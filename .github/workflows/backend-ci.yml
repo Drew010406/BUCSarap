@@ -41,7 +41,12 @@ jobs:
           pip install flake8 pytest # Linter
           # TODO: make sure na meron requirements.txt for the list of libs na magagamit
           # Ilagay sa root folder
-
+      # Conditional statement in yml or yaml
+      # Link for the exmple: https://www.peterbe.com/plog/how-to-run-workflow-step-if-a-file-exists
+      - name: Check if requirement.txt exists
+        if: ${{ hashFiles('requirements.txt') != ''}}
+        run: |
+          pip install -r requirements.txt
       - name: 
         run: |
           # This is from the official Python starter template ng Github ( Copy Pasted )
