@@ -51,7 +51,7 @@ class WelcomeScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(context, '/login');
                   },
-                  color: Color(0xFFFF9644).withValues(alpha: 0.50g),
+                  color: Color(0xFFFF9644).withValues(alpha: 0.50),
                   label: "I'm a food stall owner",
                   labelColor: Color(0xFFDA782B),
                 ),
