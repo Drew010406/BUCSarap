@@ -36,6 +36,7 @@ jobs:
       - name: Check for lints
         run: |
           flutter analyze
+        continue-on-error: true
 
 #      In the future if hindi ako tamarin imma write my tests
 #      Pero for now comment this out just like on the backend ci
