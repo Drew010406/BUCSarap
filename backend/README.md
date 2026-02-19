@@ -1,1 +1,1 @@
-Tangina men sadboy ako ngayon miss kona mga cold replies nya:<
+Nigga we da best.
