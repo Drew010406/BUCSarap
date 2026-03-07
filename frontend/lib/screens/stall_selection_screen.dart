@@ -4,6 +4,7 @@ import 'package:frontend/shared/back_button_container.dart';
 import 'package:frontend/components/stall_selection_screen/card_container.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/models/stall_model.dart';
+import 'package:frontend/shared/order_button.dart';
 
 import '../constants.dart';
 
@@ -19,6 +20,7 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen>
     with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+
   // Reference: https://stackoverflow.com/questions/66640920/how-do-you-animate-to-expand-a-container-from-0-height-to-the-height-of-its-cont
   @override
   void initState() {
@@ -28,10 +30,7 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen>
       vsync: this,
       duration: Duration(milliseconds: 100),
     );
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.fastLinearToSlowEaseIn,
-    );
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.linear);
   }
 
   _toggleContainer() {
@@ -124,12 +123,17 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen>
           Positioned(
             bottom: 0,
             child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
               height: 100,
               width: screenWidth,
-              color: Colors.brown,
-              child: TextButton(
-                onPressed: () => _toggleContainer(),
-                child: Text("j"),
+              color: Color(0xFFD9BFA1).withValues(alpha: 0.5),
+              child: Row(
+                children: [
+                  OrderButton(
+                    onTap: () => _toggleContainer(),
+                    label: 'My Order',
+                  ),
+                ],
               ),
             ),
           ),
@@ -142,7 +146,8 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen>
               child: Container(
                 height: 400,
                 width: screenWidth,
-                color: Colors.brown,
+                color: Color(0xFFD9BFA1).withValues(alpha: 0.5),
+                child: Column(),
               ),
             ),
           ),
