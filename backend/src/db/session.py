@@ -11,7 +11,7 @@ url = URL.create(
     password="", 
     host="localhost",
     database="buCSarapDB", #I'm not sure sa DB name
-    port=5432
+    port=3306
 )
 
 engine = create_engine(url)
