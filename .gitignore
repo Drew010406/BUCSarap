@@ -32,7 +32,7 @@ frontend/.idea/
 .pub-cache/
 .pub/
 frontend/build
-
+#
 # Symbolication related
 app.*.symbols
 
