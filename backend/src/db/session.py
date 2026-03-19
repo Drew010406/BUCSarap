@@ -19,7 +19,7 @@ url = URL.create(
     username="root", #Change later for security
     password=db_pass, 
     host="localhost",
-    database="buCSarapDB", #I'm not sure sa DB name
+    database="buCSarapDB",
     port=3306
 )
 
