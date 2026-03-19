@@ -67,7 +67,9 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                       return Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                          color: Color(0xFFEFE2D3),
+                          color: Color(
+                            0xFFFF9644
+                          ).withValues(alpha: 0.50),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Column(
@@ -108,16 +110,34 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                 ),
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(child: SizedBox()),
-                                CountButton(symbol: "-"),
-                                Text("0"),
-                                CountButton(symbol: "+"),
-                                Expanded(child: SizedBox()),
-                              ],
+                            Text(
+                              menuItems[index].label!,
+                              style: TextStyle(
+                                color: kPrimaryColor,
+                                fontFamily: "flame",
+                                fontSize: 14,
+                              ),
                             ),
+                            SizedBox(height: 10),
+                            Text(
+                              "1.5PHP",
+                              style: TextStyle(
+                                color: kPrimaryColor,
+                                fontFamily: "flame",
+                                fontSize: 13,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            //   children: [
+                            //     Expanded(child: SizedBox()),
+                            //     CountButton(symbol: "-"),
+                            //     Text("0"),
+                            //     CountButton(symbol: "+"),
+                            //     Expanded(child: SizedBox()),
+                            //   ],
+                            // ),
                           ],
                         ),
                       );

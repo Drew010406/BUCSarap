@@ -88,7 +88,6 @@ class _CartContainerState extends ConsumerState<CartContainer>
             ],
           ),
         ),
-
       ],
     );
   }
