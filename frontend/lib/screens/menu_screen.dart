@@ -66,26 +66,26 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                       childAspectRatio: 0.78,
                     ),
                     itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        decoration: BoxDecoration(
-                          color: Color(
-                            0xFFFF9644
-                          ).withValues(alpha: 0.50),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(HeroDialogRoute(builder: (context) {
-                                    return ItemWindow(index: index,);
-                                  }));
-                                },
-                                child: Hero(
-                                  tag: "$itemTag-$index",
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(HeroDialogRoute(builder: (context) {
+                            return ItemWindow(index: index,);
+                          }));
+                        },
+                        child: Hero(
+                          tag: "$itemTag-$index",
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Color(
+                                0xFFFF9644
+                              ).withValues(alpha: 0.50),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Expanded(
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Color(
@@ -107,12 +107,14 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                           ),
                                         ),
                                         SizedBox(height: 10),
-                                        Text(
-                                          "1.5PHP",
-                                          style: TextStyle(
-                                            color: kPrimaryColor,
-                                            fontFamily: "flame",
-                                            fontSize: 13,
+                                        Flexible(
+                                          child: Text(
+                                            "1.5PHP",
+                                            style: TextStyle(
+                                              color: kPrimaryColor,
+                                              fontFamily: "flame",
+                                              fontSize: 13,
+                                            ),
                                           ),
                                         ),
                                         SizedBox(height: 10),
@@ -120,37 +122,37 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                     ),
                                   ),
                                 ),
-                              ),
+                                Text(
+                                  menuItems[index].label!,
+                                  style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontFamily: "flame",
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  "1.5PHP",
+                                  style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontFamily: "flame",
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                // Row(
+                                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                //   children: [
+                                //     Expanded(child: SizedBox()),
+                                //     CountButton(symbol: "-"),
+                                //     Text("0"),
+                                //     CountButton(symbol: "+"),
+                                //     Expanded(child: SizedBox()),
+                                //   ],
+                                // ),
+                              ],
                             ),
-                            Text(
-                              menuItems[index].label!,
-                              style: TextStyle(
-                                color: kPrimaryColor,
-                                fontFamily: "flame",
-                                fontSize: 14,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              "1.5PHP",
-                              style: TextStyle(
-                                color: kPrimaryColor,
-                                fontFamily: "flame",
-                                fontSize: 13,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            //   children: [
-                            //     Expanded(child: SizedBox()),
-                            //     CountButton(symbol: "-"),
-                            //     Text("0"),
-                            //     CountButton(symbol: "+"),
-                            //     Expanded(child: SizedBox()),
-                            //   ],
-                            // ),
-                          ],
+                          ),
                         ),
                       );
                     },
