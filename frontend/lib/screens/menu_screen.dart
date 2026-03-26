@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/components/menu_screen/count_button.dart';
@@ -83,7 +85,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                       height: double.infinity,
                                       width: double.infinity,
                                       decoration: BoxDecoration(
-                                        color: Color(0xFFEFE2D3),
+                                        color: Color(0xFFFF9644),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: Padding(
@@ -101,8 +103,9 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                               child: Container(
                                                 width: double.infinity,
                                                 decoration: BoxDecoration(
-                                                  color: Color(0xFFFF9644),
-                                                  borderRadius: BorderRadius.circular(10)
+                                                  color: Colors.black45,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
                                                 ),
                                                 // Fix yellow underline under text: https://stackoverflow.com/questions/47114639/yellow-lines-under-text-widgets-in-flutter
                                                 child: DefaultTextStyle(
@@ -112,57 +115,89 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                               ),
                                             ),
                                             Expanded(child: SizedBox()),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                IconButton(
-                                                  onPressed: () {},
-                                                  icon: Image.asset(
-                                                    color: Color(0xFFFF9644),
-                                                    scale: 1.4,
-                                                    "images/icons/subtract_icon.png",
-                                                  ),
-                                                ),
-                                                Center(
-                                                  child: DefaultTextStyle(
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontFamily: "flame",
-                                                      fontSize: 25,
+                                            Expanded(
+                                              flex: 3,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  IconButton(
+                                                    onPressed: () {},
+                                                    icon: Image.asset(
+                                                      color: Colors.black45,
+                                                      scale: 1.4,
+                                                      "images/icons/subtract_icon.png",
                                                     ),
-                                                    child: Text("0"),
                                                   ),
-                                                ),
-                                                IconButton(
-                                                  onPressed: () {},
-                                                  icon: Image.asset(
-                                                    scale: 1.4,
-                                                    color: Color(0xFFFF9644),
-                                                    "images/icons/add_icon.png",
+                                                  Center(
+                                                    child: DefaultTextStyle(
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontFamily: "flame",
+                                                        fontSize: 25,
+                                                      ),
+                                                      child: Text("0"),
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                  IconButton(
+                                                    onPressed: () {},
+                                                    icon: Image.asset(
+                                                      scale: 1.4,
+                                                      color: Colors.black45,
+                                                      "images/icons/add_icon.png",
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                             Expanded(child: SizedBox()),
-                                            GestureDetector(
-                                              child: Container(
-                                                height: 46,
-                                                width: double.infinity,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.black,
-                                                  borderRadius:
-                                                      BorderRadius.circular(25),
-                                                ),
-                                                child: DefaultTextStyle(
-                                                  style: TextStyle(
-                                                    fontFamily: "flame",
+                                            Row(
+                                              children: [
+                                                // Expanded(child: SizedBox()),
+                                                Expanded(
+                                                  child: GestureDetector(
+                                                    child: Container(
+                                                      height: 46,
+                                                      // width: double.infinity,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.black,
+                                                        borderRadius:
+                                                        BorderRadius.circular(25),
+                                                      ),
+                                                      child: DefaultTextStyle(
+                                                        style: TextStyle(
+                                                          fontFamily: "flame",
+                                                        ),
+                                                        child: Center(
+                                                          child: Text("Cancel"),
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
-                                                  child: Center(
-                                                    child: Text("Add to cart"),
+                                                ),
+                                                SizedBox(width: 10,),
+                                                Expanded(
+                                                  child: GestureDetector(
+                                                    child: Container(
+                                                      height: 46,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.black,
+                                                        borderRadius:
+                                                        BorderRadius.circular(25),
+                                                      ),
+                                                      child: DefaultTextStyle(
+                                                        style: TextStyle(
+                                                          fontFamily: "flame",
+                                                        ),
+                                                        child: Center(
+                                                          child: Text("Add"),
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+                                                // Expanded(child: SizedBox()),
+                                              ],
                                             ),
                                             Expanded(child: SizedBox()),
                                           ],
