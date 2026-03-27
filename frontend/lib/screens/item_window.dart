@@ -6,7 +6,7 @@ import 'package:frontend/constants.dart';
 
 class ItemWindow extends ConsumerStatefulWidget {
   final int? index;
-  const ItemWindow({required this.index});
+  const ItemWindow({super.key, required this.index});
 
 
   @override
@@ -14,6 +14,14 @@ class ItemWindow extends ConsumerStatefulWidget {
 }
 
 class _ItemWindowState extends ConsumerState<ItemWindow> {
+  late int itemQuantity;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    itemQuantity = 0;
+  }
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -85,12 +93,18 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
                                     fontFamily: "flame",
                                     fontSize: 30,
                                   ),
-                                  child: Text("0"),
+                                  child: Text("$itemQuantity"),
                                 ),
                               ),
                               Expanded(child: SizedBox()),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    if(itemQuantity != 0) {
+                                      itemQuantity -= 1;
+                                    }
+                                  });
+                                },
                                 icon: Image.asset(
                                   color: Colors.black,
                                   scale: 1.4,
@@ -98,7 +112,11 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    itemQuantity += 1;
+                                  });
+                                },
                                 icon: Image.asset(
                                   scale: 1.4,
                                   color: Colors.black,

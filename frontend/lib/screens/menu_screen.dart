@@ -104,7 +104,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Text(
-                                          menuItems[index].label!,
+                                          menuItems[index].productName!,
                                           style: TextStyle(
                                             color: kPrimaryColor,
                                             fontFamily: "flame",
@@ -128,7 +128,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                   ),
                                 ),
                                 Text(
-                                  menuItems[index].label!,
+                                  menuItems[index].productName!,
                                   style: TextStyle(
                                     color: kPrimaryColor,
                                     fontFamily: "flame",
