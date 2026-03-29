@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/models/product_pile_model.dart';
-import 'package:frontend/providers/cart_provider.dart';
 import 'package:frontend/screens/item_window.dart';
 import 'package:frontend/screens/page_route/hero_dialog_route.dart';
 

@@ -1,9 +1,13 @@
-BUCSarap -  Root folder(contents)<br/>
-    - .env<br/>
-    - .venv<br/>
-    - .gitignore <br/>
-    - backend dic<br/>
-    - frontend dic<br/>
+### BUCSarap: Portable Ordering & Queueing System for Bicol University College of Science Canteen
+
+### Welcome Screen
+![Welcome Screen](assets/welcome_screen.png)
+
+### Stall Holders Login Screen
+![Login Screen](assets/login_screen.png)
+
+### Stall Selection Screen
+![Stall Selection Screen](assets/stall_selection.png)
 
 How to initialize python's virtual env (source: <https://www.w3schools.com/python/python_virtualenv.asp>):<br/>
 
