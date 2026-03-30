@@ -23,7 +23,7 @@ class Main extends StatelessWidget {
         '/': (context) => WelcomeScreen(),
         '/stall_selection': (context) => StallSelectionScreen(),
         '/login': (context) => LoginScreen(),
-        '/menu_screen': (context) => MenuScreen()
+        '/menu_screen': (context) => MenuScreen(),
       },
     );
   }

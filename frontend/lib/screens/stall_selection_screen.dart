@@ -61,9 +61,7 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen>
             Navigator.pop(context);
           },
         ),
-        actions: [
-          CartButton(productQuantity: cartProducts.length,)
-        ],
+        actions: [CartButton(productQuantity: cartProducts.length)],
       ),
       body: Stack(
         children: [
@@ -119,11 +117,7 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen>
               ),
             ],
           ),
-         Positioned(
-           bottom: 0,
-           child: CartContainer(
-           ),
-         ),
+          Positioned(bottom: 0, child: CartContainer()),
         ],
       ),
     );

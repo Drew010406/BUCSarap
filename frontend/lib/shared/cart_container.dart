@@ -51,140 +51,191 @@ class _CartContainerState extends ConsumerState<CartContainer>
           axis: Axis.vertical,
           axisAlignment: -1,
           child: Container(
-            height: 430,
+            height: 440,
             width: screenWidth,
-            color: Color(0xFFFFC570).withValues(alpha: 0.5),
+            color: Color(0xFFFFC570).withValues(alpha: 0.8),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Text("My Cart", style: TextStyle(fontFamily: "Flame", fontSize: 20)),
-                Container(
-                  height: 400,
-                  padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: cartProducts.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      // https://www.geeksforgeeks.org/flutter/flutter-slidable/
-                      return Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Slidable(
-                          key: const ValueKey(0),
-                          endActionPane: ActionPane(
-                            motion: ScrollMotion(),
-                            children: [
-                              SlidableAction(
-                                onPressed: (BuildContext context) {
-                                  setState(() {
-                                    ref
-                                        .read(cartNotifierProvider.notifier)
-                                        .removeProduct(
-                                          cartProducts.elementAt(index),
-                                        );
-                                  });
-                                },
-                                icon: Icons.delete,
-                                label: "Delete",
-                                backgroundColor: Colors.red,
+                if (cartProducts.isNotEmpty)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(child: SizedBox(), flex: 3),
+                      Flexible(
+                        flex: 3,
+                        child: Text(
+                          "Product Name",
+                          style: TextStyle(fontFamily: "Flame"),
+                        ),
+                      ),
+                      SizedBox(width: 70),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          "Quantity",
+                          style: TextStyle(fontFamily: "Flame"),
+                        ),
+                      ),
+                      Expanded(child: SizedBox(), flex: 1),
+                    ],
+                  ),
+                if (cartProducts.isNotEmpty)
+                  Container(
+                    height: 400,
+                    padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: cartProducts.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        // https://www.geeksforgeeks.org/flutter/flutter-slidable/
+                        return Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Slidable(
+                            key: const ValueKey(0),
+                            endActionPane: ActionPane(
+                              motion: ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (BuildContext context) {
+                                    setState(() {
+                                      ref
+                                          .read(cartNotifierProvider.notifier)
+                                          .removeProduct(
+                                            cartProducts.elementAt(index),
+                                          );
+                                    });
+                                  },
+                                  icon: Icons.delete,
+                                  label: "Delete",
+                                  backgroundColor: Colors.red,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ],
+                            ),
+                            child: Container(
+                              width: double.infinity,
+                              height: 90,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 19,
+                                vertical: 20,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFFF9644),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                            ],
-                          ),
-                          child: Container(
-                            width: double.infinity,
-                            height: 90,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 19,
-                              vertical: 20,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFF9644),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(child: Text("Picture")),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Product Name",
-                                      style: TextStyle(
-                                        fontFamily: "Flame",
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    Text(
-                                      "Product Info",
-                                      style: TextStyle(
-                                        fontFamily: "Flame",
-                                        color: Colors.black45,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 10,
-                                  ),
-                                  height: double.infinity,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(child: Text("Picture")),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            ref
-                                                .read(
-                                                  cartNotifierProvider.notifier,
-                                                )
-                                                .decrementProduct(
-                                                  cartProducts.elementAt(index),
-                                                );
-                                          });
-                                        },
-                                        child: Icon(Icons.arrow_back_ios),
-                                      ),
-                                      VerticalDivider(color: Colors.black),
-                                      Center(
-                                        child: Text(
-                                          cartProducts
-                                              .elementAt(index)
-                                              .quantity
-                                              .toString(),
-                                          style: TextStyle(
-                                            fontFamily: "Roboto",
-                                            fontSize: 19,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                      Text(
+                                        "Product Name",
+                                        style: TextStyle(
+                                          fontFamily: "Flame",
+                                          fontSize: 16,
                                         ),
                                       ),
-                                      VerticalDivider(color: Colors.black),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {});
-                                        },
-                                        child: Container(
-                                          child: Icon(Icons.arrow_forward_ios),
-                                          margin: EdgeInsets.only(
-                                            left: 6.1,
-                                          ), // Dunno the fix, if solid 6 medj fade color nung divider
+                                      Text(
+                                        "Product Info",
+                                        style: TextStyle(
+                                          fontFamily: "Flame",
+                                          color: Colors.black45,
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 10,
+                                    ),
+                                    height: double.infinity,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              ref
+                                                  .read(
+                                                    cartNotifierProvider
+                                                        .notifier,
+                                                  )
+                                                  .decrementProduct(
+                                                    cartProducts.elementAt(
+                                                      index,
+                                                    ),
+                                                  );
+                                            });
+                                          },
+                                          child: Icon(
+                                            size: 20,
+                                            Icons.arrow_back_ios,
+                                          ),
+                                        ),
+                                        VerticalDivider(color: Colors.black),
+                                        Center(
+                                          child: Text(
+                                            cartProducts
+                                                .elementAt(index)
+                                                .quantity
+                                                .toString(),
+                                            style: TextStyle(
+                                              fontFamily: "Roboto",
+                                              fontSize: 19,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        VerticalDivider(color: Colors.black),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              ref
+                                                  .read(
+                                                    cartNotifierProvider
+                                                        .notifier,
+                                                  )
+                                                  .incrementProduct(
+                                                    cartProducts.elementAt(
+                                                      index,
+                                                    ),
+                                                  );
+                                            });
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(left: 6.1),
+                                            child: Icon(
+                                              size: 20,
+                                              Icons.arrow_forward_ios,
+                                            ), // Dunno the fix, if solid 6 medj fade color nung divider
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
+                  )
+                else
+                  Center(
+                    child: Text(
+                      "No items available",
+                      style: TextStyle(fontFamily: "Flame"),
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -193,7 +244,7 @@ class _CartContainerState extends ConsumerState<CartContainer>
           padding: EdgeInsets.symmetric(horizontal: 30),
           height: 100,
           width: screenWidth,
-          color: Color(0xFFFFC570).withValues(alpha: 0.5),
+          color: Color(0xFFFFC570).withValues(alpha: 0.8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
