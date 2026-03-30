@@ -36,9 +36,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: [
-          CartButton(productQuantity: cartProducts.length,)
-        ],
+        actions: [CartButton(productQuantity: cartProducts.length)],
       ),
       body: Stack(
         children: [

@@ -1,8 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:frontend/main.dart';
-import 'package:frontend/screens/stall_selection_screen.dart';
 
 import '../components/welcome_screen/box_container.dart';
 
@@ -34,7 +30,7 @@ class WelcomeScreen extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-            SizedBox(height: 40,),
+            SizedBox(height: 40),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,

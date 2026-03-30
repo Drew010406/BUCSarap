@@ -73,26 +73,26 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 40),
               GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    height: 45,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFDA782B),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Login',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: "Flame",
-                          color: Colors.black
-                        ),
+                onTap: () {},
+                child: Container(
+                  height: 45,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFDA782B),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Login',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: "Flame",
+                        color: Colors.black,
                       ),
                     ),
                   ),
                 ),
+              ),
               Expanded(flex: 2, child: SizedBox()),
             ],
           ),

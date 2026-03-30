@@ -15,7 +15,7 @@ class CartButton extends StatelessWidget {
             onPressed: () {},
             icon: Icon(Icons.shopping_cart, color: Color(0xFFDA782B)),
           ),
-          if(productQuantity != 0)
+          if (productQuantity != 0)
             Positioned(
               right: 10,
               bottom: 25,
@@ -33,7 +33,7 @@ class CartButton extends StatelessWidget {
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Roboto",
-                      color: Colors.white
+                      color: Colors.white,
                     ),
                   ),
                 ),
