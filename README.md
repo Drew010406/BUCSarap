@@ -1,13 +1,13 @@
 ### BUCSarap: Portable Ordering & Queueing System for Bicol University College of Science Canteen
 
 ### Welcome Screen
-![Welcome Screen](assets/welcome_screen.png)
+<img src="assets/welcome_screen.png" alt="Welcome Screen" width="400">
 
 ### Stall Holders Login Screen
-![Login Screen](assets/login_screen.png)
+<img src="assets/login_screen.png" alt="Login Screen" width="400">
 
 ### Stall Selection Screen
-![Stall Selection Screen](assets/stall_selection.png)
+<img src="assets/stall_selection.png" alt="Stall Selection Screen" width="400">
 
 How to initialize python's virtual env (source: <https://www.w3schools.com/python/python_virtualenv.asp>):<br/>
 
