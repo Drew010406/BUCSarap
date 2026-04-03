@@ -1,0 +1,46 @@
+// https://github.com/funwithflutter/flutter_ui_tips/blob/master/tip_003_popup_card/lib/hero_dialog_route.dart
+import 'package:flutter/material.dart';
+
+class HeroDialogRoute<T> extends PageRoute<T> {
+  HeroDialogRoute({required WidgetBuilder builder, super.fullscreenDialog})
+    : _builder = builder;
+
+  final WidgetBuilder _builder;
+
+  @override
+  bool get opaque => false;
+
+  @override
+  bool get barrierDismissible => true;
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 100);
+
+  @override
+  bool get maintainState => true;
+
+  @override
+  Color get barrierColor => Color(0xFFEFE2D3).withValues(alpha: 0.5);
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    return child;
+  }
+
+  @override
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
+    return _builder(context);
+  }
+
+  @override
+  String get barrierLabel => 'Popup dialog open';
+}
