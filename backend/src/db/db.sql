@@ -7,7 +7,6 @@ CREATE TABLE owner (
 CREATE TABLE stall (
   stall_id int PRIMARY KEY AUTO_INCREMENT,
   stall_name varchar(100) NOT NULL,
-  operating_days varchar(55) NOT NULL,
   opening_time time NOT NULL,
   closing_time time NOT NULL,
   operating_days varchar(55) NOT NULL,
@@ -39,7 +38,7 @@ CREATE TABLE product_pile (
   FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
-CREATE TABLE order (
+CREATE TABLE orders (
   order_id int PRIMARY KEY AUTO_INCREMENT,
   product_pile_id int NOT NULL,
   stall_id int NOT NULL,
@@ -56,5 +55,5 @@ CREATE TABLE history (
   order_id int,
   PRIMARY KEY (owner_id, order_id),
   FOREIGN KEY (owner_id) REFERENCES owner(owner_id),
-  FOREIGN KEY (order_id) REFERENCES order(order_id)
+  FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
