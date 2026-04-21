@@ -25,7 +25,9 @@ class _StallHolderScreenState extends State<StallHolderScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/add_product_screen');
+            },
             icon: Icon(Icons.add, color: Color(0xFFDA782B)),
           ),
         ],
