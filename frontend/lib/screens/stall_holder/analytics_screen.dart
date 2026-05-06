@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/constants.dart';
 
 import '../../components/stall_holder/navigation_panel.dart';
 import '../../shared/back_button_container.dart';
@@ -24,6 +25,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentRoute = ModalRoute.of(context)?.settings.name;
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 110,
@@ -47,86 +50,203 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
         // ],
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            height: 250,
-            decoration: BoxDecoration(color: Color(0xFFFFC570).withValues(alpha: 0.8), borderRadius: BorderRadius.circular(10)),
-            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
+          Expanded(
+            child: ListView(
               children: [
-                Container(
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFEFE2D3),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _updateStatus(ChartStatus.MONTHLY);
-                          });
-                        },
-                        child: Container(
-                          height: 35,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: _status == ChartStatus.MONTHLY ? active : inactive,
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Monthly",
-                              style: TextStyle(fontFamily: "Flame"),
+                      Text("Earnings,", style: kJetbrainsFontTitle),
+                      SizedBox(height: 10),
+                      Container(
+                        height: 250,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFFFC570).withValues(alpha: 0.8),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 10,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 45,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFEFE2D3),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _updateStatus(ChartStatus.MONTHLY);
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 35,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: _status == ChartStatus.MONTHLY
+                                            ? active
+                                            : inactive,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "Monthly",
+                                          style: TextStyle(fontFamily: "Flame"),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _updateStatus(ChartStatus.WEEKLY);
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 35,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: _status == ChartStatus.WEEKLY
+                                            ? active
+                                            : inactive,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "Weekly",
+                                          style: TextStyle(fontFamily: "Flame"),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _updateStatus(ChartStatus.DAILY);
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 35,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: _status == ChartStatus.DAILY
+                                            ? active
+                                            : inactive,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "Daily",
+                                          style: TextStyle(fontFamily: "Flame"),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+
+                            Expanded(child: SizedBox()),
+                            IntrinsicHeight(
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 20),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text.rich(
+                                        TextSpan(
+                                          text: 'April ',
+                                          style: kJetbrainsDescription.copyWith(
+                                            fontWeight: FontWeight.w900,
+                                            color: Color(0xFF5D371A),
+                                            fontSize: 20,
+                                          ),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: '2026',
+                                              style: kJetbrainsDescription
+                                                  .copyWith(
+                                                    color: Color(0xFF5D371A),
+                                                    fontWeight: FontWeight.w900,
+                                                    fontSize: 20,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Text.rich(
+                                        TextSpan(
+                                          text: '₱ ',
+                                          style: kJetbrainsFontTitle,
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: '100',
+                                              style: kJetbrainsFontTitle,
+                                            ),
+                                            TextSpan(
+                                              text: '.00',
+                                              style: kJetbrainsFontTitle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.arrow_drop_up,
+                                            size: 30,
+                                            color: Colors.green,
+                                          ),
+                                          Text(
+                                            "+10% increase",
+                                            style: kJetbrainsDescription
+                                                .copyWith(
+                                                  color: Colors.green,
+                                                  fontSize: 18,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Expanded(child: SizedBox()),
+                                ],
+                              ),
+                            ),
+
+                            Expanded(child: SizedBox()),
+                          ],
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _updateStatus(ChartStatus.WEEKLY);
-                          });
-                        },
-                        child: Container(
-                          height: 35,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: _status == ChartStatus.WEEKLY ? active : inactive,
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Weekly",
-                              style: TextStyle(fontFamily: "Flame"),
-                            ),
-                          ),
+                      SizedBox(height: 15),
+                      Text("Income History", style: kJetbrainsFontTitle),
+                      SizedBox(height: 10),
+                      Container(
+                        height: 250,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFFFC570).withValues(alpha: 0.8),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _updateStatus(ChartStatus.DAILY);
-                          });
-                        },
-                        child: Container(
-                          height: 35,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: _status == ChartStatus.DAILY ? active : inactive,
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Daily",
-                              style: TextStyle(fontFamily: "Flame"),
-                            ),
-                          ),
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 10,
                         ),
+                        child: Column(children: []),
                       ),
                     ],
                   ),
@@ -134,7 +254,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               ],
             ),
           ),
-          NavigationPanel(),
+          NavigationPanel(currentRoute: currentRoute as String),
         ],
       ),
     );
