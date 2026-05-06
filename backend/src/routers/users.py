@@ -1,9 +1,9 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import text, Connection
-from db.session import get_db
-from schema.user import UserCreate, UserResponse
-from core.security import hash_password
+from backend.src.db.session import get_db
+from backend.src.schema.user import UserCreate, UserResponse
+from backend.src.core.security import hash_password
 
 route = APIRouter()
 

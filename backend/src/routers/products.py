@@ -1,8 +1,8 @@
 from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import text, Connection
-from db.session import get_db
-from schema.product import ProductResponse, StallResponse, OrderResponse, CategoryResponse
+from backend.src.db.session import get_db
+from backend.src.schema.product import ProductResponse, StallResponse, OrderResponse, CategoryResponse
 
 route = APIRouter()
 

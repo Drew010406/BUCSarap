@@ -1,8 +1,8 @@
 # Run niyo sa src (python -m db.auth_cli)
 
 from sqlalchemy import text
-from db.session import engine
-from core.security import hash_password, verify_hash
+from backend.src.db.session import engine
+from backend.src.core.security import hash_password, verify_hash
 
 def add_account():
     print("\nAdd new acc")
