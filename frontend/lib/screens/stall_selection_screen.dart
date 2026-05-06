@@ -23,7 +23,6 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen>
     with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-
   // Reference: https://stackoverflow.com/questions/66640920/how-do-you-animate-to-expand-a-container-from-0-height-to-the-height-of-its-cont
   @override
   void initState() {
@@ -48,6 +47,7 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen>
   Widget build(BuildContext context) {
     final testProducts = ref.read(productProvider);
     final cartProducts = ref.watch(cartNotifierProvider);
+    final double height = MediaQuery.heightOf(context);
 
     final screenWidth = MediaQuery.sizeOf(context).width;
 
@@ -76,7 +76,7 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen>
               //   TODO: Implement SingleChildScroll
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 100),
                   child: GridView.builder(
                     itemCount: testProducts.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

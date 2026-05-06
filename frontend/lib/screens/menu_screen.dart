@@ -50,7 +50,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 90),
+                  padding: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 100),
                   child: GridView.builder(
                     itemCount: menuItems.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
