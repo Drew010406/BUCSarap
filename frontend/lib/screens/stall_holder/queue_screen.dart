@@ -18,9 +18,11 @@ class _QueueScreenState extends State<QueueScreen> {
 
   final Color inactive = Color(0xFFFFC570).withValues(alpha: 0.8);
   final Color active = Color(0xFFDA782B);
+
   void _updateStatus(Status status) {
     _status = status;
   }
+
   @override
   Widget build(BuildContext context) {
     final currentRoute = ModalRoute.of(context)?.settings.name;
@@ -32,7 +34,10 @@ class _QueueScreenState extends State<QueueScreen> {
         leadingWidth: 140,
         leading: BackButtonContainer(
           onTap: () {
-            Navigator.popUntil(context, ModalRoute.withName('/stall_holder_screen'));
+            Navigator.popUntil(
+              context,
+              ModalRoute.withName('/stall_holder_screen'),
+            );
           },
         ),
         // actions: [
@@ -47,50 +52,66 @@ class _QueueScreenState extends State<QueueScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _updateStatus(Status.PENDING);
-                  });
-                },
-                child: Container(
-                  height: 35,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    color: _status == Status.PENDING ? active : inactive,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      topLeft: Radius.circular(10),
+          Container(
+            height: 45,
+            decoration: BoxDecoration(
+              color: Color(0xFFEFE2D3),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _updateStatus(Status.PENDING);
+                    });
+                  },
+                  child: Container(
+                    height: 35,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        topLeft: Radius.circular(10),
+                      ),
+                      color: _status == Status.PENDING ? active : inactive,
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Pending",
+                        style: TextStyle(fontFamily: "Flame"),
+                      ),
                     ),
                   ),
-                  child: Center(child: Text("Pending", style: TextStyle(fontFamily: "Flame"),)),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _updateStatus(Status.PROCESSING);
-                  });
-                },
-                child: Container(
-                  height: 30,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    color: _status == Status.PROCESSING ? active : inactive,
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(10),
-                      topRight: Radius.circular(10),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _updateStatus(Status.PROCESSING);
+                    });
+                  },
+                  child: Container(
+                    height: 35,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: _status == Status.PROCESSING ? active : inactive,
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      ),                    ),
+                    child: Center(
+                      child: Text(
+                        "Processing",
+                        style: TextStyle(fontFamily: "Flame"),
+                      ),
                     ),
                   ),
-                  child: Center(child: Text("Processing", style: TextStyle(fontFamily: "Flame"),)),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          NavigationPanel(currentRoute: currentRoute as String,),
+          NavigationPanel(currentRoute: currentRoute as String),
         ],
       ),
     );

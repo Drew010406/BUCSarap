@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/providers/cart_provider.dart';
 import 'package:frontend/shared/item_cart.dart';
 import 'package:frontend/shared/order_button.dart';
@@ -45,16 +46,17 @@ class _CartContainerState extends ConsumerState<CartContainer>
 
     final ScrollController _scrollController = ScrollController();
 
-    return Column(
+    return Stack(
+      alignment: Alignment.bottomRight,
       children: [
         SizeTransition(
           sizeFactor: _animation,
           axis: Axis.vertical,
           axisAlignment: -1,
           child: Container(
-            height: 440,
+            height: 480,
             width: screenWidth,
-            color: Color(0xFFFFC570).withValues(alpha: 0.8),
+            color: Color(0xFFFFC570).withValues(alpha: 1),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -125,7 +127,7 @@ class _CartContainerState extends ConsumerState<CartContainer>
                                 color: Color(0xFFFF9644),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: ItemCart(index: index,)
+                              child: ItemCart(index: index),
                             ),
                           ),
                         );
@@ -180,6 +182,24 @@ class _CartContainerState extends ConsumerState<CartContainer>
                 ),
               ),
             ],
+          ),
+        ),
+        Positioned(
+          top: -1,
+          left: 10,
+          child: SizeTransition(
+            sizeFactor: _animation,
+            axis: Axis.vertical,
+            axisAlignment: -1,
+            child: IconButton(
+              onPressed: () {
+                _toggleContainer();
+                if (_scrollController.hasClients) {
+                  _scrollController.jumpTo(0.0);
+                }
+              },
+              icon: SvgPicture.asset('images/icons/x.svg'),
+            ),
           ),
         ),
       ],

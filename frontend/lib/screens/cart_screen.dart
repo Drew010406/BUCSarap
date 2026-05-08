@@ -90,11 +90,52 @@ class _CartScreenState extends ConsumerState<CartScreen> {
             height: 100,
             width: screenWidth,
             color: Color(0xFFFFC570).withValues(alpha: 0.8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-
-              ],
+            child: IntrinsicHeight(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(child: SizedBox()),
+                  Text(
+                    "500 PHP",
+                    style: TextStyle(
+                      fontFamily: 'Flame',
+                      fontSize: 20,
+                      color: Color(0xFF5D371A),
+                    ),
+                  ),
+                  Expanded(flex: 5,child: SizedBox()),
+                  VerticalDivider(
+                    color: Colors.black,
+                    thickness: 3,
+                    width: 30,
+                    indent: 23,
+                    endIndent: 23,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/order_successful');
+                    },
+                    child: Container(
+                      height: 52,
+                      width: 153,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFF9644).withValues(alpha: 0.5),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Checkout",
+                          style: TextStyle(
+                            color: Color(0xFF5D371A),
+                            fontFamily: 'Flame',
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ],
