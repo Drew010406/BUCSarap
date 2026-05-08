@@ -4,9 +4,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/providers/cart_provider.dart';
 
-import '../shared/back_button_container.dart';
-import '../shared/item_cart.dart';
-import '../shared/order_button.dart';
+import '../../shared/back_button_container.dart';
+import '../../shared/item_cart.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});

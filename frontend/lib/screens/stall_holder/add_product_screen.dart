@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/constants.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../shared/back_button_container.dart';
@@ -83,8 +84,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            Text('Product Image', style: kJetbrainsFontTitle.copyWith(fontSize: 24)),
+            SizedBox(height: 20,),
             GestureDetector(
               onTap: () {
                 _showPicker(context: context);
@@ -95,10 +97,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 decoration: BoxDecoration(
                   color: Color(0xFFFDBD10).withValues(alpha: 0.50),
                 ),
-                child: Center(child: Text('Add a photo')),
+                child: Center(child: Text('Add a photo', style: TextStyle(fontFamily: 'Flame'),)),
               ),
             ),
-            Text('Product Name'),
+            SizedBox(height: 30,),
+            Text('Product Name', style: kJetbrainsFontTitle.copyWith(fontSize: 24)),
+            SizedBox(height: 20,),
             TextField(
               style: TextStyle(color: Colors.black, fontFamily: "Flame"),
               decoration: InputDecoration(
@@ -110,7 +114,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 hintText: 'Product name',
               ),
             ),
-            Text('Product Price'),
+            SizedBox(height: 30,),
+            Text('Product Price', style: kJetbrainsFontTitle.copyWith(fontSize: 24)),
+            SizedBox(height: 20,),
             TextField(
               style: TextStyle(color: Colors.black, fontFamily: "Flame"),
               decoration: InputDecoration(
@@ -122,6 +128,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 hintText: 'Product Price in PHP',
               ),
             ),
+            Expanded(child: SizedBox(height: double.infinity,)),
             GestureDetector(
               onTap: () {
                 // Navigator.pushNamed(context, '/stall_holder_screen');
@@ -142,6 +149,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ),
               ),
             ),
+            SizedBox(height: 30,)
           ],
         ),
       ),

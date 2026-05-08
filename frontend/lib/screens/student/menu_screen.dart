@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/screens/item_window.dart';
+import 'package:frontend/screens/student/item_window.dart';
 import 'package:frontend/screens/page_route/hero_dialog_route.dart';
 import 'package:frontend/shared/cart_button.dart';
 
-import '../constants.dart';
-import '../providers/cart_provider.dart';
-import '../providers/menu_provider.dart';
-import '../shared/back_button_container.dart';
-import '../shared/cart_container.dart';
+import '../../constants.dart';
+import '../../providers/cart_provider.dart';
+import '../../providers/menu_provider.dart';
+import '../../shared/back_button_container.dart';
+import '../../shared/cart_container.dart';
 
 class MenuScreen extends ConsumerStatefulWidget {
   const MenuScreen({super.key});

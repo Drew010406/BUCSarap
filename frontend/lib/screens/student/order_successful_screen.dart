@@ -16,7 +16,7 @@ class OrderSuccessfulScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 17),
               decoration: BoxDecoration(
                 color: Color(0xFFFFC570),
-                borderRadius: BorderRadius.circular(10)
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -45,11 +45,25 @@ class OrderSuccessfulScreen extends StatelessWidget {
                           22,
                         ), // rect feels more native than pill
                       ),
-                      child: Center(child: Text("Save receipt to gallery", style: TextStyle(fontFamily: 'Flame', color: Colors.white70))),
+                      child: Center(
+                        child: Text(
+                          "Save receipt to gallery",
+                          style: TextStyle(
+                            fontFamily: 'Flame',
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(height: 4),
                   GestureDetector(
+                    onTap: () {
+                      Navigator.popUntil(
+                        context,
+                        ModalRoute.withName('/stall_selection'),
+                      );
+                    },
                     child: Container(
                       height: 42,
                       width: 200,
@@ -58,7 +72,12 @@ class OrderSuccessfulScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(22),
                         border: Border.all(width: 2, color: Color(0xFFDA782B)),
                       ),
-                      child: Center(child: Text("Home", style: TextStyle(fontFamily: 'Flame'),)),
+                      child: Center(
+                        child: Text(
+                          "Home",
+                          style: TextStyle(fontFamily: 'Flame'),
+                        ),
+                      ),
                     ),
                   ),
                   Expanded(child: SizedBox()),
