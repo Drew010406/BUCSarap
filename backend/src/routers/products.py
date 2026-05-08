@@ -2,24 +2,25 @@ from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import text, Connection
 from backend.src.db.session import get_db
-from backend.src.schema.product import ProductResponse, StallResponse, OrderResponse, CategoryResponse
+from backend.src.schema.product import ProductResponse, StallResponse, OrderResponse, CategoryResponse, ProductWithDetails
 
 route = APIRouter()
 
 
-#Gets all the product category of a stall
-@route.get("/{stall_id}", response_model= List[CategoryResponse])
-async def get_stall_products(stall_id : int, db: Annotated[Connection, Depends(get_db)]):
+#Gets all products from a stall with details
+@route.get("/{stall_id}", response_model=List[ProductWithDetails])
+async def get_stall_products(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
     
-    #gets all the stall products
     query = text("""
-                
-                SELECT *
-                FROM product_category
-                WHERE stall_id = :stall_id
-                """)
+        SELECT p.product_id, p.product_name, p.product_price, p.photo_path, pp.product_quantity
+        FROM stall s
+        JOIN product_category pc ON pc.stall_id = s.stall_id
+        JOIN product p ON p.category_id = pc.category_id
+        JOIN product_pile pp ON pp.product_id = p.product_id AND pp.stall_id = s.stall_id
+        WHERE s.stall_id = :stall_id
+    """)
     
-    results = db.execute(query, {"stall_id" : stall_id}).mappings().fetchall()
+    results = db.execute(query, {"stall_id": stall_id}).mappings().fetchall()
     return results
 
 #Gets all the products from a category based off of the id

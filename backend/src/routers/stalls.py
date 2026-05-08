@@ -1,0 +1,173 @@
+from typing import Annotated, List
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import text, Connection
+from backend.src.db.session import get_db
+from backend.src.schema.stalls import StallUpdate, StallResponse, StallWithCategories
+
+route = APIRouter()
+
+@route.get("/", response_model=List[StallResponse])
+#gets all stalls 
+async def get_all_stalls(db: Annotated[Connection, Depends(get_db)]):
+    
+    query = text("""
+        SELECT stall_id, owner_id, stall_name, opening_time, closing_time, operating_days, stall_status, photo_path
+        FROM stall
+    """)
+    
+    try:
+        results = db.execute(query).mappings().fetchall()
+        return results
+    
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
+
+
+@route.get("/{stall_id}",response_model=StallResponse)
+#gets info of a stall using the stasll id 
+async def get_stall(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+
+    query = text("""
+        SELECT stall_id, owner_id, stall_name, opening_time, closing_time, operating_days, stall_status, photo_path
+        FROM stall
+        WHERE stall_id = :id
+    """)
+    
+    try:
+        result = db.execute(query, {"id": stall_id}).mappings().fetchone()
+        
+        if not result:
+            raise HTTPException(status_code=404, detail="Stall not found")
+        
+        return result
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
+
+
+@route.get("/{stall_id}/with-categories", response_model=StallWithCategories)
+
+async def get_stall_with_categories(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
+
+    #gets the stall info tapos ang categories
+    query = text("""
+        SELECT 
+            s.stall_id,
+            s.owner_id,
+            s.stall_name,
+            s.photo_path,
+            pc.category_id,
+            pc.category_name
+        FROM stall s
+        LEFT JOIN product_category pc ON s.stall_id = pc.stall_id
+        WHERE s.stall_id = :id
+    """)
+    
+    try:
+        results = db.execute(query, {"id": stall_id}).mappings().fetchall()
+        
+        if not results:
+            raise HTTPException(status_code=404, detail="Stall not found")
+        
+        # Build stall with categories
+        stall_data = {
+            "stall_id": results[0]["stall_id"],
+            "owner_id": results[0]["owner_id"],
+            "stall_name": results[0]["stall_name"],
+            "opening_time": results[0]["opening_time"],
+            "closing_time": results[0]["closing_time"],
+            "operating_days": results[0]["operating_days"],
+            "stall_status": results[0]["stall_status"],
+            "photo_path": results[0]["photo_path"],
+            "categories": [
+                {"category_id": r["category_id"], "category_name": r["category_name"]}
+                for r in results if r["category_id"]
+            ]
+        }
+        
+        return stall_data
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
+
+
+@route.put("/{stall_id}",response_model=StallResponse)
+async def update_stall(stall_id: int, stall_update: StallUpdate, db: Annotated[Connection, Depends(get_db)]):
+
+
+    # Check if stall exists
+    check_query = text("""
+        SELECT stall_id FROM stall WHERE stall_id = :id
+    """)
+    
+    existing_stall = db.execute(check_query, {"id": stall_id}).mappings().fetchone()
+    
+    if not existing_stall:
+        raise HTTPException(status_code=404, detail="Stall not found")
+    
+    # Build dynamic update query
+    update_fields = []
+    params = {"id": stall_id}
+    
+    if stall_update.stall_name is not None:
+        
+        update_fields.append("stall_name = :stall_name")
+        params["stall_name"] = stall_update.stall_name
+    
+    if stall_update.opening_time is not None:
+        
+        update_fields.append("opening_time = :opening_time")
+        params["opening_time"] = stall_update.opening_time
+    
+    if stall_update.closing_time is not None:
+        
+        update_fields.append("closing_time = :closing_time")
+        params["closing_time"] = stall_update.closing_time
+    
+    if stall_update.operating_days is not None:
+        
+        update_fields.append("operating_days = :operating_days")
+        params["operating_days"] = stall_update.operating_days
+    
+    if stall_update.stall_status is not None:
+        
+        update_fields.append("stall_status = :stall_status")
+        params["stall_status"] = stall_update.stall_status
+    
+    if stall_update.photo_path is not None:
+        
+        update_fields.append("photo_path = :photo_path")
+        params["photo_path"] = stall_update.photo_path
+    
+    if not update_fields:
+        
+        raise HTTPException(status_code=400, detail="No fields to update")
+    
+    update_query = text(f"""
+        UPDATE stall
+        SET {', '.join(update_fields)}
+        WHERE stall_id = :id
+    """)
+    
+    try:
+        
+        db.execute(update_query, params)
+        db.commit()
+        
+        # Fetch and return the updated stall
+        select_query = text("""
+            SELECT stall_id, owner_id, stall_name, opening_time, closing_time, operating_days, stall_status, photo_path
+            FROM stall
+            WHERE stall_id = :id
+        """)
+        
+        updated_stall = db.execute(select_query, {"id": stall_id}).mappings().fetchone()
+        return updated_stall
+    
+    except Exception as error:
+        
+        db.rollback()
+        raise HTTPException(status_code=400, detail=f"Database error: {str(error)}")

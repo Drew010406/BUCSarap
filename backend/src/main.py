@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import users, products
+from backend.src.routers import users, products, stalls
 
 app = FastAPI()
 
@@ -16,3 +16,5 @@ app.include_router(users.route, prefix="/users", tags=["Users"])
 
 # Remove comment on the bottom code later, wala pa kase sa products
 app.include_router(products.route, prefix="/products", tags=["Products"])
+
+app.include_router(stalls.route, prefix="/stalls", tags=["Stalls"])
