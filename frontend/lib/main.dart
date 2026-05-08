@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/screens/cart_screen.dart';
-import 'package:frontend/screens/login_screen.dart';
-import 'package:frontend/screens/menu_screen.dart';
-import 'package:frontend/screens/order_successful_screen.dart';
+import 'package:frontend/screens/student/cart_screen.dart';
+import 'package:frontend/screens/student/login_screen.dart';
+import 'package:frontend/screens/student/menu_screen.dart';
+import 'package:frontend/screens/student/order_successful_screen.dart';
 import 'package:frontend/screens/stall_holder/add_product_screen.dart';
 import 'package:frontend/screens/stall_holder/analytics_screen.dart';
 import 'package:frontend/screens/stall_holder/queue_screen.dart';
 import 'package:frontend/screens/stall_holder/stall_holder_screen.dart';
 import 'package:frontend/screens/stall_holder/transaction_history_screen.dart';
-import 'package:frontend/screens/stall_selection_screen.dart';
-import 'package:frontend/screens/welcome_screen.dart';
+import 'package:frontend/screens/student/stall_selection_screen.dart';
+import 'package:frontend/screens/student/welcome_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: Main()));

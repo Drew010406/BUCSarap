@@ -8,8 +8,8 @@ import 'package:frontend/shared/cart_button.dart';
 import 'package:frontend/shared/cart_container.dart';
 import 'package:frontend/shared/order_button.dart';
 
-import '../constants.dart';
-import '../providers/stall_provider.dart';
+import '../../constants.dart';
+import '../../providers/stall_provider.dart';
 
 class StallSelectionScreen extends ConsumerStatefulWidget {
   const StallSelectionScreen({super.key});
