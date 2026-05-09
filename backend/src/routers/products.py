@@ -19,6 +19,9 @@ async def get_products_by_category(category_id : int, db : Annotated[Connection,
             pp.product_quantity, 
             p.photo_path,
             
+            s.stall_id,
+            s.stall_name,
+            
             pc.category_id,
             pc.category_name
         

@@ -11,6 +11,9 @@ class ProductResponse(BaseModel):
     product_quantity: int
     photo_path : str
     
+    stall_id : int
+    stall_name : str
+    
     category_id : int
     category_name : str
     
