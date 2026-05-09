@@ -48,3 +48,5 @@ app.*.map.json
 venv
 
 .idea/
+__pycache__
+__init.py__
