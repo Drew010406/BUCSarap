@@ -8,28 +8,9 @@ class ProductResponse(BaseModel):
     product_name : str
     product_price : Decimal
     product_status : bool
-    photo_path : str
-    
     product_quantity: int
+    photo_path : str
     
     category_id : int
     category_name : str
-    
-class StallResponse(BaseModel):
-    
-    stall_id : int
-    stall_name : str
-    owner_id : int
-    opening_time : str
-    closing_time : str
-    operating_days : str
-    stall_status : bool
-    
-class OrderResponse(BaseModel):
-
-    order_id : int
-    order_number: str
-    order_status: str
-    customer_name: Optional[str]
-    stall_id: int
     
