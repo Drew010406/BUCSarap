@@ -1,3 +1,6 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+
 class ProductPile {
   final int? productPileID;
   final int? productID;

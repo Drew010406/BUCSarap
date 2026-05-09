@@ -24,13 +24,17 @@ dependencies:
   fresh_dio: ^0.6.0
   flutter_secure_storage: ^10.0.0
   flutter_svg: ^2.2.4
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.11.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
+  freezed: ^3.2.5
   flutter_lints: ^5.0.0
+  json_serializable: ^6.13.2
+  build_runner: ^2.15.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

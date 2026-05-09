@@ -1,23 +1,18 @@
-class OrderModel {
-  final int? orderID;
-  final int? productPileID;
-  final int? stallID;
-  final String? orderNumber;
-  final String? orderStatus;
-  final DateTime? orderTime;
-  final DateTime? processingTime;
-  final String? customerName;
-  final int? total;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  const OrderModel({
-    this.stallID,
-    this.total,
-    this.customerName,
-    this.orderID,
-    this.orderNumber,
-    this.orderStatus,
-    this.orderTime,
-    this.processingTime,
-    this.productPileID,
-  });
+part 'order_model.freezed.dart';
+part 'order_model.g.dart';
+
+@freezed
+abstract class OrderResponseModel with _$OrderResponseModel {
+  const factory OrderResponseModel({
+    @JsonKey(name: "order_id") int? orderID,
+    @JsonKey(name: "order_number") String? orderNumber,
+    @JsonKey(name: "order_status") @Default("pending") String? orderStatus,
+    @JsonKey(name: "customer_name") String? customerName,
+    @JsonKey(name: "stall_id") int? stallID,
+  }) = _OrderResponseModel;
+
+  factory OrderResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$OrderResponseModelFromJson(json);
 }
