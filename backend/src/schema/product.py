@@ -8,19 +8,12 @@ class ProductResponse(BaseModel):
     product_name : str
     product_price : Decimal
     product_status : bool
-    category_id : int
-
-class ProductWithDetails(BaseModel):
-    product_id: int
-    product_name: str
-    product_price: Decimal
-    photo_path: str
+    photo_path : str
+    
     product_quantity: int
     
-class CategoryResponse(BaseModel):
-    category_id: int
-    category_name: str
-    stall_id: int
+    category_id : int
+    category_name : str
     
 class StallResponse(BaseModel):
     

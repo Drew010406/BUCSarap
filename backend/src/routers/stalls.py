@@ -2,7 +2,7 @@ from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import text, Connection
 from backend.src.db.session import get_db
-from backend.src.schema.stalls import StallUpdate, StallResponse, StallWithCategories
+from backend.src.schema.stalls import StallUpdate, StallResponse, StallCategories
 
 route = APIRouter()
 
@@ -47,7 +47,7 @@ async def get_stall(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
         raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
 
 
-@route.get("/{stall_id}/with-categories", response_model=StallWithCategories)
+@route.get("/{stall_id}/with-categories", response_model=StallCategories)
 
 async def get_stall_with_categories(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
 
@@ -55,11 +55,10 @@ async def get_stall_with_categories(stall_id: int, db: Annotated[Connection, Dep
     query = text("""
         SELECT 
             s.stall_id,
-            s.owner_id,
             s.stall_name,
-            s.photo_path,
             pc.category_id,
             pc.category_name
+            
         FROM stall s
         LEFT JOIN product_category pc ON s.stall_id = pc.stall_id
         WHERE s.stall_id = :id
@@ -74,13 +73,7 @@ async def get_stall_with_categories(stall_id: int, db: Annotated[Connection, Dep
         # Build stall with categories
         stall_data = {
             "stall_id": results[0]["stall_id"],
-            "owner_id": results[0]["owner_id"],
-            "stall_name": results[0]["stall_name"],
-            "opening_time": results[0]["opening_time"],
-            "closing_time": results[0]["closing_time"],
-            "operating_days": results[0]["operating_days"],
-            "stall_status": results[0]["stall_status"],
-            "photo_path": results[0]["photo_path"],
+            "stall_name" : results[0]["stall_name"],
             "categories": [
                 {"category_id": r["category_id"], "category_name": r["category_name"]}
                 for r in results if r["category_id"]
