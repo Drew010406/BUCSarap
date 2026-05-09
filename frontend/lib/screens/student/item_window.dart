@@ -31,7 +31,7 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
   @override
   Widget build(BuildContext context) {
     final cartProducts = ref.watch(cartNotifierProvider);
-    final productList = ref.read(menuProvider);
+    // final productList = ref.read(menuProvider);
 
     return Center(
       child: Padding(

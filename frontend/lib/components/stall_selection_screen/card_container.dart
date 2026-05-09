@@ -5,7 +5,7 @@ import '../../models/stall_model.dart';
 
 class CardContainer extends StatelessWidget {
   const CardContainer({super.key, required this.stall});
-  final Stall? stall;
+  final StallResponseModel? stall;
 
   @override
   Widget build(BuildContext context) {

@@ -1,14 +1,20 @@
 import 'package:dio/dio.dart';
+import 'package:frontend/models/stall_model.dart';
 
 class StallService {
   final Dio? _dio;
 
   StallService({dio}) : _dio = dio;
 
-  Future<dynamic> getStalls() async {
+  Future<List<StallResponseModel>> getStalls() async {
+    List<StallResponseModel> stalls = [];
     try {
       Response response = await _dio!.get('/stalls/');
       print(response.data.toString());
+      for(var stall in response.data) {
+        stalls.add(StallResponseModel.fromJson(stall));
+      }
+      return stalls;
     } on DioException catch (e) {
       /// Tangina inaantok nako
       if (e.response != null) {
@@ -29,9 +35,10 @@ class StallService {
     }
   }
 
-  Future<dynamic> getStall(int stallId) async {
+  Future<StallResponseModel> getStall(int stallId) async {
     try {
       Response response = await _dio!.get('/$stallId');
+      return StallResponseModel.fromJson(response.data);
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
@@ -54,9 +61,10 @@ class StallService {
     }
   }
 
-  Future<dynamic> getStallWithCategories(int stallId) async {
+  Future<StallWithCategories> getStallWithCategories(int stallId) async {
     try {
       Response response = await _dio!.get('/$stallId/with-categories');
+      return StallWithCategories.fromJson(response.data);
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
@@ -79,9 +87,10 @@ class StallService {
     }
   }
 
-  Future<dynamic> updateStall(int stallId) async {
+  Future<dynamic> updateStall(int stallId, StallUpdateModel update) async {
     try {
-      Response response = await _dio!.get('/$stallId');
+      Response response = await _dio!.put('/$stallId', data: update.toJson());
+      print(response.data.toString());
     } on DioException catch (e) {
 
       if (e.response != null) {
