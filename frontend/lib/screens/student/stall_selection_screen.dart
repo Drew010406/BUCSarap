@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/providers/cart_provider.dart';
 import 'package:frontend/shared/back_button_container.dart';
-import 'package:frontend/components/stall_selection_screen/card_container.dart';
-import 'package:frontend/main.dart';
 import 'package:frontend/shared/cart_button.dart';
 import 'package:frontend/shared/cart_container.dart';
-import 'package:frontend/shared/order_button.dart';
-
 import '../../constants.dart';
 import '../../providers/stall_provider.dart';
 
@@ -19,37 +15,13 @@ class StallSelectionScreen extends ConsumerStatefulWidget {
       _StallSelectionScreenState();
 }
 
-class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen>
-    with TickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-  // Reference: https://stackoverflow.com/questions/66640920/how-do-you-animate-to-expand-a-container-from-0-height-to-the-height-of-its-cont
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 100),
-    );
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.linear);
-  }
+class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
 
-  _toggleContainer() {
-    if (_animation.status != AnimationStatus.completed) {
-      _controller.forward();
-    } else {
-      _controller.animateBack(0, duration: Duration(milliseconds: 100));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final cartProducts = ref.watch(cartNotifierProvider);
     final stallsAsyncProvider = ref.watch(stallsProvider);
-    final double height = MediaQuery.heightOf(context);
-
-    final screenWidth = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
       appBar: AppBar(
