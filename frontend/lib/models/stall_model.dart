@@ -50,15 +50,9 @@ abstract class StallUpdateModel with _$StallUpdateModel {
 @freezed
 abstract class StallWithCategories with _$StallWithCategories {
   const factory StallWithCategories({
-    @JsonKey(name: 'stall_id') required int stallId,
-    @JsonKey(name: 'stall_name') required String stallName,
-    @JsonKey(name: 'owner_id') required int ownerId,
-    @JsonKey(name: 'opening_time') required String openingTime,
-    @JsonKey(name: 'closing_time') required String closingTime,
-    @JsonKey(name: 'operating_days') required String operatingDays,
-    @JsonKey(name: 'stall_status') required bool stallStatus,
-    @JsonKey(name: 'photo_path') required String photoPath,
-    required List<CategoryInfoModel> categories,
+    @JsonKey(name: 'stall_id') int? stallId,
+    @JsonKey(name: 'stall_name') String? stallName,
+    @Default([]) List<CategoryInfoModel> categories,
   }) = _StallWithCategories;
 
   factory StallWithCategories.fromJson(Map<String, dynamic> json) =>

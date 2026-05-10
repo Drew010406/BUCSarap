@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/screens/student/cart_screen.dart';
+import 'package:frontend/screens/student/category_screen.dart';
 import 'package:frontend/screens/student/login_screen.dart';
 import 'package:frontend/screens/student/menu_screen.dart';
 import 'package:frontend/screens/student/order_successful_screen.dart';
@@ -30,6 +31,7 @@ class Main extends StatelessWidget {
         '/': (context) => WelcomeScreen(),
         '/stall_selection': (context) => StallSelectionScreen(),
         '/login': (context) => LoginScreen(),
+        '/category_screen': (context) => CategoryScreen(),
         '/menu_screen': (context) => MenuScreen(),
         '/cart_screen': (context) => CartScreen(),
         '/stall_holder_screen': (context) =>StallHolderScreen(),

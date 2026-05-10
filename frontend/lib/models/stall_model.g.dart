@@ -64,17 +64,15 @@ Map<String, dynamic> _$StallUpdateModelToJson(_StallUpdateModel instance) =>
 
 _StallWithCategories _$StallWithCategoriesFromJson(Map<String, dynamic> json) =>
     _StallWithCategories(
-      stallId: (json['stall_id'] as num).toInt(),
-      stallName: json['stall_name'] as String,
-      ownerId: (json['owner_id'] as num).toInt(),
-      openingTime: json['opening_time'] as String,
-      closingTime: json['closing_time'] as String,
-      operatingDays: json['operating_days'] as String,
-      stallStatus: json['stall_status'] as bool,
-      photoPath: json['photo_path'] as String,
-      categories: (json['categories'] as List<dynamic>)
-          .map((e) => CategoryInfoModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      stallId: (json['stall_id'] as num?)?.toInt(),
+      stallName: json['stall_name'] as String?,
+      categories:
+          (json['categories'] as List<dynamic>?)
+              ?.map(
+                (e) => CategoryInfoModel.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$StallWithCategoriesToJson(
@@ -82,11 +80,5 @@ Map<String, dynamic> _$StallWithCategoriesToJson(
 ) => <String, dynamic>{
   'stall_id': instance.stallId,
   'stall_name': instance.stallName,
-  'owner_id': instance.ownerId,
-  'opening_time': instance.openingTime,
-  'closing_time': instance.closingTime,
-  'operating_days': instance.operatingDays,
-  'stall_status': instance.stallStatus,
-  'photo_path': instance.photoPath,
   'categories': instance.categories,
 };

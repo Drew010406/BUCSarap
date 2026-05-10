@@ -11,9 +11,14 @@ _ProductResponseModel _$ProductResponseModelFromJson(
 ) => _ProductResponseModel(
   productID: (json['product_id'] as num?)?.toInt(),
   productName: json['product_name'] as String?,
-  productPrice: (json['product_price'] as num?)?.toDouble(),
-  productStatus: json[' product_status'] as bool? ?? false,
-  categoryID: (json['category_id '] as num?)?.toInt(),
+  productPrice: _parseDouble(json['product_price']),
+  productStatus: json['product_status'] as bool? ?? false,
+  productQuantity: (json['product_quantity'] as num?)?.toInt(),
+  photoPath: json['photo_path'] as String?,
+  stallID: (json['stall_id'] as num?)?.toInt(),
+  stallName: json['stall_name'] as String?,
+  categoryID: (json['category_id'] as num?)?.toInt(),
+  categoryName: json['category_name'] as String?,
 );
 
 Map<String, dynamic> _$ProductResponseModelToJson(
@@ -22,26 +27,11 @@ Map<String, dynamic> _$ProductResponseModelToJson(
   'product_id': instance.productID,
   'product_name': instance.productName,
   'product_price': instance.productPrice,
-  ' product_status': instance.productStatus,
-  'category_id ': instance.categoryID,
-};
-
-_ProductWithDetailsModel _$ProductWithDetailsModelFromJson(
-  Map<String, dynamic> json,
-) => _ProductWithDetailsModel(
-  productID: (json['product_id'] as num?)?.toInt(),
-  productName: json['product_name'] as String?,
-  productPrice: (json['product_price'] as num?)?.toDouble(),
-  photoPath: json['photo_path'] as String?,
-  productQuantity: (json['product_quantity'] as num?)?.toInt(),
-);
-
-Map<String, dynamic> _$ProductWithDetailsModelToJson(
-  _ProductWithDetailsModel instance,
-) => <String, dynamic>{
-  'product_id': instance.productID,
-  'product_name': instance.productName,
-  'product_price': instance.productPrice,
-  'photo_path': instance.photoPath,
+  'product_status': instance.productStatus,
   'product_quantity': instance.productQuantity,
+  'photo_path': instance.photoPath,
+  'stall_id': instance.stallID,
+  'stall_name': instance.stallName,
+  'category_id': instance.categoryID,
+  'category_name': instance.categoryName,
 };
