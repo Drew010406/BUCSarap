@@ -72,7 +72,6 @@ def create_tables():
             order_time timestamp DEFAULT CURRENT_TIMESTAMP,
             processing_time int,
             customer_name varchar(55),
-            total_price decimal(10,2) NOT NULL DEFAULT 0,
             FOREIGN KEY (stall_id) REFERENCES stall(stall_id)
         )
         """,
@@ -81,8 +80,6 @@ def create_tables():
             order_item_id int PRIMARY KEY AUTO_INCREMENT,
             order_id int NOT NULL,
             product_pile_id int NOT NULL,
-            order_item_quantity int NOT NULL,
-            order_item_price decimal(10,2) NOT NULL,
             FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
             FOREIGN KEY (product_pile_id) REFERENCES product_pile(product_pile_id)
         )
@@ -91,8 +88,6 @@ def create_tables():
         CREATE TABLE history (
             owner_id int,
             order_id int,
-            total_price decimal(10,2),
-            order_time timestamp,
             PRIMARY KEY (owner_id, order_id),
             FOREIGN KEY (owner_id) REFERENCES owner(owner_id),
             FOREIGN KEY (order_id) REFERENCES orders(order_id)

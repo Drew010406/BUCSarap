@@ -138,51 +138,51 @@ VALUES
 
 
 -- ORDERS
-INSERT INTO orders (stall_id, order_number, order_status, customer_name, processing_time, total_price) VALUES
+INSERT INTO orders (stall_id, order_number, order_status, customer_name, processing_time) VALUES
 -- Burger Boss Orders
-(1, 'ORD-001', 'Completed', 'Juan Santos', 15, 320.00),
-(1, 'ORD-002', 'Completed', 'Maria Garcia', 12, 305.00),
-(1, 'ORD-003', 'Ready', 'Carlos Reyes', 10, 360.00),
-(1, 'ORD-004', 'In Progress', 'Ana Lopez', NULL, 290.00),
-(1, 'ORD-005', 'Pending', 'Peter Wong', NULL, 345.00),
+(1, 'ORD-001', 'Completed', 'Juan Santos', 15),
+(1, 'ORD-002', 'Completed', 'Maria Garcia', 12),
+(1, 'ORD-003', 'Ready', 'Carlos Reyes', 10),
+(1, 'ORD-004', 'In Progress', 'Ana Lopez', NULL),
+(1, 'ORD-005', 'Pending', 'Peter Wong', NULL),
 
 -- Rice King Orders
-(2, 'ORD-006', 'Completed', 'Sophie Chen', 18, 320.00),
-(2, 'ORD-007', 'Completed', 'Marco Rossi', 20, 300.00),
-(2, 'ORD-008', 'Ready', 'Lisa Tan', 14, 170.00),
+(2, 'ORD-006', 'Completed', 'Sophie Chen', 18),
+(2, 'ORD-007', 'Completed', 'Marco Rossi', 20),
+(2, 'ORD-008', 'Ready', 'Lisa Tan', 14),
 
 -- Pasta Hub Orders
-(3, 'ORD-009', 'Completed', 'Roberto Trevino', 25, 500.00),
-(3, 'ORD-010', 'In Progress', 'Francesca Villa', NULL, 360.00),
+(3, 'ORD-009', 'Completed', 'Roberto Trevino', 25),
+(3, 'ORD-010', 'In Progress', 'Francesca Villa', NULL),
 
 -- MilkTea Manila Orders
-(4, 'ORD-011', 'Completed', 'Amara Khan', 8, 330.00),
-(4, 'ORD-012', 'Completed', 'Zainab Ahmed', 9, 350.00),
-(4, 'ORD-013', 'Ready', 'Yuki Tanaka', 7, 120.00),
+(4, 'ORD-011', 'Completed', 'Amara Khan', 8),
+(4, 'ORD-012', 'Completed', 'Zainab Ahmed', 9),
+(4, 'ORD-013', 'Ready', 'Yuki Tanaka', 7),
 
 -- Takoyaki World Orders
-(5, 'ORD-014', 'Completed', 'Hiroshi Yamamoto', 10, 295.00),
-(5, 'ORD-015', 'In Progress', 'Sakura Nakamura', NULL, 95.00),
+(5, 'ORD-014', 'Completed', 'Hiroshi Yamamoto', 10),
+(5, 'ORD-015', 'In Progress', 'Sakura Nakamura', NULL),
 
 -- Sisig Sentral Orders
-(6, 'ORD-016', 'Completed', 'Ramon Cruz', 12, 290.00),
-(6, 'ORD-017', 'Ready', 'Gloria Santos', 11, 280.00),
+(6, 'ORD-016', 'Completed', 'Ramon Cruz', 12),
+(6, 'ORD-017', 'Ready', 'Gloria Santos', 11),
 
 -- Ramen House Orders
-(7, 'ORD-018', 'Completed', 'Kenji Sato', 22, 250.00),
-(7, 'ORD-019', 'Pending', 'Yuki Suzuki', NULL, 510.00),
+(7, 'ORD-018', 'Completed', 'Kenji Sato', 22),
+(7, 'ORD-019', 'Pending', 'Yuki Suzuki', NULL),
 
 -- BBQ Corner Orders
-(8, 'ORD-020', 'Completed', 'Miguel Torres', 18, 260.00),
-(8, 'ORD-021', 'Completed', 'Rosa Martinez', 16, 270.00),
+(8, 'ORD-020', 'Completed', 'Miguel Torres', 18),
+(8, 'ORD-021', 'Completed', 'Rosa Martinez', 16),
 
 -- Sweet Bite Orders
-(9, 'ORD-022', 'Completed', 'Emma Wilson', 5, 90.00),
-(9, 'ORD-023', 'Ready', 'Sophia Brown', 6, 220.00),
+(9, 'ORD-022', 'Completed', 'Emma Wilson', 5),
+(9, 'ORD-023', 'Ready', 'Sophia Brown', 6),
 
 -- Healthy Bowl Orders
-(10, 'ORD-024', 'In Progress', 'Alexandra Green', NULL, 305.00),
-(10, 'ORD-025', 'Pending', 'Diana Lee', NULL, 320.00);
+(10, 'ORD-024', 'In Progress', 'Alexandra Green', NULL),
+(10, 'ORD-025', 'Pending', 'Diana Lee', NULL);
 
 
 -- ORDER ITEMS
