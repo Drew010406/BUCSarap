@@ -52,12 +52,6 @@ abstract class StallWithCategories with _$StallWithCategories {
   const factory StallWithCategories({
     @JsonKey(name: 'stall_id') int? stallId,
     @JsonKey(name: 'stall_name') String? stallName,
-    @JsonKey(name: 'owner_id') int? ownerId,
-    @JsonKey(name: 'opening_time') String? openingTime,
-    @JsonKey(name: 'closing_time') String? closingTime,
-    @JsonKey(name: 'operating_days') String? operatingDays,
-    @JsonKey(name: 'stall_status') @Default(false) bool stallStatus,
-    @JsonKey(name: 'photo_path') String? photoPath,
     @Default([]) List<CategoryInfoModel> categories,
   }) = _StallWithCategories;
 

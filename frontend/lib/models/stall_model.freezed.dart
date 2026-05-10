@@ -843,7 +843,7 @@ as String?,
 /// @nodoc
 mixin _$StallWithCategories {
 
-@JsonKey(name: 'stall_id') int? get stallId;@JsonKey(name: 'stall_name') String? get stallName;@JsonKey(name: 'owner_id') int? get ownerId;@JsonKey(name: 'opening_time') String? get openingTime;@JsonKey(name: 'closing_time') String? get closingTime;@JsonKey(name: 'operating_days') String? get operatingDays;@JsonKey(name: 'stall_status') bool get stallStatus;@JsonKey(name: 'photo_path') String? get photoPath; List<CategoryInfoModel> get categories;
+@JsonKey(name: 'stall_id') int? get stallId;@JsonKey(name: 'stall_name') String? get stallName; List<CategoryInfoModel> get categories;
 /// Create a copy of StallWithCategories
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -856,16 +856,16 @@ $StallWithCategoriesCopyWith<StallWithCategories> get copyWith => _$StallWithCat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StallWithCategories&&(identical(other.stallId, stallId) || other.stallId == stallId)&&(identical(other.stallName, stallName) || other.stallName == stallName)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&(identical(other.openingTime, openingTime) || other.openingTime == openingTime)&&(identical(other.closingTime, closingTime) || other.closingTime == closingTime)&&(identical(other.operatingDays, operatingDays) || other.operatingDays == operatingDays)&&(identical(other.stallStatus, stallStatus) || other.stallStatus == stallStatus)&&(identical(other.photoPath, photoPath) || other.photoPath == photoPath)&&const DeepCollectionEquality().equals(other.categories, categories));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StallWithCategories&&(identical(other.stallId, stallId) || other.stallId == stallId)&&(identical(other.stallName, stallName) || other.stallName == stallName)&&const DeepCollectionEquality().equals(other.categories, categories));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,stallId,stallName,ownerId,openingTime,closingTime,operatingDays,stallStatus,photoPath,const DeepCollectionEquality().hash(categories));
+int get hashCode => Object.hash(runtimeType,stallId,stallName,const DeepCollectionEquality().hash(categories));
 
 @override
 String toString() {
-  return 'StallWithCategories(stallId: $stallId, stallName: $stallName, ownerId: $ownerId, openingTime: $openingTime, closingTime: $closingTime, operatingDays: $operatingDays, stallStatus: $stallStatus, photoPath: $photoPath, categories: $categories)';
+  return 'StallWithCategories(stallId: $stallId, stallName: $stallName, categories: $categories)';
 }
 
 
@@ -876,7 +876,7 @@ abstract mixin class $StallWithCategoriesCopyWith<$Res>  {
   factory $StallWithCategoriesCopyWith(StallWithCategories value, $Res Function(StallWithCategories) _then) = _$StallWithCategoriesCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'stall_id') int? stallId,@JsonKey(name: 'stall_name') String? stallName,@JsonKey(name: 'owner_id') int? ownerId,@JsonKey(name: 'opening_time') String? openingTime,@JsonKey(name: 'closing_time') String? closingTime,@JsonKey(name: 'operating_days') String? operatingDays,@JsonKey(name: 'stall_status') bool stallStatus,@JsonKey(name: 'photo_path') String? photoPath, List<CategoryInfoModel> categories
+@JsonKey(name: 'stall_id') int? stallId,@JsonKey(name: 'stall_name') String? stallName, List<CategoryInfoModel> categories
 });
 
 
@@ -893,16 +893,10 @@ class _$StallWithCategoriesCopyWithImpl<$Res>
 
 /// Create a copy of StallWithCategories
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? stallId = freezed,Object? stallName = freezed,Object? ownerId = freezed,Object? openingTime = freezed,Object? closingTime = freezed,Object? operatingDays = freezed,Object? stallStatus = null,Object? photoPath = freezed,Object? categories = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? stallId = freezed,Object? stallName = freezed,Object? categories = null,}) {
   return _then(_self.copyWith(
 stallId: freezed == stallId ? _self.stallId : stallId // ignore: cast_nullable_to_non_nullable
 as int?,stallName: freezed == stallName ? _self.stallName : stallName // ignore: cast_nullable_to_non_nullable
-as String?,ownerId: freezed == ownerId ? _self.ownerId : ownerId // ignore: cast_nullable_to_non_nullable
-as int?,openingTime: freezed == openingTime ? _self.openingTime : openingTime // ignore: cast_nullable_to_non_nullable
-as String?,closingTime: freezed == closingTime ? _self.closingTime : closingTime // ignore: cast_nullable_to_non_nullable
-as String?,operatingDays: freezed == operatingDays ? _self.operatingDays : operatingDays // ignore: cast_nullable_to_non_nullable
-as String?,stallStatus: null == stallStatus ? _self.stallStatus : stallStatus // ignore: cast_nullable_to_non_nullable
-as bool,photoPath: freezed == photoPath ? _self.photoPath : photoPath // ignore: cast_nullable_to_non_nullable
 as String?,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
 as List<CategoryInfoModel>,
   ));
@@ -989,10 +983,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'stall_id')  int? stallId, @JsonKey(name: 'stall_name')  String? stallName, @JsonKey(name: 'owner_id')  int? ownerId, @JsonKey(name: 'opening_time')  String? openingTime, @JsonKey(name: 'closing_time')  String? closingTime, @JsonKey(name: 'operating_days')  String? operatingDays, @JsonKey(name: 'stall_status')  bool stallStatus, @JsonKey(name: 'photo_path')  String? photoPath,  List<CategoryInfoModel> categories)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'stall_id')  int? stallId, @JsonKey(name: 'stall_name')  String? stallName,  List<CategoryInfoModel> categories)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _StallWithCategories() when $default != null:
-return $default(_that.stallId,_that.stallName,_that.ownerId,_that.openingTime,_that.closingTime,_that.operatingDays,_that.stallStatus,_that.photoPath,_that.categories);case _:
+return $default(_that.stallId,_that.stallName,_that.categories);case _:
   return orElse();
 
 }
@@ -1010,10 +1004,10 @@ return $default(_that.stallId,_that.stallName,_that.ownerId,_that.openingTime,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'stall_id')  int? stallId, @JsonKey(name: 'stall_name')  String? stallName, @JsonKey(name: 'owner_id')  int? ownerId, @JsonKey(name: 'opening_time')  String? openingTime, @JsonKey(name: 'closing_time')  String? closingTime, @JsonKey(name: 'operating_days')  String? operatingDays, @JsonKey(name: 'stall_status')  bool stallStatus, @JsonKey(name: 'photo_path')  String? photoPath,  List<CategoryInfoModel> categories)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'stall_id')  int? stallId, @JsonKey(name: 'stall_name')  String? stallName,  List<CategoryInfoModel> categories)  $default,) {final _that = this;
 switch (_that) {
 case _StallWithCategories():
-return $default(_that.stallId,_that.stallName,_that.ownerId,_that.openingTime,_that.closingTime,_that.operatingDays,_that.stallStatus,_that.photoPath,_that.categories);case _:
+return $default(_that.stallId,_that.stallName,_that.categories);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1030,10 +1024,10 @@ return $default(_that.stallId,_that.stallName,_that.ownerId,_that.openingTime,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'stall_id')  int? stallId, @JsonKey(name: 'stall_name')  String? stallName, @JsonKey(name: 'owner_id')  int? ownerId, @JsonKey(name: 'opening_time')  String? openingTime, @JsonKey(name: 'closing_time')  String? closingTime, @JsonKey(name: 'operating_days')  String? operatingDays, @JsonKey(name: 'stall_status')  bool stallStatus, @JsonKey(name: 'photo_path')  String? photoPath,  List<CategoryInfoModel> categories)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'stall_id')  int? stallId, @JsonKey(name: 'stall_name')  String? stallName,  List<CategoryInfoModel> categories)?  $default,) {final _that = this;
 switch (_that) {
 case _StallWithCategories() when $default != null:
-return $default(_that.stallId,_that.stallName,_that.ownerId,_that.openingTime,_that.closingTime,_that.operatingDays,_that.stallStatus,_that.photoPath,_that.categories);case _:
+return $default(_that.stallId,_that.stallName,_that.categories);case _:
   return null;
 
 }
@@ -1045,17 +1039,11 @@ return $default(_that.stallId,_that.stallName,_that.ownerId,_that.openingTime,_t
 @JsonSerializable()
 
 class _StallWithCategories implements StallWithCategories {
-  const _StallWithCategories({@JsonKey(name: 'stall_id') this.stallId, @JsonKey(name: 'stall_name') this.stallName, @JsonKey(name: 'owner_id') this.ownerId, @JsonKey(name: 'opening_time') this.openingTime, @JsonKey(name: 'closing_time') this.closingTime, @JsonKey(name: 'operating_days') this.operatingDays, @JsonKey(name: 'stall_status') this.stallStatus = false, @JsonKey(name: 'photo_path') this.photoPath, final  List<CategoryInfoModel> categories = const []}): _categories = categories;
+  const _StallWithCategories({@JsonKey(name: 'stall_id') this.stallId, @JsonKey(name: 'stall_name') this.stallName, final  List<CategoryInfoModel> categories = const []}): _categories = categories;
   factory _StallWithCategories.fromJson(Map<String, dynamic> json) => _$StallWithCategoriesFromJson(json);
 
 @override@JsonKey(name: 'stall_id') final  int? stallId;
 @override@JsonKey(name: 'stall_name') final  String? stallName;
-@override@JsonKey(name: 'owner_id') final  int? ownerId;
-@override@JsonKey(name: 'opening_time') final  String? openingTime;
-@override@JsonKey(name: 'closing_time') final  String? closingTime;
-@override@JsonKey(name: 'operating_days') final  String? operatingDays;
-@override@JsonKey(name: 'stall_status') final  bool stallStatus;
-@override@JsonKey(name: 'photo_path') final  String? photoPath;
  final  List<CategoryInfoModel> _categories;
 @override@JsonKey() List<CategoryInfoModel> get categories {
   if (_categories is EqualUnmodifiableListView) return _categories;
@@ -1077,16 +1065,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StallWithCategories&&(identical(other.stallId, stallId) || other.stallId == stallId)&&(identical(other.stallName, stallName) || other.stallName == stallName)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&(identical(other.openingTime, openingTime) || other.openingTime == openingTime)&&(identical(other.closingTime, closingTime) || other.closingTime == closingTime)&&(identical(other.operatingDays, operatingDays) || other.operatingDays == operatingDays)&&(identical(other.stallStatus, stallStatus) || other.stallStatus == stallStatus)&&(identical(other.photoPath, photoPath) || other.photoPath == photoPath)&&const DeepCollectionEquality().equals(other._categories, _categories));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StallWithCategories&&(identical(other.stallId, stallId) || other.stallId == stallId)&&(identical(other.stallName, stallName) || other.stallName == stallName)&&const DeepCollectionEquality().equals(other._categories, _categories));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,stallId,stallName,ownerId,openingTime,closingTime,operatingDays,stallStatus,photoPath,const DeepCollectionEquality().hash(_categories));
+int get hashCode => Object.hash(runtimeType,stallId,stallName,const DeepCollectionEquality().hash(_categories));
 
 @override
 String toString() {
-  return 'StallWithCategories(stallId: $stallId, stallName: $stallName, ownerId: $ownerId, openingTime: $openingTime, closingTime: $closingTime, operatingDays: $operatingDays, stallStatus: $stallStatus, photoPath: $photoPath, categories: $categories)';
+  return 'StallWithCategories(stallId: $stallId, stallName: $stallName, categories: $categories)';
 }
 
 
@@ -1097,7 +1085,7 @@ abstract mixin class _$StallWithCategoriesCopyWith<$Res> implements $StallWithCa
   factory _$StallWithCategoriesCopyWith(_StallWithCategories value, $Res Function(_StallWithCategories) _then) = __$StallWithCategoriesCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'stall_id') int? stallId,@JsonKey(name: 'stall_name') String? stallName,@JsonKey(name: 'owner_id') int? ownerId,@JsonKey(name: 'opening_time') String? openingTime,@JsonKey(name: 'closing_time') String? closingTime,@JsonKey(name: 'operating_days') String? operatingDays,@JsonKey(name: 'stall_status') bool stallStatus,@JsonKey(name: 'photo_path') String? photoPath, List<CategoryInfoModel> categories
+@JsonKey(name: 'stall_id') int? stallId,@JsonKey(name: 'stall_name') String? stallName, List<CategoryInfoModel> categories
 });
 
 
@@ -1114,16 +1102,10 @@ class __$StallWithCategoriesCopyWithImpl<$Res>
 
 /// Create a copy of StallWithCategories
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? stallId = freezed,Object? stallName = freezed,Object? ownerId = freezed,Object? openingTime = freezed,Object? closingTime = freezed,Object? operatingDays = freezed,Object? stallStatus = null,Object? photoPath = freezed,Object? categories = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? stallId = freezed,Object? stallName = freezed,Object? categories = null,}) {
   return _then(_StallWithCategories(
 stallId: freezed == stallId ? _self.stallId : stallId // ignore: cast_nullable_to_non_nullable
 as int?,stallName: freezed == stallName ? _self.stallName : stallName // ignore: cast_nullable_to_non_nullable
-as String?,ownerId: freezed == ownerId ? _self.ownerId : ownerId // ignore: cast_nullable_to_non_nullable
-as int?,openingTime: freezed == openingTime ? _self.openingTime : openingTime // ignore: cast_nullable_to_non_nullable
-as String?,closingTime: freezed == closingTime ? _self.closingTime : closingTime // ignore: cast_nullable_to_non_nullable
-as String?,operatingDays: freezed == operatingDays ? _self.operatingDays : operatingDays // ignore: cast_nullable_to_non_nullable
-as String?,stallStatus: null == stallStatus ? _self.stallStatus : stallStatus // ignore: cast_nullable_to_non_nullable
-as bool,photoPath: freezed == photoPath ? _self.photoPath : photoPath // ignore: cast_nullable_to_non_nullable
 as String?,categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
 as List<CategoryInfoModel>,
   ));

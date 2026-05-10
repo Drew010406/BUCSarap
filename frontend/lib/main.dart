@@ -32,7 +32,7 @@ class Main extends StatelessWidget {
         '/stall_selection': (context) => StallSelectionScreen(),
         '/login': (context) => LoginScreen(),
         '/category_screen': (context) => CategoryScreen(),
-        // '/menu_screen': (context) => MenuScreen(),
+        '/menu_screen': (context) => MenuScreen(),
         '/cart_screen': (context) => CartScreen(),
         '/stall_holder_screen': (context) =>StallHolderScreen(),
         '/add_product_screen': (context) => AddProductScreen(),

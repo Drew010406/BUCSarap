@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/models/stall_model.dart';
+import 'package:frontend/providers/product_provider.dart';
 import 'package:frontend/providers/stall_provider.dart';
 
 import '../../constants.dart';
@@ -8,8 +8,6 @@ import '../../providers/cart_provider.dart';
 import '../../shared/back_button_container.dart';
 import '../../shared/cart_button.dart';
 import '../../shared/cart_container.dart';
-import '../page_route/hero_dialog_route.dart';
-import 'item_window.dart';
 
 class CategoryScreen extends ConsumerStatefulWidget {
   const CategoryScreen({super.key});
@@ -25,7 +23,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
     final stallWithCategory = ref.watch(stallsWithCategoriesProvider);
     final double _ = MediaQuery.sizeOf(context).width;
     final double _ = MediaQuery.sizeOf(context).height;
-    // final testProducts = ref.read(productProvider);
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 110,
@@ -73,7 +71,8 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, '/category_screen');
+                              ref.read(selectedCategoryProvider.notifier).selectedCategory(stallCategories[index]);
+                              Navigator.pushNamed(context, '/menu_screen');
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 10),
@@ -89,16 +88,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                     style: TextStyle(
                                       color: kPrimaryColor,
                                       fontFamily: "flame",
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    "1.5PHP",
-                                    style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontFamily: "flame",
-                                      fontSize: 13,
+                                      fontSize: 18,
                                     ),
                                   ),
                                   SizedBox(height: 10),
