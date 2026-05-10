@@ -45,8 +45,8 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen>
 
   @override
   Widget build(BuildContext context) {
-    final testProducts = ref.read(productProvider);
     final cartProducts = ref.watch(cartNotifierProvider);
+    final stallsAsyncProvider = ref.watch(stallsProvider);
     final double height = MediaQuery.heightOf(context);
 
     final screenWidth = MediaQuery.sizeOf(context).width;
@@ -77,41 +77,48 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen>
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 100),
-                  child: GridView.builder(
-                    itemCount: testProducts.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20,
-                      childAspectRatio: 1,
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/menu_screen');
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFFFE591),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                testProducts[index].stallName!,
-                                style: TextStyle(
-                                  color: kPrimaryColor,
-                                  fontFamily: "flame",
-                                  fontSize: 14,
+                  child: stallsAsyncProvider.when(
+                    loading: () => const Center(child: CircularProgressIndicator(),),
+                    error: (err, stack) => Text('Error: $err'),
+                    data: (stalls) => GridView.builder(
+                      itemCount: stalls.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 20,
+                        crossAxisSpacing: 20,
+                        childAspectRatio: 1,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () {
+                            final stall = stalls[index];
+                            debugPrint('Selected stallID: ${stall.stallID}');
+                            ref.read(selectedStallProvider.notifier).selectStall(stall);
+                            Navigator.pushNamed(context, '/category_screen');
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFFFE591),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  stalls[index].stallName!,
+                                  style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontFamily: "flame",
+                                    fontSize: 14,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),

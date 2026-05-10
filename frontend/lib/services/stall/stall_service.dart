@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:frontend/models/stall_model.dart';
 
 class StallService {
@@ -7,14 +8,18 @@ class StallService {
   StallService({dio}) : _dio = dio;
 
   Future<List<StallResponseModel>> getStalls() async {
-    List<StallResponseModel> stalls = [];
     try {
       Response response = await _dio!.get('/stalls/');
-      print(response.data.toString());
-      for(var stall in response.data) {
-        stalls.add(StallResponseModel.fromJson(stall));
+      if (kDebugMode) {
+        print(response.data.toString());
       }
-      return stalls;
+      // Explicit pala ha
+      return (response.data as List)
+          .map<StallResponseModel>(
+            (stall) =>
+                StallResponseModel.fromJson(stall as Map<String, dynamic>),
+          )
+          .toList();
     } on DioException catch (e) {
       /// Tangina inaantok nako
       if (e.response != null) {
@@ -63,8 +68,11 @@ class StallService {
 
   Future<StallWithCategories> getStallWithCategories(int stallId) async {
     try {
-      Response response = await _dio!.get('/$stallId/with-categories');
-      return StallWithCategories.fromJson(response.data);
+      Response response = await _dio!.get('/stalls/$stallId/with-categories');
+      if (kDebugMode) {
+        print(response.data.toString());
+      }
+      return StallWithCategories.fromJson(response.data as Map<String, dynamic>);
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
@@ -92,7 +100,6 @@ class StallService {
       Response response = await _dio!.put('/$stallId', data: update.toJson());
       print(response.data.toString());
     } on DioException catch (e) {
-
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
         final errorData = e.response?.data;

@@ -64,17 +64,21 @@ Map<String, dynamic> _$StallUpdateModelToJson(_StallUpdateModel instance) =>
 
 _StallWithCategories _$StallWithCategoriesFromJson(Map<String, dynamic> json) =>
     _StallWithCategories(
-      stallId: (json['stall_id'] as num).toInt(),
-      stallName: json['stall_name'] as String,
-      ownerId: (json['owner_id'] as num).toInt(),
-      openingTime: json['opening_time'] as String,
-      closingTime: json['closing_time'] as String,
-      operatingDays: json['operating_days'] as String,
-      stallStatus: json['stall_status'] as bool,
-      photoPath: json['photo_path'] as String,
-      categories: (json['categories'] as List<dynamic>)
-          .map((e) => CategoryInfoModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      stallId: (json['stall_id'] as num?)?.toInt(),
+      stallName: json['stall_name'] as String?,
+      ownerId: (json['owner_id'] as num?)?.toInt(),
+      openingTime: json['opening_time'] as String?,
+      closingTime: json['closing_time'] as String?,
+      operatingDays: json['operating_days'] as String?,
+      stallStatus: json['stall_status'] as bool? ?? false,
+      photoPath: json['photo_path'] as String?,
+      categories:
+          (json['categories'] as List<dynamic>?)
+              ?.map(
+                (e) => CategoryInfoModel.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$StallWithCategoriesToJson(
