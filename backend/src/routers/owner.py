@@ -49,9 +49,13 @@ async def create_user(make_user: UserCreate, db: Annotated[Connection, Depends(g
 def attach_auth_cookies(response: Response, owner_id: int):
     token_payload = {"sub": str(owner_id)}
     
+    # Store the generated tokens in variables so we can return them
+    access_token = create_access_token(token_payload)
+    refresh_token = create_refresh_token(token_payload)
+    
     response.set_cookie(
         key="access_token",
-        value=f"Bearer {create_access_token(token_payload)}",
+        value=f"Bearer {access_token}",
         httponly=True,
         secure=False, # gawin nalang true pag https na
         samesite="lax",
@@ -60,13 +64,15 @@ def attach_auth_cookies(response: Response, owner_id: int):
 
     response.set_cookie(
         key="refresh_token",
-        value=create_refresh_token(token_payload),
+        value=refresh_token,
         httponly=True,
         secure=False,
         path="/users/refresh",
         samesite="lax",
         max_age=7 * 24 * 60 * 60 
     )
+    
+    return access_token, refresh_token
 
 @route.post(
     "/login", 
@@ -90,9 +96,14 @@ async def login_user(
     if not user or not verify_hash(user_credentials.password, user["hashed_password"]):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    attach_auth_cookies(response, user["owner_id"])
+    access_token, refresh_token = attach_auth_cookies(response, user["owner_id"])
     
-    return {"message": "Login successful"}
+    return {
+        "message": "Login successful",
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "token_type": "Bearer"
+    }
 
 @route.post(
     "/refresh", 
@@ -101,7 +112,8 @@ async def login_user(
     }
 )
 async def refresh_access_token(request: Request, response: Response):
-    refresh_token = request.cookies.get("refresh_token")
+    # Fallback para nakakasend ang client ng refresh token manually
+    refresh_token = request.cookies.get("refresh_token") or request.headers.get("x-refresh-token")
     
     if not refresh_token:
         raise HTTPException(status_code=401, detail="Refresh token missing. Please log in again.")
@@ -123,10 +135,14 @@ async def refresh_access_token(request: Request, response: Response):
         max_age=15 * 60 
     )
 
-    return {"message": "Token refreshed successfully"}
+    return {
+        "message": "Token refreshed successfully",
+        "access_token": new_access_token,
+        "token_type": "Bearer"
+    }
 
 @route.get(
-    "/{owner_id}",
+    "/current_owner",
     response_model=UserResponse,
     responses={
         404: {"description": "Not Found - User does not exist"}
