@@ -6,7 +6,7 @@ CREATE TABLE owner (
 
 CREATE TABLE stall (
   stall_id int PRIMARY KEY AUTO_INCREMENT,
-  owner_id int NOT NULL,
+  owner_id int UNIQUE NOT NULL,
   stall_name varchar(100) NOT NULL,
   opening_time time NOT NULL,
   closing_time time NOT NULL,
