@@ -41,11 +41,12 @@ class AuthService {
   Future<dynamic> loginUser(OwnerModel userData) async {
     try {
       Response response = await _dio!.post(
-        '/auth/login',
-        data: FormData.fromMap(userData.toJson()),
+        '/users/login',
+        data: userData.toJson(),
       );
 
       if(response.statusCode == 200) {
+        print('Response data: ${response.data}');
         _tokenStorageImpl.write(
             AuthTokenPair.fromJson(response.data)
         );

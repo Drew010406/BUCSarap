@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OwnerModel {
 
-@JsonKey(name: "owner_username") String? get ownerUsername;@JsonKey(name: "hashed_password") String? get password;
+@JsonKey(name: "username") String? get username;@JsonKey(name: "password") String? get password;
 /// Create a copy of OwnerModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $OwnerModelCopyWith<OwnerModel> get copyWith => _$OwnerModelCopyWithImpl<OwnerMo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OwnerModel&&(identical(other.ownerUsername, ownerUsername) || other.ownerUsername == ownerUsername)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OwnerModel&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,ownerUsername,password);
+int get hashCode => Object.hash(runtimeType,username,password);
 
 @override
 String toString() {
-  return 'OwnerModel(ownerUsername: $ownerUsername, password: $password)';
+  return 'OwnerModel(username: $username, password: $password)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $OwnerModelCopyWith<$Res>  {
   factory $OwnerModelCopyWith(OwnerModel value, $Res Function(OwnerModel) _then) = _$OwnerModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: "owner_username") String? ownerUsername,@JsonKey(name: "hashed_password") String? password
+@JsonKey(name: "username") String? username,@JsonKey(name: "password") String? password
 });
 
 
@@ -65,9 +65,9 @@ class _$OwnerModelCopyWithImpl<$Res>
 
 /// Create a copy of OwnerModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? ownerUsername = freezed,Object? password = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? username = freezed,Object? password = freezed,}) {
   return _then(_self.copyWith(
-ownerUsername: freezed == ownerUsername ? _self.ownerUsername : ownerUsername // ignore: cast_nullable_to_non_nullable
+username: freezed == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String?,password: freezed == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -154,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "owner_username")  String? ownerUsername, @JsonKey(name: "hashed_password")  String? password)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "username")  String? username, @JsonKey(name: "password")  String? password)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OwnerModel() when $default != null:
-return $default(_that.ownerUsername,_that.password);case _:
+return $default(_that.username,_that.password);case _:
   return orElse();
 
 }
@@ -175,10 +175,10 @@ return $default(_that.ownerUsername,_that.password);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "owner_username")  String? ownerUsername, @JsonKey(name: "hashed_password")  String? password)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "username")  String? username, @JsonKey(name: "password")  String? password)  $default,) {final _that = this;
 switch (_that) {
 case _OwnerModel():
-return $default(_that.ownerUsername,_that.password);case _:
+return $default(_that.username,_that.password);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +195,10 @@ return $default(_that.ownerUsername,_that.password);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "owner_username")  String? ownerUsername, @JsonKey(name: "hashed_password")  String? password)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "username")  String? username, @JsonKey(name: "password")  String? password)?  $default,) {final _that = this;
 switch (_that) {
 case _OwnerModel() when $default != null:
-return $default(_that.ownerUsername,_that.password);case _:
+return $default(_that.username,_that.password);case _:
   return null;
 
 }
@@ -210,11 +210,11 @@ return $default(_that.ownerUsername,_that.password);case _:
 @JsonSerializable()
 
 class _OwnerModel implements OwnerModel {
-  const _OwnerModel({@JsonKey(name: "owner_username") this.ownerUsername, @JsonKey(name: "hashed_password") this.password});
+  const _OwnerModel({@JsonKey(name: "username") this.username, @JsonKey(name: "password") this.password});
   factory _OwnerModel.fromJson(Map<String, dynamic> json) => _$OwnerModelFromJson(json);
 
-@override@JsonKey(name: "owner_username") final  String? ownerUsername;
-@override@JsonKey(name: "hashed_password") final  String? password;
+@override@JsonKey(name: "username") final  String? username;
+@override@JsonKey(name: "password") final  String? password;
 
 /// Create a copy of OwnerModel
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +229,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OwnerModel&&(identical(other.ownerUsername, ownerUsername) || other.ownerUsername == ownerUsername)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OwnerModel&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,ownerUsername,password);
+int get hashCode => Object.hash(runtimeType,username,password);
 
 @override
 String toString() {
-  return 'OwnerModel(ownerUsername: $ownerUsername, password: $password)';
+  return 'OwnerModel(username: $username, password: $password)';
 }
 
 
@@ -249,7 +249,7 @@ abstract mixin class _$OwnerModelCopyWith<$Res> implements $OwnerModelCopyWith<$
   factory _$OwnerModelCopyWith(_OwnerModel value, $Res Function(_OwnerModel) _then) = __$OwnerModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: "owner_username") String? ownerUsername,@JsonKey(name: "hashed_password") String? password
+@JsonKey(name: "username") String? username,@JsonKey(name: "password") String? password
 });
 
 
@@ -266,9 +266,9 @@ class __$OwnerModelCopyWithImpl<$Res>
 
 /// Create a copy of OwnerModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? ownerUsername = freezed,Object? password = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? username = freezed,Object? password = freezed,}) {
   return _then(_OwnerModel(
-ownerUsername: freezed == ownerUsername ? _self.ownerUsername : ownerUsername // ignore: cast_nullable_to_non_nullable
+username: freezed == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String?,password: freezed == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

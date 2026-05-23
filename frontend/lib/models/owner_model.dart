@@ -7,8 +7,8 @@ part 'owner_model.g.dart';
 @freezed
 abstract class OwnerModel with _$OwnerModel {
   const factory OwnerModel({
-    @JsonKey(name: "owner_username") String? ownerUsername,
-    @JsonKey(name: "hashed_password") String? password,
+    @JsonKey(name: "username") String? username,
+    @JsonKey(name: "password") String? password,
   }) = _OwnerModel;
 
   factory OwnerModel.fromJson(Map<String, dynamic> json) =>

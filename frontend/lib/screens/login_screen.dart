@@ -89,7 +89,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   try {
                     final response = await authService.loginUser(
                       OwnerModel(
-                        ownerUsername: usernameController.text,
+                        username: usernameController.text,
                         password: passwordController.text
                       )
                     );
@@ -101,6 +101,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         );
                       }
+                      Navigator.pushNamed(context, '/stall_holder_screen');
                     }
                   } catch (e) {
                     if (context.mounted) {
@@ -109,7 +110,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       );
                     }
                   }
-                  Navigator.pushNamed(context, '/stall_holder_screen');
                 },
                 child: Container(
                   height: 45,
