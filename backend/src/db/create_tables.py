@@ -6,6 +6,7 @@ def create_tables():
         "DROP TABLE IF EXISTS order_line",
         "DROP TABLE IF EXISTS orders",
         "DROP TABLE IF EXISTS product",
+        "DROP TABLE IF EXISTS product_category",
         "DROP TABLE IF EXISTS stall",
         "DROP TABLE IF EXISTS owner"
     ]
@@ -32,15 +33,22 @@ def create_tables():
         )
         """,
         """
+        CREATE TABLE product_category (
+            category_id int PRIMARY KEY AUTO_INCREMENT,
+            stall_id int NOT NULL,
+            category_name varchar(100) NOT NULL,
+            FOREIGN KEY (stall_id) REFERENCES stall(stall_id)
+        )
+        """,
+        """
         CREATE TABLE product (
             product_id int PRIMARY KEY AUTO_INCREMENT,
-            stall_id int NOT NULL,
+            category_id int NOT NULL,
             product_name varchar(55) NOT NULL,
-            category_name varchar(100) NOT NULL,
             product_price decimal(10,2) NOT NULL,
             product_status bool DEFAULT false,
             photo_path varchar(255) NOT NULL,
-            FOREIGN KEY (stall_id) REFERENCES stall(stall_id)
+            FOREIGN KEY (category_id) REFERENCES product_category(category_id)
         )
         """,
         """
