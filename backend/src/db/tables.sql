@@ -16,15 +16,21 @@ CREATE TABLE stall (
   FOREIGN KEY (owner_id) REFERENCES owner(owner_id)
 );
 
+CREATE TABLE product_category (  
+  category_id int PRIMARY KEY AUTO_INCREMENT,
+  stall_id int NOT NULL,
+  category_name varchar(100) NOT NULL,
+  FOREIGN KEY (stall_id) REFERENCES stall(stall_id)
+); 
+
 CREATE TABLE product (
   product_id int PRIMARY KEY AUTO_INCREMENT,
-  stall_id int NOT NULL,
+  category_id int NOT NULL,
   product_name varchar(55) NOT NULL,
-  category_name varchar(100) NOT NULL,
   product_price decimal(10,2) NOT NULL,
   product_status bool DEFAULT false,
   photo_path varchar(255) NOT NULL,
-  FOREIGN KEY (stall_id) REFERENCES stall(stall_id)
+  FOREIGN KEY (category_id) REFERENCES product_category(category_id)
 );
 
 CREATE TABLE orders (
