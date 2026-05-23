@@ -168,9 +168,9 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
                                   ref
                                       .read(cartNotifierProvider.notifier)
                                       .addProduct(
-                                        ProductPile(
+                                        ProductPileModel(
                                           productID: widget.productID,
-                                          quantity: itemQuantity,
+                                          productsQuantity: itemQuantity,
                                         ),
                                       );
                                 }

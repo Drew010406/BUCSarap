@@ -1,35 +1,34 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/models/product_pile_model.dart';
 
-class CartNotifier extends Notifier<Set<ProductPile>> {
+class CartNotifier extends Notifier<Set<ProductPileModel>> {
   @override
-  Set<ProductPile> build() {
+  Set<ProductPileModel> build() {
     return const {};
   }
 
-  void addProduct(ProductPile product) {
+  void addProduct(ProductPileModel product) {
     if (!state.contains(product)) {
       for (var prod in state) {
         if (prod.productID == product.productID) {
           // Walang internet pota diko alam pano baguhin obj from a set
           // Kaya hanap nlng alternative
           // Update: this shit works HAHAHAHAHAHAHAHA
-          int prodQuantity = prod.quantity!;
+          int prodQuantity = prod.productsQuantity!;
           removeProduct(prod);
           state = {
             ...state,
-            ProductPile(
+            ProductPileModel(
               productID: product.productID,
-              productPileID: product.productPileID,
               stallID: product.stallID,
-              quantity: (product.quantity! + prodQuantity),
+              productsQuantity: (product.productsQuantity! + prodQuantity),
             ),
           };
           var current = state.toList();
           for (int i = 0; i < current.length; i++) {
             for (int j = i; j < current.length - 1; j++) {
               if (current[i].productID! > current[j + 1].productID!) {
-                ProductPile temp = current[i];
+                ProductPileModel temp = current[i];
                 current[i] = current[j + 1];
                 current[j + 1] = temp;
               }
@@ -43,30 +42,29 @@ class CartNotifier extends Notifier<Set<ProductPile>> {
     }
   }
 
-  ProductPile getProduct(int productID) {
+  ProductPileModel getProduct(int productID) {
     return state.where((prod) => prod.productID == productID).first;
   }
 
-  void decrementProduct(ProductPile product) {
-    if (product.quantity! > 0) {
+  void decrementProduct(ProductPileModel product) {
+    if (product.productsQuantity! > 0) {
       for (var prod in state) {
         if (prod.productID == product.productID) {
           // Putang talino kong hayup
           removeProduct(prod);
           state = {
             ...state,
-            ProductPile(
+            ProductPileModel(
               productID: product.productID,
-              productPileID: product.productPileID,
               stallID: product.stallID,
-              quantity: (product.quantity! - 1),
+              productsQuantity: (product.productsQuantity! - 1),
             ),
           };
           var current = state.toList();
           for (int i = 0; i < current.length; i++) {
             for (int j = i; j < current.length - 1; j++) {
               if (current[i].productID! > current[j + 1].productID!) {
-                ProductPile temp = current[i];
+                ProductPileModel temp = current[i];
                 current[i] = current[j + 1];
                 current[j + 1] = temp;
               }
@@ -79,24 +77,23 @@ class CartNotifier extends Notifier<Set<ProductPile>> {
     }
   }
 
-  void incrementProduct(ProductPile product) {
+  void incrementProduct(ProductPileModel product) {
     for (var prod in state) {
       if (prod.productID == product.productID) {
         removeProduct(prod);
         state = {
           ...state,
-          ProductPile(
+          ProductPileModel(
             productID: product.productID,
-            productPileID: product.productPileID,
             stallID: product.stallID,
-            quantity: (product.quantity! + 1),
+            productsQuantity: (product.productsQuantity! + 1),
           ),
         };
         var current = state.toList();
         for (int i = 0; i < current.length; i++) {
           for (int j = i; j < current.length - 1; j++) {
             if (current[i].productID! > current[j + 1].productID!) {
-              ProductPile temp = current[i];
+              ProductPileModel temp = current[i];
               current[i] = current[j + 1];
               current[j + 1] = temp;
             }
@@ -108,7 +105,7 @@ class CartNotifier extends Notifier<Set<ProductPile>> {
     }
   }
 
-  void removeProduct(ProductPile product) {
+  void removeProduct(ProductPileModel product) {
     if (state.contains(product)) {
       state = state
           .where((prod) => prod.productID != product.productID)
@@ -117,7 +114,7 @@ class CartNotifier extends Notifier<Set<ProductPile>> {
   }
 }
 
-final cartNotifierProvider = NotifierProvider<CartNotifier, Set<ProductPile>>(
+final cartNotifierProvider = NotifierProvider<CartNotifier, Set<ProductPileModel>>(
   () {
     return CartNotifier();
   },

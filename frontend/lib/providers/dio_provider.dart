@@ -8,7 +8,7 @@ final dioProvider = Provider<Dio>((ref) {
       receiveTimeout: Duration(seconds: 30),
       sendTimeout: Duration(seconds: 30),
       contentType: 'application/json'
-  ));;
+  ));
 
   dio.interceptors.add(LogInterceptor()); // Logger
 

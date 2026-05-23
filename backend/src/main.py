@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.src.routers import owner, products, stalls
@@ -18,3 +19,7 @@ app.include_router(owner.route, prefix="/users", tags=["Users"])
 app.include_router(products.route, prefix="/products", tags=["Products"])
 
 app.include_router(stalls.route, prefix="/stalls", tags=["Stalls"])
+
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='0.0.0.0', port=8080)

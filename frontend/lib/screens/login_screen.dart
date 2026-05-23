@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/constants.dart';
+import 'package:frontend/models/owner_model.dart';
+import 'package:frontend/providers/dio_provider.dart';
+import 'package:frontend/services/auth/auth_service.dart';
 
-import '../../shared/back_button_container.dart';
+import '../shared/back_button_container.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final dio = ref.watch(dioProvider);
+    final authService = AuthService(dio: dio);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -43,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Expanded(flex: 1, child: SizedBox()),
               TextField(
+                controller: usernameController,
                 style: TextStyle(color: Colors.black, fontFamily: "Flame"),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -58,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 10),
               TextField(
+                controller: passwordController,
                 style: TextStyle(color: Colors.black, fontFamily: "Flame"),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -73,7 +85,30 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 40),
               GestureDetector(
-                onTap: () {
+                onTap: () async {
+                  try {
+                    final response = await authService.loginUser(
+                      OwnerModel(
+                        ownerUsername: usernameController.text,
+                        password: passwordController.text
+                      )
+                    );
+                    if(response.statusCode == 200) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Login successful!'),
+                          ),
+                        );
+                      }
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(e.toString())),
+                      );
+                    }
+                  }
                   Navigator.pushNamed(context, '/stall_holder_screen');
                 },
                 child: Container(

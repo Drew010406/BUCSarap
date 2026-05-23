@@ -82,7 +82,7 @@ class _ItemCartState extends ConsumerState<ItemCart> {
                 child: Text(
                   cartProducts
                       .elementAt(widget.index)
-                      .quantity
+                      .productsQuantity
                       .toString(),
                   style: TextStyle(
                     fontFamily: "Roboto",

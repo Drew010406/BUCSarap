@@ -10,10 +10,10 @@ db_pass = os.getenv("DB_PASSWORD")
 # Connection config
 url = URL.create(
     drivername="mysql+pymysql",
-    username="root", 
-    password=db_pass, 
+    username="test",
+    password=db_pass,
     host="localhost",
-    database="buCSarapDB",
+    database="bucsarap",
     port=3306
 )
 
