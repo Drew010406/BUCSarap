@@ -15,4 +15,9 @@ class ProductResponse(BaseModel):
     
     category_id : int
     category_name : str
+
+class ProductInfo(BaseModel):
+    
+    product_name : str
+    photo_path : str
     
