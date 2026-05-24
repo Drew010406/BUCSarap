@@ -1,34 +1,35 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/models/product_pile_model.dart';
+import 'package:frontend/models/order_line_model.dart';
 
-class CartNotifier extends Notifier<Set<ProductPileModel>> {
+class CartNotifier extends Notifier<Set<OrderLineModel>> {
   @override
-  Set<ProductPileModel> build() {
+  Set<OrderLineModel> build() {
     return const {};
   }
 
-  void addProduct(ProductPileModel product) {
+  void addProduct(OrderLineModel product) {
     if (!state.contains(product)) {
       for (var prod in state) {
         if (prod.productID == product.productID) {
           // Walang internet pota diko alam pano baguhin obj from a set
           // Kaya hanap nlng alternative
           // Update: this shit works HAHAHAHAHAHAHAHA
-          int prodQuantity = prod.productsQuantity!;
+          int prodQuantity = prod.quantityOrdered!;
           removeProduct(prod);
           state = {
             ...state,
-            ProductPileModel(
+            OrderLineModel(
+              orderID: product.orderID,
               productID: product.productID,
-              stallID: product.stallID,
-              productsQuantity: (product.productsQuantity! + prodQuantity),
+              unitPriceAtOrder: product.unitPriceAtOrder,
+              quantityOrdered: (product.quantityOrdered! + prodQuantity),
             ),
           };
           var current = state.toList();
           for (int i = 0; i < current.length; i++) {
             for (int j = i; j < current.length - 1; j++) {
               if (current[i].productID! > current[j + 1].productID!) {
-                ProductPileModel temp = current[i];
+                OrderLineModel temp = current[i];
                 current[i] = current[j + 1];
                 current[j + 1] = temp;
               }
@@ -42,29 +43,29 @@ class CartNotifier extends Notifier<Set<ProductPileModel>> {
     }
   }
 
-  ProductPileModel getProduct(int productID) {
+  OrderLineModel getProduct(int productID) {
     return state.where((prod) => prod.productID == productID).first;
   }
 
-  void decrementProduct(ProductPileModel product) {
-    if (product.productsQuantity! > 0) {
+  void decrementProduct(OrderLineModel product) {
+    if (product.quantityOrdered! > 0) {
       for (var prod in state) {
         if (prod.productID == product.productID) {
           // Putang talino kong hayup
           removeProduct(prod);
           state = {
             ...state,
-            ProductPileModel(
+            OrderLineModel(
               productID: product.productID,
-              stallID: product.stallID,
-              productsQuantity: (product.productsQuantity! - 1),
+              unitPriceAtOrder: product.unitPriceAtOrder,
+              quantityOrdered: (product.quantityOrdered! - 1),
             ),
           };
           var current = state.toList();
           for (int i = 0; i < current.length; i++) {
             for (int j = i; j < current.length - 1; j++) {
               if (current[i].productID! > current[j + 1].productID!) {
-                ProductPileModel temp = current[i];
+                OrderLineModel temp = current[i];
                 current[i] = current[j + 1];
                 current[j + 1] = temp;
               }
@@ -77,23 +78,23 @@ class CartNotifier extends Notifier<Set<ProductPileModel>> {
     }
   }
 
-  void incrementProduct(ProductPileModel product) {
+  void incrementProduct(OrderLineModel product) {
     for (var prod in state) {
       if (prod.productID == product.productID) {
         removeProduct(prod);
         state = {
           ...state,
-          ProductPileModel(
+          OrderLineModel(
             productID: product.productID,
-            stallID: product.stallID,
-            productsQuantity: (product.productsQuantity! + 1),
+            unitPriceAtOrder: product.unitPriceAtOrder,
+            quantityOrdered: (product.quantityOrdered! + 1),
           ),
         };
         var current = state.toList();
         for (int i = 0; i < current.length; i++) {
           for (int j = i; j < current.length - 1; j++) {
             if (current[i].productID! > current[j + 1].productID!) {
-              ProductPileModel temp = current[i];
+              OrderLineModel temp = current[i];
               current[i] = current[j + 1];
               current[j + 1] = temp;
             }
@@ -105,7 +106,7 @@ class CartNotifier extends Notifier<Set<ProductPileModel>> {
     }
   }
 
-  void removeProduct(ProductPileModel product) {
+  void removeProduct(OrderLineModel product) {
     if (state.contains(product)) {
       state = state
           .where((prod) => prod.productID != product.productID)
@@ -114,8 +115,22 @@ class CartNotifier extends Notifier<Set<ProductPileModel>> {
   }
 }
 
-final cartNotifierProvider = NotifierProvider<CartNotifier, Set<ProductPileModel>>(
-  () {
-    return CartNotifier();
-  },
+final cartNotifierProvider =
+    NotifierProvider<CartNotifier, Set<OrderLineModel>>(() {
+      return CartNotifier();
+    });
+
+class OrderPriceNotifier extends Notifier<double> {
+  @override
+  double build() {
+    final cart = ref.watch(cartNotifierProvider);
+    return cart.fold(
+      0,
+      (sum, item) => sum + (item.unitPriceAtOrder! * item.quantityOrdered!),
+    );
+  }
+}
+
+final orderPriceNotifierProvider = NotifierProvider<OrderPriceNotifier, double>(
+  () => OrderPriceNotifier(),
 );

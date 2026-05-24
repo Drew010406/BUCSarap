@@ -4,15 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/models/product_model.dart';
-import 'package:frontend/models/product_pile_model.dart';
+import 'package:frontend/models/order_line_model.dart';
 import 'package:frontend/providers/cart_provider.dart';
 import 'package:frontend/providers/menu_provider.dart';
 
 class ItemWindow extends ConsumerStatefulWidget {
   final int? productID;
+  final double? unitPrice;
   final int? index;
 
-  const ItemWindow({super.key, required this.productID, this.index});
+  const ItemWindow({super.key, required this.productID, required this.unitPrice, this.index});
 
   @override
   ConsumerState<ItemWindow> createState() => _ItemWindowState();
@@ -168,9 +169,10 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
                                   ref
                                       .read(cartNotifierProvider.notifier)
                                       .addProduct(
-                                        ProductPileModel(
+                                        OrderLineModel(
                                           productID: widget.productID,
-                                          productsQuantity: itemQuantity,
+                                          unitPriceAtOrder: widget.unitPrice,
+                                          quantityOrdered: itemQuantity,
                                         ),
                                       );
                                 }

@@ -77,6 +77,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                   builder: (context) {
                                     return ItemWindow(
                                       productID: product[index].productID,
+                                      unitPrice: product[index].productPrice,
                                       index: index,
                                     );
                                   },

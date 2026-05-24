@@ -21,7 +21,7 @@ class StallService {
           )
           .toList();
     } on DioException catch (e) {
-      /// Tangina inaantok nako
+      // Tangina inaantok nako
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
         final errorData = e.response?.data;

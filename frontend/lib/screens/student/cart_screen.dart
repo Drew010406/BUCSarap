@@ -18,6 +18,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final cartProducts = ref.watch(cartNotifierProvider);
+    final totalPrice = ref.watch(orderPriceNotifierProvider);
+
     final ScrollController _scrollController = ScrollController();
     final double screenWidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
@@ -95,7 +97,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 children: [
                   Expanded(child: SizedBox()),
                   Text(
-                    "500 PHP",
+                    "${totalPrice.toStringAsFixed(2)} PHP",
                     style: TextStyle(
                       fontFamily: 'Flame',
                       fontSize: 20,

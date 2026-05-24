@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/models/auth_token_pair.dart';
 import 'package:frontend/models/owner_model.dart';
-import 'package:frontend/providers/dio_provider.dart';
 import 'package:frontend/services/auth/token_storage_impl.dart';
 
 class AuthService {

@@ -43,6 +43,7 @@ class _CartContainerState extends ConsumerState<CartContainer>
     final screenWidth = MediaQuery.sizeOf(context).width;
 
     final cartProducts = ref.watch(cartNotifierProvider);
+    final totalPrice = ref.watch(orderPriceNotifierProvider);
 
     final ScrollController _scrollController = ScrollController();
 
@@ -174,7 +175,7 @@ class _CartContainerState extends ConsumerState<CartContainer>
               ),
               Expanded(child: SizedBox()),
               Text(
-                "500 PHP",
+                "${totalPrice.toStringAsFixed(2)} PHP",
                 style: TextStyle(
                   fontFamily: 'Flame',
                   fontSize: 20,
