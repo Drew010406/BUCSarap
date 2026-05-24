@@ -3,7 +3,7 @@ from decimal import Decimal
 from typing import Optional
 
 class ProductResponse(BaseModel):
-
+    
     product_id : int
     product_name : str
     product_price : Decimal

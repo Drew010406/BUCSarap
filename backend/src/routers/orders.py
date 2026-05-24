@@ -11,7 +11,6 @@ from backend.src.schema.order import (
 	OrderStatusUpdate,
 	VALID_STATUSES,
 )
-from src.schema.order import OrderCheckoutRequest, OrderCheckoutResponse
 
 route = APIRouter()
 
