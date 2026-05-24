@@ -8,7 +8,6 @@ class ProductResponse(BaseModel):
     product_name : str
     product_price : Decimal
     product_status : bool
-    product_quantity: int
     photo_path : str
     
     stall_id : int

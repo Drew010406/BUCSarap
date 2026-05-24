@@ -90,53 +90,6 @@ VALUES
 (21, 11, 'Tofu Rice Bowl', 145.00, true, 'products/tofubowl.jpg');
 
 
--- PRODUCT PILES
-INSERT INTO product_pile
-(product_id, stall_id, product_quantity)
-VALUES
-
--- Burger Boss
-(1, 1, 30),
-(2, 1, 25),
-(3, 1, 40),
-
--- Rice King
-(4, 2, 20),
-(5, 2, 18),
-
--- Pasta Hub
-(6, 3, 15),
-(7, 3, 20),
-
--- MilkTea Manila
-(8, 4, 50),
-(9, 4, 45),
-
--- Takoyaki World
-(10, 5, 35),
-(11, 5, 30),
-
--- Sisig Sentral
-(12, 6, 25),
-(13, 6, 15),
-
--- Ramen House
-(14, 7, 12),
-(15, 7, 10),
-
--- BBQ Corner
-(16, 8, 22),
-(17, 8, 20),
-
--- Sweet Bite
-(18, 9, 18),
-(19, 9, 14),
-
--- Healthy Bowl
-(20, 10, 16),
-(21, 10, 15);
-
-
 -- ORDERS
 INSERT INTO orders (stall_id, order_number, order_status, customer_name, processing_time) VALUES
 -- Burger Boss Orders
@@ -185,125 +138,91 @@ INSERT INTO orders (stall_id, order_number, order_status, customer_name, process
 (10, 'ORD-025', 'Pending', 'Diana Lee', NULL);
 
 
--- ORDER ITEMS
-INSERT INTO order_item (order_id, product_pile_id, order_item_quantity, order_item_price) VALUES
--- Order 1: Burger Boss (Juan) - 2x Classic Burger (120*2=240) + 1x Large Fries (80*1=80)
-(1, 1, 2, 240.00),
+-- ORDER LINE ITEMS
+INSERT INTO order_line (order_id, product_id, quantity_ordered, unit_price_at_order) VALUES
+-- Order 1: Burger Boss (Juan) - 2x Classic Burger + 1x Large Fries
+(1, 1, 2, 120.00),
 (1, 3, 1, 80.00),
 
--- Order 2: Burger Boss (Maria) - 1x Cheese Burger (145*1=145) + 2x Large Fries (80*2=160)
+-- Order 2: Burger Boss (Maria) - 1x Cheese Burger + 2x Large Fries
 (2, 2, 1, 145.00),
-(2, 3, 2, 160.00),
+(2, 3, 2, 80.00),
 
--- Order 3: Burger Boss (Carlos) - 3x Classic Burger (120*3=360)
-(3, 1, 3, 360.00),
+-- Order 3: Burger Boss (Carlos) - 3x Classic Burger
+(3, 1, 3, 120.00),
 
--- Order 4: Burger Boss (Ana) - 2x Cheese Burger (145*2=290)
-(4, 2, 2, 290.00),
+-- Order 4: Burger Boss (Ana) - 2x Cheese Burger
+(4, 2, 2, 145.00),
 
--- Order 5: Burger Boss (Peter) - 1x Classic Burger (120*1=120) + 1x Cheese Burger (145*1=145) + 1x Large Fries (80*1=80)
+-- Order 5: Burger Boss (Peter) - 1x Classic Burger + 1x Cheese Burger + 1x Large Fries
 (5, 1, 1, 120.00),
 (5, 2, 1, 145.00),
 (5, 3, 1, 80.00),
 
--- Order 6: Rice King (Sophie) - 1x Chicken Teriyaki (150*1=150) + 1x Beef Pepper Rice (170*1=170)
+-- Order 6: Rice King (Sophie) - 1x Chicken Teriyaki + 1x Beef Pepper Rice
 (6, 4, 1, 150.00),
 (6, 5, 1, 170.00),
 
--- Order 7: Rice King (Marco) - 2x Chicken Teriyaki (150*2=300)
-(7, 4, 2, 300.00),
+-- Order 7: Rice King (Marco) - 2x Chicken Teriyaki
+(7, 4, 2, 150.00),
 
--- Order 8: Rice King (Lisa) - 1x Beef Pepper Rice (170*1=170)
+-- Order 8: Rice King (Lisa) - 1x Beef Pepper Rice
 (8, 5, 1, 170.00),
 
--- Order 9: Pasta Hub (Roberto) - 1x Carbonara (180*1=180) + 2x Spaghetti Bolognese (160*2=320)
+-- Order 9: Pasta Hub (Roberto) - 1x Carbonara + 2x Spaghetti Bolognese
 (9, 6, 1, 180.00),
-(9, 7, 2, 320.00),
+(9, 7, 2, 160.00),
 
--- Order 10: Pasta Hub (Francesca) - 2x Carbonara (180*2=360)
-(10, 6, 2, 360.00),
+-- Order 10: Pasta Hub (Francesca) - 2x Carbonara
+(10, 6, 2, 180.00),
 
--- Order 11: MilkTea Manila (Amara) - 3x Wintermelon Milk Tea (110*3=330)
-(11, 8, 3, 330.00),
+-- Order 11: MilkTea Manila (Amara) - 3x Wintermelon Milk Tea
+(11, 8, 3, 110.00),
 
--- Order 12: MilkTea Manila (Zainab) - 2x Okinawa Milk Tea (120*2=240) + 1x Wintermelon Milk Tea (110*1=110)
-(12, 9, 2, 240.00),
+-- Order 12: MilkTea Manila (Zainab) - 2x Okinawa Milk Tea + 1x Wintermelon Milk Tea
+(12, 9, 2, 120.00),
 (12, 8, 1, 110.00),
 
--- Order 13: MilkTea Manila (Yuki) - 1x Okinawa Milk Tea (120*1=120)
+-- Order 13: MilkTea Manila (Yuki) - 1x Okinawa Milk Tea
 (13, 9, 1, 120.00),
 
--- Order 14: Takoyaki World (Hiroshi) - 2x Octobits Takoyaki (95*2=190) + 1x Cheese Takoyaki (105*1=105)
-(14, 10, 2, 190.00),
+-- Order 14: Takoyaki World (Hiroshi) - 2x Octobits Takoyaki + 1x Cheese Takoyaki
+(14, 10, 2, 95.00),
 (14, 11, 1, 105.00),
 
--- Order 15: Takoyaki World (Sakura) - 1x Octobits Takoyaki (95*1=95)
+-- Order 15: Takoyaki World (Sakura) - 1x Octobits Takoyaki
 (15, 10, 1, 95.00),
 
--- Order 16: Sisig Sentral (Ramon) - 1x Pork Sisig (140*1=140) + 1x Bangus Sisig (150*1=150)
+-- Order 16: Sisig Sentral (Ramon) - 1x Pork Sisig + 1x Bangus Sisig
 (16, 12, 1, 140.00),
 (16, 13, 1, 150.00),
 
--- Order 17: Sisig Sentral (Gloria) - 2x Pork Sisig (140*2=280)
-(17, 12, 2, 280.00),
+-- Order 17: Sisig Sentral (Gloria) - 2x Pork Sisig
+(17, 12, 2, 140.00),
 
--- Order 18: Ramen House (Kenji) - 1x Tonkotsu Ramen (250*1=250)
+-- Order 18: Ramen House (Kenji) - 1x Tonkotsu Ramen
 (18, 14, 1, 250.00),
 
--- Order 19: Ramen House (Yuki) - 1x Spicy Miso Ramen (260*1=260) + 1x Tonkotsu Ramen (250*1=250)
+-- Order 19: Ramen House (Yuki) - 1x Spicy Miso Ramen + 1x Tonkotsu Ramen
 (19, 15, 1, 260.00),
 (19, 14, 1, 250.00),
 
--- Order 20: BBQ Corner (Miguel) - 2x Pork BBQ Meal (130*2=260)
-(20, 16, 2, 260.00),
+-- Order 20: BBQ Corner (Miguel) - 2x Pork BBQ Meal
+(20, 16, 2, 130.00),
 
--- Order 21: BBQ Corner (Rosa) - 1x Chicken BBQ Meal (140*1=140) + 1x Pork BBQ Meal (130*1=130)
+-- Order 21: BBQ Corner (Rosa) - 1x Chicken BBQ Meal + 1x Pork BBQ Meal
 (21, 17, 1, 140.00),
 (21, 16, 1, 130.00),
 
--- Order 22: Sweet Bite (Emma) - 1x Chocolate Cake Slice (90*1=90)
+-- Order 22: Sweet Bite (Emma) - 1x Chocolate Cake Slice
 (22, 18, 1, 90.00),
 
--- Order 23: Sweet Bite (Sophia) - 2x Blueberry Cheesecake (110*2=220)
-(23, 19, 2, 220.00),
+-- Order 23: Sweet Bite (Sophia) - 2x Blueberry Cheesecake
+(23, 19, 2, 110.00),
 
--- Order 24: Healthy Bowl (Alexandra) - 1x Chicken Salad Bowl (160*1=160) + 1x Tofu Rice Bowl (145*1=145)
+-- Order 24: Healthy Bowl (Alexandra) - 1x Chicken Salad Bowl + 1x Tofu Rice Bowl
 (24, 20, 1, 160.00),
 (24, 21, 1, 145.00),
 
--- Order 25: Healthy Bowl (Diana) - 2x Chicken Salad Bowl (160*2=320)
-(25, 20, 2, 320.00);
-
-
--- HISTORY (Completed Orders Only)
-INSERT INTO history (owner_id, order_id, total_price, order_time) VALUES
--- Burger Boss (owner_id=1)
-(1, 1, 320.00, NOW()),
-(1, 2, 305.00, NOW()),
-
--- Rice King (owner_id=2)
-(2, 6, 320.00, NOW()),
-(2, 7, 300.00, NOW()),
-
--- Pasta Hub (owner_id=3)
-(3, 9, 500.00, NOW()),
-
--- MilkTea Manila (owner_id=4)
-(4, 11, 330.00, NOW()),
-(4, 12, 350.00, NOW()),
-
--- Takoyaki World (owner_id=5)
-(5, 14, 295.00, NOW()),
-
--- Sisig Sentral (owner_id=6)
-(6, 16, 290.00, NOW()),
-
--- Ramen House (owner_id=7)
-(7, 18, 250.00, NOW()),
-
--- BBQ Corner (owner_id=8)
-(8, 20, 260.00, NOW()),
-(8, 21, 270.00, NOW()),
-
--- Sweet Bite (owner_id=9)
-(9, 22, 90.00, NOW());
+-- Order 25: Healthy Bowl (Diana) - 2x Chicken Salad Bowl
+(25, 20, 2, 160.00);

@@ -16,7 +16,6 @@ async def get_products_by_category(category_id : int, db : Annotated[Connection,
             p.product_name, 
             p.product_price, 
             p.product_status, 
-            pp.product_quantity, 
             p.photo_path,
             
             s.stall_id,
@@ -29,8 +28,7 @@ async def get_products_by_category(category_id : int, db : Annotated[Connection,
         
         JOIN product_category pc ON pc.stall_id = s.stall_id
         JOIN product p ON p.category_id = pc.category_id
-        JOIN product_pile pp ON pp.product_id = p.product_id AND pp.stall_id = s.stall_id
-        WHERE pc.category_id = :category_id AND p.product_status = 1 AND pp.product_quantity > 0
+        WHERE pc.category_id = :category_id AND p.product_status = 1
     """)
     
     try:
