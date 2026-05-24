@@ -25,17 +25,17 @@ async def get_all_stalls(db: Annotated[Connection, Depends(get_db)]):
 
 @route.get("/{stall_id}",response_model=StallResponse)
 #gets info of a stall using the stasll id 
-async def get_stall(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
+async def get_stall(stall_id: int,owner_id: int, db: Annotated[Connection, Depends(get_db)]):
     
 
     query = text("""
         SELECT stall_id, owner_id, stall_name, opening_time, closing_time, operating_days, stall_status, photo_path
         FROM stall
-        WHERE stall_id = :id
+        WHERE stall_id = :s_id AND owner_id = :o_id
     """)
     
     try:
-        result = db.execute(query, {"id": stall_id}).mappings().fetchone()
+        result = db.execute(query, {"s_id": stall_id, "o_id": owner_id}).mappings().fetchone()
         
         if not result:
             raise HTTPException(status_code=404, detail="Stall not found")
