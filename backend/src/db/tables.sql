@@ -55,13 +55,13 @@ CREATE TABLE order_line (
 );
 
 /*
-README:
-Flow para sa order:
-Pili product -> Store sa cart (local lang)
--> Checkout (confirm ng order tsaka lang maga generate order) -> Generate orders (table) -> Generate order_line (andito na yung order id)
-
-Changes:
-order_line table: unit_price_at_order (in case na magbago price ng product)
-
-Diagram: https://dbdocs.io/seeeeaaaannnn/MysqlSaIM?view=relationships
+--README:
+--Flow para sa order:
+--Pili product -> Store sa cart (local lang)
+---> Checkout (confirm ng order tsaka lang maga generate order) -> Generate orders (table) -> Generate order_line (andito na yung order id)
+--
+--Changes:
+--order_line table: unit_price_at_order (in case na magbago price ng product)
+--
+--Diagram: https://dbdocs.io/seeeeaaaannnn/MysqlSaIM?view=relationships
 */

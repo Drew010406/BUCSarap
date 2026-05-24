@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:frontend/models/order_line_model.dart';
 import 'package:frontend/providers/cart_provider.dart';
 import 'package:frontend/shared/item_cart.dart';
 import 'package:frontend/shared/order_button.dart';
@@ -128,7 +129,7 @@ class _CartContainerState extends ConsumerState<CartContainer>
                                 color: Color(0xFFFF9644),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: ItemCart(index: index),
+                              child: ItemCart(index: index, item: cartProducts.elementAt(index),),
                             ),
                           ),
                         );

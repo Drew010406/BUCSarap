@@ -64,8 +64,33 @@ class ProductService {
       }
     }
   }
+  Future getProductInfo(int productID) async {
+    try {
+      Response response = await _dio!.get("/products/products/$productID");
+      if(kDebugMode) {
+        print(response.data.toString());
+      }
+      return response.data;
+    } on DioException catch(e) {
+     if (e.response != null) {
+      final statusCode = e.response?.statusCode;
+      final errorData = e.response?.data;
 
-  // Future<List<ProductResponseModel>> getAvailableProducts(int stallId) async {
+      if (statusCode == 500) {
+       final errorMessage = errorData['detail'] ?? 'Database error';
+       throw Exception(errorMessage);
+      } else {
+       throw Exception(
+        'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
+       );
+      }
+     } else {
+      throw Exception('Network error: ${e.message}');
+     }
+    }
+  }
+
+  // Future<ProductResponseModel> getAvailableProducts(int stallId) async {
   //   try {
   //     Response response = await _dio!.get("/products/$stallId/available");
   //     if (kDebugMode) {

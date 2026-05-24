@@ -20,6 +20,7 @@ class CartNotifier extends Notifier<Set<OrderLineModel>> {
             ...state,
             OrderLineModel(
               orderID: product.orderID,
+              productName: product.productName,
               productID: product.productID,
               unitPriceAtOrder: product.unitPriceAtOrder,
               quantityOrdered: (product.quantityOrdered! + prodQuantity),
@@ -57,6 +58,7 @@ class CartNotifier extends Notifier<Set<OrderLineModel>> {
             ...state,
             OrderLineModel(
               productID: product.productID,
+              productName: product.productName,
               unitPriceAtOrder: product.unitPriceAtOrder,
               quantityOrdered: (product.quantityOrdered! - 1),
             ),
@@ -86,6 +88,7 @@ class CartNotifier extends Notifier<Set<OrderLineModel>> {
           ...state,
           OrderLineModel(
             productID: product.productID,
+            productName: product.productName,
             unitPriceAtOrder: product.unitPriceAtOrder,
             quantityOrdered: (product.quantityOrdered! + 1),
           ),

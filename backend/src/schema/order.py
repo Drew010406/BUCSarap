@@ -15,6 +15,7 @@ class CheckoutRequest(BaseModel):
     items: List[OrderLineItem] = Field(min_length=1)
 
 
+    
 class OrderLineResponse(BaseModel):
     order_line_id: int
     product_id: int

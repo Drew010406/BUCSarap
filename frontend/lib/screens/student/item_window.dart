@@ -7,13 +7,19 @@ import 'package:frontend/models/product_model.dart';
 import 'package:frontend/models/order_line_model.dart';
 import 'package:frontend/providers/cart_provider.dart';
 import 'package:frontend/providers/menu_provider.dart';
+import 'package:frontend/providers/product_provider.dart';
 
 class ItemWindow extends ConsumerStatefulWidget {
   final int? productID;
   final double? unitPrice;
   final int? index;
 
-  const ItemWindow({super.key, required this.productID, required this.unitPrice, this.index});
+  const ItemWindow({
+    super.key,
+    required this.productID,
+    required this.unitPrice,
+    this.index,
+  });
 
   @override
   ConsumerState<ItemWindow> createState() => _ItemWindowState();
@@ -32,6 +38,8 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
   @override
   Widget build(BuildContext context) {
     final cartProducts = ref.watch(cartNotifierProvider);
+    final prodService = ref.watch(productServiceProvider);
+
     // final productList = ref.read(menuProvider);
 
     return Center(
@@ -75,8 +83,8 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
                             style: TextStyle(),
                             child: FittedBox(
                               fit: BoxFit.fill,
-                                child: Image.asset("images/foods/beef_steak.jpg")
-                            )
+                              child: Image.asset("images/foods/beef_steak.jpg"),
+                            ),
                           ),
                         ),
                       ),
@@ -164,12 +172,15 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
                           SizedBox(width: 10),
                           Expanded(
                             child: GestureDetector(
-                              onTap: () {
+                              onTap: () async {
+                                var productName = await prodService.getProductInfo(widget.productID!);
                                 if (itemQuantity > 0) {
                                   ref
                                       .read(cartNotifierProvider.notifier)
                                       .addProduct(
+
                                         OrderLineModel(
+                                          productName: productName["product_name"],
                                           productID: widget.productID,
                                           unitPriceAtOrder: widget.unitPrice,
                                           quantityOrdered: itemQuantity,

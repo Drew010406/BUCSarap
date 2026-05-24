@@ -79,7 +79,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                         color: Color(0xFFFF9644),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: ItemCart(index: index,)
+                      child: ItemCart(index: index, item: cartProducts.elementAt(index),)
                     ),
                   ),
                 );

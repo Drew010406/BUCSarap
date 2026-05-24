@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/models/order_line_model.dart';
+import 'package:frontend/providers/product_provider.dart';
 
 import '../providers/cart_provider.dart';
 
 class ItemCart extends ConsumerStatefulWidget {
   final int index;
-  const ItemCart({super.key, required this.index});
+  final OrderLineModel? item;
+  const ItemCart({super.key, required this.index, required this.item});
 
   @override
   ConsumerState<ItemCart> createState() => _ItemCartState();
@@ -31,14 +34,14 @@ class _ItemCartState extends ConsumerState<ItemCart> {
           CrossAxisAlignment.start,
           children: [
             Text(
-              "Product Name",
+              "${widget.item!.productName}",
               style: TextStyle(
                 fontFamily: "Flame",
                 fontSize: 16,
               ),
             ),
             Text(
-              "Product Info",
+              "${widget.item!.unitPriceAtOrder}",
               style: TextStyle(
                 fontFamily: "Flame",
                 color: Colors.black45,
