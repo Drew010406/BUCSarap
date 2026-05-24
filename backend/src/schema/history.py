@@ -28,6 +28,8 @@ class HistoryResponse(BaseModel):
     total_orders: int = None
     total_revenue: float = None
     
+    model_config = ConfigDict(from_attributes=True)
+    
 class RevenueResponse(BaseModel):
     """Stall revenue summary"""
     stall_name: str
