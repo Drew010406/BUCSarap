@@ -5,16 +5,19 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-db_pass = os.getenv("DB_PASSWORD")
+db_user = os.getenv("USER_NAME") or "root"
+db_pass = os.getenv("DB_PASSWORD") or None
+db_port = int(os.getenv("DB_PORT") or 3306)
+db_name = os.getenv("DATABASE") or "bucsarap"
 
 # Connection config
 url = URL.create(
     drivername="mysql+pymysql",
-    username="test",
-    password=db_pass,
+    username=db_user,
+    password=db_pass if db_pass else None,
     host="localhost",
-    database="bucsarap",
-    port=3306
+    database=db_name,
+    port=db_port
 )
 
 engine = create_engine(
