@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/models/order_line_model.dart';
 
+import '../services/order/order_service.dart';
+import 'dio_provider.dart';
+
 class CartNotifier extends Notifier<Set<OrderLineModel>> {
   @override
   Set<OrderLineModel> build() {
@@ -137,3 +140,8 @@ class OrderPriceNotifier extends Notifier<double> {
 final orderPriceNotifierProvider = NotifierProvider<OrderPriceNotifier, double>(
   () => OrderPriceNotifier(),
 );
+
+final orderServiceProvider = Provider<OrderService>((ref) {
+  final dio = ref.watch(dioProvider);
+  return OrderService(dio: dio);
+});

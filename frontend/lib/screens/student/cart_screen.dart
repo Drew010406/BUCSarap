@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/providers/cart_provider.dart';
+import 'package:frontend/providers/product_provider.dart';
 
 import '../../shared/back_button_container.dart';
 import '../../shared/item_cart.dart';
@@ -19,6 +20,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   Widget build(BuildContext context) {
     final cartProducts = ref.watch(cartNotifierProvider);
     final totalPrice = ref.watch(orderPriceNotifierProvider);
+    final orderService = ref.watch(orderServiceProvider);
 
     final ScrollController _scrollController = ScrollController();
     final double screenWidth = MediaQuery.sizeOf(context).width;
@@ -113,7 +115,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                     endIndent: 23,
                   ),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+
                       Navigator.pushNamed(context, '/order_successful');
                     },
                     child: Container(

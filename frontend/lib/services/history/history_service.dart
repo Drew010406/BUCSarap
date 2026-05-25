@@ -1,26 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:frontend/models/order_line_model.dart';
 
-class OrderService {
+class HistoryService {
   final Dio? _dio;
+  HistoryService({dio}): _dio=dio;
 
-  OrderService({dio}) : _dio = dio;
-
-  Future checkout(int stallID, String? customerName) async {
+  Future getProductInfo(int productID) async {
     try {
-      Response response = await _dio!.post(
-        "/orders/checkout",
-        data: {
-          "stall_id": stallID,
-          "customer_name": customerName ?? "anonymous"
-        }
-      );
-      if (kDebugMode) {
+      Response response = await _dio!.get("/products/products/$productID");
+      if(kDebugMode) {
         print(response.data.toString());
       }
       return response.data;
-    } on DioException catch (e) {
+    } on DioException catch(e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
         final errorData = e.response?.data;
