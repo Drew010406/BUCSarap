@@ -12,7 +12,7 @@ class OrderDetailsModal extends StatelessWidget {
       child: Hero(
         tag: "$itemTag-$index}",
         child: Padding(
-          padding: EdgeInsetsGeometry.symmetric(horizontal: 50, vertical: 240),
+          padding: EdgeInsetsGeometry.symmetric(horizontal: 30, vertical: 240),
           child: Container(
             padding: EdgeInsetsGeometry.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
