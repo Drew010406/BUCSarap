@@ -1,24 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/constants.dart';
+import 'package:frontend/providers/cart_provider.dart';
 
-class AddNameModal extends StatelessWidget {
+class AddNameModal extends ConsumerStatefulWidget {
   const AddNameModal({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final nameController = TextEditingController();
+  ConsumerState<AddNameModal> createState() => _AddNameModalState();
+}
 
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsetsGeometry.symmetric(horizontal: 24),
+class _AddNameModalState extends ConsumerState<AddNameModal> {
+  late TextEditingController nameController;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               height: 200,
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
               decoration: BoxDecoration(
-                color: Color(0xFFFFC570).withValues(alpha: 0.8),
+                color: const Color(0xFFFFC570).withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -30,7 +50,10 @@ class AddNameModal extends StatelessWidget {
                   ),
                   TextField(
                     controller: nameController,
-                    style: TextStyle(color: Colors.black, fontFamily: "Flame"),
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: "Flame",
+                    ),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -39,7 +62,7 @@ class AddNameModal extends StatelessWidget {
                           width: 0.0,
                         ),
                       ),
-                      hintStyle: TextStyle(color: Colors.black45),
+                      hintStyle: const TextStyle(color: Colors.black45),
                       hintText: 'Add name',
                     ),
                   ),
@@ -48,10 +71,18 @@ class AddNameModal extends StatelessWidget {
                     children: [
                       Expanded(
                         child: GestureDetector(
+                          onTap: () {
+                            ref
+                                .read(nameProvider.notifier)
+                                .addName(nameController.text);
+                            Navigator.pop(context);
+                          },
                           child: Container(
                             height: 40,
                             decoration: BoxDecoration(
-                              color: Color(0xFFDA782B).withValues(alpha: 0.5),
+                              color: const Color(
+                                0xFFDA782B,
+                              ).withValues(alpha: 0.5),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Center(
@@ -63,13 +94,19 @@ class AddNameModal extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: GestureDetector(
+                          onTap: () {
+                            ref
+                                .read(nameProvider.notifier)
+                                .addName(null); // Explicitly Stay Anonymous
+                            Navigator.pop(context);
+                          },
                           child: Container(
                             height: 40,
                             decoration: BoxDecoration(
-                              color: Color(0xFFDA782B),
+                              color: const Color(0xFFDA782B),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Center(

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:frontend/components/stall_holder/navigation_panel.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/main.dart';
+import 'package:frontend/screens/stall_holder/order_details_modal.dart';
 
 import '../../shared/back_button_container.dart';
+import '../page_route/hero_dialog_route.dart';
 
 enum Status { PENDING, PROCESSING }
 
@@ -27,7 +29,9 @@ class _QueueScreenState extends State<QueueScreen> {
   @override
   Widget build(BuildContext context) {
     final currentRoute = ModalRoute.of(context)?.settings.name;
-
+    double cellWidth = ((MediaQuery.of(context).size.width - 50) / 2);
+    double desiredCellHeight = 35;
+    double childAspectRatio = cellWidth / desiredCellHeight;
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 110,
@@ -100,7 +104,8 @@ class _QueueScreenState extends State<QueueScreen> {
                       borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(10),
                         topRight: Radius.circular(10),
-                      ),                    ),
+                      ),
+                    ),
                     child: Center(
                       child: Text(
                         "Processing",
@@ -112,53 +117,96 @@ class _QueueScreenState extends State<QueueScreen> {
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-              color: Color(0xFFFFC570),
-              borderRadius: BorderRadius.circular(10)
-            ),
-            height: 80,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(child: SizedBox(),),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Customer Name", style: kJetbrainsFontTitle.copyWith(fontSize: 17),),
-                    Text("Order Number", style: kJetbrainsDescription.copyWith(color: Colors.black45),)
-                  ],
-                ),
-                Expanded(child: SizedBox(),),
-                GestureDetector(
-                  child: Container(
-                    width: 80,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFDA782B).withValues(alpha: 0.5),
-                      borderRadius: BorderRadius.circular(10)
+          SizedBox(height: 10,),
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: childAspectRatio,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      HeroDialogRoute(
+                        builder: (context) {
+                          return OrderDetailsModal(index: 1);
+                        },
+                      ),
+                    );
+                  },
+                  child: Hero(
+                    tag: "$itemTag-1",
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFFC570),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      // height: 80,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(child: SizedBox()),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Customer Name",
+                                style: kJetbrainsFontTitle.copyWith(fontSize: 17),
+                              ),
+                              Text(
+                                "Order Number",
+                                style: kJetbrainsDescription.copyWith(
+                                  color: Colors.black45,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Expanded(child: SizedBox()),
+                          GestureDetector(
+                            child: Container(
+                              width: 80,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFDA782B).withValues(alpha: 0.5),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text("Accept", style: kJetbrainsLoginRegister),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          GestureDetector(
+                            child: Container(
+                              width: 80,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFDA782B),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Decline",
+                                  style: kJetbrainsLoginRegister,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Center(child: Text("Accept", style: kJetbrainsLoginRegister,)),
                   ),
-                ),
-                SizedBox(width: 10,),
-                GestureDetector(
-                  child: Container(
-                    width: 80,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFDA782B),
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Center(child: Text("Decline", style: kJetbrainsLoginRegister,)),
-                  ),
-                )
-              ],
+                );
+              },
             ),
           ),
+
           NavigationPanel(currentRoute: currentRoute as String),
         ],
       ),

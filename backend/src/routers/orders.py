@@ -106,7 +106,16 @@ async def add_items_to_order(
     payload: List[OrderLineRequest],
     db: Annotated[Connection, Depends(get_db)],
 ):
-
+    """
+    TODO: Change of plans.
+    
+    Expected attributes na matatanggap from the frontend:
+        - product_id, product_name, unit_price_order, quantity_ordered
+    
+    Error: Hindi nagamatch ung OrderLineRequest schema sa pinapass ko sa endpoint.
+    Solution: Dagdagan ng product_name na attribute ung OrderLineRequest schema
+    pero pag ipupush na sa DB wag idadamay ung product_name since ala syang attribute sa table.
+    """
     # Verify order exists and is in pending state
     query = text("""
                               
@@ -190,7 +199,13 @@ async def add_items_to_order(
 	},
 )
 async def get_queue(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
-    
+    """
+    Expected attributes na irereturn netong endpoint:
+        - customer_name, order_no, order_status, order_time, total_cost(derived).
+        - and yung items(product_name, quantity)
+        
+    Gawin rin ata to sa stall_history.
+    """
     query = text("""
         SELECT stall_id 
         FROM stall 

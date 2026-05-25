@@ -22,7 +22,6 @@ class CartNotifier extends Notifier<Set<OrderLineModel>> {
           state = {
             ...state,
             OrderLineModel(
-              orderID: product.orderID,
               productName: product.productName,
               productID: product.productID,
               unitPriceAtOrder: product.unitPriceAtOrder,
@@ -144,4 +143,23 @@ final orderPriceNotifierProvider = NotifierProvider<OrderPriceNotifier, double>(
 final orderServiceProvider = Provider<OrderService>((ref) {
   final dio = ref.watch(dioProvider);
   return OrderService(dio: dio);
+});
+
+class NameNotifier extends Notifier<String?> {
+  @override
+  String? build() {
+    return null;
+  }
+
+  void addName(String? name) {
+    if (name == null) {
+      state = "Anonymous";
+    } else {
+      state = name;
+    }
+  }
+}
+
+final nameProvider = NotifierProvider<NameNotifier, String?>(() {
+  return NameNotifier();
 });
