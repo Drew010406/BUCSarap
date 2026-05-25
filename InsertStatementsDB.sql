@@ -226,3 +226,133 @@ INSERT INTO order_line (order_id, product_id, quantity_ordered, unit_price_at_or
 
 -- Order 25: Healthy Bowl (Diana) - 2x Chicken Salad Bowl
 (25, 20, 2, 160.00);
+
+
+-- ============================
+-- TEST DATA FOR REVENUE ENDPOINTS
+-- ============================
+
+-- TEST STALL 1 (Uses existing stall_id = 1, new order IDs in 100s)
+-- TODAY'S ORDERS
+INSERT INTO orders (order_id, stall_id, order_number, order_status, customer_name, order_time) VALUES
+(100, 1, 'STL1-0101', 'Completed', 'Test User 1', NOW()),
+(101, 1, 'STL1-0102', 'Completed', 'Test User 2', NOW()),
+(102, 1, 'STL1-0103', 'Completed', 'Test User 3', NOW());
+
+-- THIS WEEK'S ORDERS
+INSERT INTO orders (order_id, stall_id, order_number, order_status, customer_name, order_time) VALUES
+(103, 1, 'STL1-0104', 'Completed', 'Test User 4', DATE_SUB(NOW(), INTERVAL 2 DAY)),
+(104, 1, 'STL1-0105', 'Completed', 'Test User 5', DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(105, 1, 'STL1-0106', 'Completed', 'Test User 6', DATE_SUB(NOW(), INTERVAL 3 DAY));
+
+-- THIS MONTH'S ORDERS
+INSERT INTO orders (order_id, stall_id, order_number, order_status, customer_name, order_time) VALUES
+(106, 1, 'STL1-0107', 'Completed', 'Test User 7', DATE_SUB(NOW(), INTERVAL 15 DAY)),
+(107, 1, 'STL1-0108', 'Completed', 'Test User 8', DATE_SUB(NOW(), INTERVAL 10 DAY)),
+(108, 1, 'STL1-0109', 'Completed', 'Test User 9', DATE_SUB(NOW(), INTERVAL 20 DAY));
+
+-- ORDER LINE ITEMS FOR TODAY (100-102)
+INSERT INTO order_line (order_id, product_id, quantity_ordered, unit_price_at_order) VALUES
+-- Order 100: 2x Classic Burger + 1x Cheese Burger
+(100, 1, 2, 120.00),
+(100, 2, 1, 145.00),
+-- Order 101: 1x Large Fries + 1x Classic Burger
+(101, 3, 1, 80.00),
+(101, 1, 1, 120.00),
+-- Order 102: 2x Cheese Burger
+(102, 2, 2, 145.00);
+
+-- ORDER LINE ITEMS FOR THIS WEEK (103-105)
+INSERT INTO order_line (order_id, product_id, quantity_ordered, unit_price_at_order) VALUES
+-- Order 103: 3x Classic Burger
+(103, 1, 3, 120.00),
+-- Order 104: 1x Classic Burger + 2x Large Fries
+(104, 1, 1, 120.00),
+(104, 3, 2, 80.00),
+-- Order 105: 2x Cheese Burger + 1x Large Fries
+(105, 2, 2, 145.00),
+(105, 3, 1, 80.00);
+
+-- ORDER LINE ITEMS FOR THIS MONTH (106-108)
+INSERT INTO order_line (order_id, product_id, quantity_ordered, unit_price_at_order) VALUES
+-- Order 106: 1x Classic Burger + 1x Cheese Burger
+(106, 1, 1, 120.00),
+(106, 2, 1, 145.00),
+-- Order 107: 2x Large Fries
+(107, 3, 2, 80.00),
+-- Order 108: 1x Cheese Burger + 1x Large Fries + 1x Classic Burger
+(108, 2, 1, 145.00),
+(108, 3, 1, 80.00),
+(108, 1, 1, 120.00);
+
+
+-- TEST STALL 2 (New owner and stall, IDs in 200s)
+-- NEW OWNER
+INSERT INTO owner (owner_id, owner_username, hashed_password) VALUES
+(11, 'testvendor', 'hashed_pw11');
+
+-- NEW STALL
+INSERT INTO stall (stall_id, owner_id, stall_name, opening_time, closing_time, operating_days, stall_status, photo_path) VALUES
+(11, 11, 'Test Vendor Stall', '09:00:00', '21:00:00', 'Mon-Sun', true, 'images/testvendor.jpg');
+
+-- PRODUCT CATEGORIES FOR TEST STALL
+INSERT INTO product_category (category_id, stall_id, category_name) VALUES
+(12, 11, 'Test Meals');
+
+-- PRODUCTS FOR TEST STALL
+INSERT INTO product (product_id, category_id, product_name, product_price, product_status, photo_path) VALUES
+(100, 12, 'Test Meal A', 200.00, true, 'products/testmeala.jpg'),
+(101, 12, 'Test Meal B', 250.00, true, 'products/testmealb.jpg'),
+(102, 12, 'Test Meal C', 180.00, true, 'products/testmealc.jpg');
+
+-- TODAY'S ORDERS FOR TEST STALL (200-202)
+INSERT INTO orders (order_id, stall_id, order_number, order_status, customer_name, order_time) VALUES
+(200, 11, 'STL11-0200', 'Completed', 'Test Customer 1', NOW()),
+(201, 11, 'STL11-0201', 'Completed', 'Test Customer 2', NOW()),
+(202, 11, 'STL11-0202', 'Completed', 'Test Customer 3', NOW());
+
+-- THIS WEEK'S ORDERS FOR TEST STALL (203-205)
+INSERT INTO orders (order_id, stall_id, order_number, order_status, customer_name, order_time) VALUES
+(203, 11, 'STL11-0203', 'Completed', 'Test Customer 4', DATE_SUB(NOW(), INTERVAL 2 DAY)),
+(204, 11, 'STL11-0204', 'Completed', 'Test Customer 5', DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(205, 11, 'STL11-0205', 'Completed', 'Test Customer 6', DATE_SUB(NOW(), INTERVAL 3 DAY));
+
+-- THIS MONTH'S ORDERS FOR TEST STALL (206-208)
+INSERT INTO orders (order_id, stall_id, order_number, order_status, customer_name, order_time) VALUES
+(206, 11, 'STL11-0206', 'Completed', 'Test Customer 7', DATE_SUB(NOW(), INTERVAL 15 DAY)),
+(207, 11, 'STL11-0207', 'Completed', 'Test Customer 8', DATE_SUB(NOW(), INTERVAL 10 DAY)),
+(208, 11, 'STL11-0208', 'Completed', 'Test Customer 9', DATE_SUB(NOW(), INTERVAL 20 DAY));
+
+-- ORDER LINE ITEMS FOR TODAY (200-202)
+INSERT INTO order_line (order_id, product_id, quantity_ordered, unit_price_at_order) VALUES
+-- Order 200: 2x Test Meal A + 1x Test Meal B
+(200, 100, 2, 200.00),
+(200, 101, 1, 250.00),
+-- Order 201: 1x Test Meal B + 1x Test Meal C
+(201, 101, 1, 250.00),
+(201, 102, 1, 180.00),
+-- Order 202: 2x Test Meal C
+(202, 102, 2, 180.00);
+
+-- ORDER LINE ITEMS FOR THIS WEEK (203-205)
+INSERT INTO order_line (order_id, product_id, quantity_ordered, unit_price_at_order) VALUES
+-- Order 203: 3x Test Meal A
+(203, 100, 3, 200.00),
+-- Order 204: 1x Test Meal A + 2x Test Meal B
+(204, 100, 1, 200.00),
+(204, 101, 2, 250.00),
+-- Order 205: 2x Test Meal B + 1x Test Meal C
+(205, 101, 2, 250.00),
+(205, 102, 1, 180.00);
+
+-- ORDER LINE ITEMS FOR THIS MONTH (206-208)
+INSERT INTO order_line (order_id, product_id, quantity_ordered, unit_price_at_order) VALUES
+-- Order 206: 1x Test Meal A + 1x Test Meal B
+(206, 100, 1, 200.00),
+(206, 101, 1, 250.00),
+-- Order 207: 2x Test Meal C
+(207, 102, 2, 180.00),
+-- Order 208: 1x Test Meal B + 1x Test Meal C + 1x Test Meal A
+(208, 101, 1, 250.00),
+(208, 102, 1, 180.00),
+(208, 100, 1, 200.00);
