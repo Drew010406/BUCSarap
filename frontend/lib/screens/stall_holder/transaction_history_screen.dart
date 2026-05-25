@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../components/stall_holder/navigation_panel.dart';
 import '../../constants.dart';
 import '../../shared/back_button_container.dart';
+import '../page_route/hero_dialog_route.dart';
+import 'order_details_modal.dart';
 
 class TransactionHistoryScreen extends StatefulWidget {
   const TransactionHistoryScreen({super.key});
@@ -15,6 +17,9 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     final currentRoute = ModalRoute.of(context)?.settings.name;
+    double cellWidth = ((MediaQuery.of(context).size.width - 50) / 2);
+    double desiredCellHeight = 35;
+    double childAspectRatio = cellWidth / desiredCellHeight;
 
     return Scaffold(
       appBar: AppBar(
@@ -38,41 +43,68 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-                color: Color(0xFFFFC570),
-                borderRadius: BorderRadius.circular(10)
-            ),
-            height: 80,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(child: SizedBox(),),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Customer Name", style: kJetbrainsFontTitle.copyWith(fontSize: 17),),
-                    Text("Order Number", style: kJetbrainsDescription.copyWith(color: Colors.black45),)
-                  ],
-                ),
-                Expanded(child: SizedBox(),),
-                GestureDetector(
-                  child: Container(
-                    width: 110,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: Color(0xFFDA782B).withValues(alpha: 0.5),
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Center(child: Text("View Details", style: kJetbrainsLoginRegister,)),
-                  ),
-                ),
-                SizedBox(width: 10,),
+          Center(child: Text("Transaction History", style: kJetbrainsFontTitle.copyWith(fontSize: 30),),),
+          SizedBox(height: 10,),
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1,
+                mainAxisSpacing: 10,
+                childAspectRatio: childAspectRatio,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      HeroDialogRoute(
+                        builder: (context) {
+                          return OrderDetailsModal(index: index);
+                        },
+                      ),
+                    );
+                  },
+                  child: Hero(
+                    tag: "$itemTag-1",
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      decoration: BoxDecoration(
+                          color: Color(0xFFFFC570),
+                          borderRadius: BorderRadius.circular(10)
+                      ),
+                      height: 80,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(child: SizedBox(),),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Customer Name", style: kJetbrainsFontTitle.copyWith(fontSize: 17),),
+                              Text("Order Number", style: kJetbrainsDescription.copyWith(color: Colors.black45),)
+                            ],
+                          ),
+                          Expanded(child: SizedBox(),),
+                          GestureDetector(
+                            child: Container(
+                              width: 110,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  color: Color(0xFFDA782B).withValues(alpha: 0.5),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: Center(child: Text("View Details", style: kJetbrainsLoginRegister,)),
+                            ),
+                          ),
+                          SizedBox(width: 10,),
 
-              ],
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           NavigationPanel(currentRoute: currentRoute as String,),

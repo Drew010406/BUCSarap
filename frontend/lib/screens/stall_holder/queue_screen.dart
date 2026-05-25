@@ -132,7 +132,7 @@ class _QueueScreenState extends State<QueueScreen> {
                     Navigator.of(context).push(
                       HeroDialogRoute(
                         builder: (context) {
-                          return OrderDetailsModal(index: 1);
+                          return OrderDetailsModal(index: index);
                         },
                       ),
                     );

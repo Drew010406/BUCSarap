@@ -106,7 +106,7 @@ class StallService {
 
         if (statusCode == 400) {
           final errorMessage = errorData['detail'] ?? 'Database error';
-          throw Exception(errorMessage);
+          throw Exception(errorMessage); 
         } else {
           throw Exception(
             'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
