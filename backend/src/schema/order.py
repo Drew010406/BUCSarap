@@ -16,6 +16,7 @@ class OrderLineRequest(BaseModel):
     
     product_id: int
     quantity: int = Field(gt=0)
+    unit_price_ordered : float
 
     
 class OrderLineResponse(BaseModel):

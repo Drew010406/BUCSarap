@@ -16,6 +16,9 @@ from backend.src.schema.order import (
 
 route = APIRouter()
 
+# Key: order_id, Value: list of added items
+added_items = {}
+
 @route.post(
     "/checkout",
     response_model=CheckoutResponse,
@@ -90,20 +93,21 @@ async def checkout(payload: CheckoutRequest, db: Annotated[Connection, Depends(g
 
 @route.post(
     "/{order_id}/items",
-    response_model=OrderLineCreateResponse,
+    response_model=dict,
     status_code=201,
     responses={
-        400: {"description": "Bad Request - invalid product or order already completed"},
+        400: {"description": "Bad Request - invalid product or order already submitted"},
         404: {"description": "Order or product not found"},
-        500: {"description": "Could not add item to order"}
+        500: {"description": "Could not add items to order"}
     },
 )
 async def add_items_to_order(
     order_id: int,
-    payload: OrderLineRequest,
+    payload: List[OrderLineRequest],
     db: Annotated[Connection, Depends(get_db)],
 ):
-    # Verify order exists
+
+    # Verify order exists and is in pending state
     query = text("""
                               
         SELECT order_id, stall_id, order_status
@@ -120,76 +124,62 @@ async def add_items_to_order(
     if not order_row:
         raise HTTPException(status_code=404, detail="Order not found")
 
-    # Check if order can still accept items (not completed/cancelled)
-    if order_row["order_status"] in ("Completed", "Cancelled"):
-        
+    # Check if order can still accept items (must be in Pending state)
+    if order_row["order_status"] != "Pending":
         raise HTTPException(
             status_code=400,
-            detail=f"Cannot add items to order with status '{order_row['order_status']}'",
+            detail=f"Cannot add items to order with status '{order_row['order_status']}'. Order must be in 'Pending' state.",
         )
 
     stall_id = order_row["stall_id"]
-
-    # Verify product exists and belongs to this stall
-    query = text("""
-                 
-        SELECT p.product_id, p.product_name, p.product_price, p.product_status
-        FROM product p
-        JOIN product_category pc ON pc.category_id = p.category_id
-        WHERE p.product_id = :p_id
-        AND pc.stall_id = :s_id
-        AND p.product_status = 1  
-        """)
     
-    try:
-        product_row = db.execute(query, {"p_id": payload.product_id, "s_id": stall_id}).mappings().fetchone()
+    # Initialize global items list for this order if it doesn't exist
+    if order_id not in added_items:
+        added_items[order_id] = []
 
-    except Exception:
+    # Process each item in the list
+    for item in payload:
         
-        raise HTTPException(
-            status_code=404,
-            detail=f"Product not found or is unavailable for this stall",
-        )
-
-    if not product_row:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Product not found or is unavailable for this stall",
-        )
+        # Verify product exists and belongs to this stall
+        query = text("""
+                     
+            SELECT p.product_id, p.product_name, p.product_price, p.product_status
+            FROM product p
+            JOIN product_category pc ON pc.category_id = p.category_id
+            WHERE p.product_id = :p_id
+            AND pc.stall_id = :s_id
+            AND p.product_status = 1  
+            """)
         
-    insert_query = text("""
-                 
-            INSERT INTO order_line (order_id, product_id, quantity_ordered, unit_price_at_order)
-            VALUES (:order_id, :product_id, :qty, :price)
-        """)
+        try:
+            product_row = db.execute(query, {"p_id": item.product_id, "s_id": stall_id}).mappings().fetchone()
 
-    try:
-        result = db.execute(insert_query,
-                {
-                "order_id": order_id,
-                "product_id": payload.product_id,
-                "qty": payload.quantity,
-                "price": float(product_row["product_price"]),
-                })
+        except Exception:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Product {item.product_id} not found or is unavailable for this stall",
+            )
 
-        db.commit()
-        order_line_id = result.lastrowid
-
-    except Exception as error:
+        if not product_row:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Product {item.product_id} not found or is unavailable for this stall",
+            )
         
-        db.rollback()
-        raise HTTPException(status_code=500, detail=f"Could not add item to order: {str(error)}") from error
-
-    return OrderLineCreateResponse(
-        
-        order_line_id=order_line_id,
-        order_id=order_id,
-        product_id=payload.product_id,
-        product_name=product_row["product_name"],
-        quantity_ordered=payload.quantity,
-        unit_price_at_order=product_row["product_price"],
-        message="Item added to order successfully",
-    )
+        # Append to global items array - accumulates across multiple add_items calls
+        added_items[order_id].append({
+            "product_id": item.product_id,
+            "product_name": product_row["product_name"],
+            "quantity_ordered": item.quantity,
+            "unit_price_at_order": float(product_row["product_price"]),
+        })
+    
+    return {
+        "order_id": order_id,
+        "items_added": len(added_items[order_id]),
+        "items": added_items[order_id],
+        "message": f"Successfully validated items. Total items for this order: {len(added_items[order_id])}."
+    }
 
 
 @route.get(
@@ -266,6 +256,85 @@ async def get_queue(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
         )
 
     return list(orders.values())
+
+@route.post(
+    "/{order_id}/submit",
+    responses={
+        400: {"description": "Bad Request - invalid order state or no items"},
+        404: {"description": "Order not found"},
+        500: {"description": "Could not submit order"}
+    },
+)
+async def submit_order(order_id: int, payload: dict, db: Annotated[Connection, Depends(get_db)]):
+
+    # Verify order exists and is in pending state
+    query = text("""
+                 
+        SELECT order_id, order_status, stall_id
+        FROM orders 
+        WHERE order_id = :o_id
+        """)
+    
+    try:
+        order_row = db.execute(query, {"o_id": order_id}).mappings().fetchone()
+
+    except Exception:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    if not order_row:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    if order_row["order_status"] != "Pending":
+
+        raise HTTPException(
+            status_code=400,
+            detail=f"Cannot submit order with status '{order_row['order_status']}'. Order must be in 'Pending' state.",
+        )
+
+    # Verify items array exists and is not empty
+    items = payload.get("items", [])
+    
+    if not items or len(items) == 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Please add at least one item.",
+        )
+
+    # Insert all items into order_line table
+    try:
+        
+        for item in items:
+
+            insert_query = text("""
+
+                INSERT INTO order_line (order_id, product_id, quantity_ordered, unit_price_at_order)
+                VALUES (:order_id, :product_id, :qty, :price)
+            """)
+            
+            db.execute(insert_query, 
+                {
+                "order_id": order_id,
+                "product_id": item["product_id"],
+                "qty": item["quantity_ordered"],
+                "price": item["unit_price_at_order"],
+            })
+
+        db.commit()
+        
+    except Exception as error:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Could not submit order: {str(error)}") from error
+
+    # Clear the global items array for this order after successful submit
+    if order_id in added_items:
+        del added_items[order_id]
+
+    return {
+        "order_id": order_id,
+        "order_status": "Pending",
+        "items_submitted": len(items),
+        "message": f"Order {order_id} submitted successfully!"
+    }
 
 @route.patch(
 	"/{order_id}/status",
