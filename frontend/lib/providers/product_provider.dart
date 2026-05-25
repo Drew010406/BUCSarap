@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/models/product_model.dart';
 import 'package:frontend/models/stall_model.dart';
+import 'package:frontend/services/order/order_service.dart';
 import 'package:frontend/services/product/product_service.dart';
 
-import 'cart_provider.dart';
 import 'dio_provider.dart';
 
 class SelectedCategory extends Notifier<CategoryInfoModel?> {

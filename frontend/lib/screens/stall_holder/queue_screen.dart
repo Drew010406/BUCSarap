@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/components/stall_holder/navigation_panel.dart';
+import 'package:frontend/constants.dart';
 import 'package:frontend/main.dart';
 
 import '../../shared/back_button_container.dart';
@@ -108,6 +109,53 @@ class _QueueScreenState extends State<QueueScreen> {
                     ),
                   ),
                 ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            decoration: BoxDecoration(
+              color: Color(0xFFFFC570),
+              borderRadius: BorderRadius.circular(10)
+            ),
+            height: 80,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(child: SizedBox(),),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Customer Name", style: kJetbrainsFontTitle.copyWith(fontSize: 17),),
+                    Text("Order Number", style: kJetbrainsDescription.copyWith(color: Colors.black45),)
+                  ],
+                ),
+                Expanded(child: SizedBox(),),
+                GestureDetector(
+                  child: Container(
+                    width: 80,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFDA782B).withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Center(child: Text("Accept", style: kJetbrainsLoginRegister,)),
+                  ),
+                ),
+                SizedBox(width: 10,),
+                GestureDetector(
+                  child: Container(
+                    width: 80,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFDA782B),
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Center(child: Text("Decline", style: kJetbrainsLoginRegister,)),
+                  ),
+                )
               ],
             ),
           ),
