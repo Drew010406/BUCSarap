@@ -1,13 +1,12 @@
 from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import text, Connection
+from backend.src.schema.history import HistoryItem
 
 from backend.src.db.session import get_db
 from backend.src.schema.order import (
     CheckoutRequest,
     CheckoutResponse,
-    OrderResponse,
-    OrderLineResponse,
     OrderStatusUpdate,
     VALID_STATUSES,
     OrderLineRequest,
@@ -185,8 +184,8 @@ async def add_items_to_order(
 
 
 @route.get(
-	"/queue/{stall_id}",
-	response_model=List[QueueOrderResponse],
+	"/preparing_queue/{stall_id}",
+	response_model=List[HistoryItem],
 	responses={
 		404: {"description": "Stall not found"},
 	},
@@ -205,59 +204,31 @@ async def get_pending_queue(stall_id: int, db: Annotated[Connection, Depends(get
 
     get_rows_query = text("""
                     
-        SELECT
-            o.order_id,
-            o.order_number,
-            o.order_status,
-            o.order_time,
-            o.customer_name,
-            ol.order_line_id,
-            ol.product_id,
-            p.product_name,
-            ol.quantity_ordered,
-            ol.unit_price_at_order
-            
-        FROM orders o
-        JOIN order_line ol ON ol.order_id = o.order_id
-        JOIN product p    ON p.product_id = ol.product_id
+        SELECT order_id, order_number, customer_name
+        FROM orders
 
-        WHERE o.stall_id = :s_id AND o.order_status = 'Pending'
-        ORDER BY o.order_time ASC, ol.order_line_id ASC
+        WHERE stall_id = :s_id AND order_status = 'Pending'
+        ORDER BY order_time ASC
         """)
 
-    rows = db.execute(get_rows_query, {"s_id": stall_id},).mappings().fetchall()
+    rows = db.execute(get_rows_query, {"s_id": stall_id}).mappings().fetchall()
 
-    orders: dict[int, QueueOrderResponse] = {}
-
-    for row in rows:
-            
-        o_id = row["order_id"]
-        
-        if o_id not in orders:
-            
-            orders[o_id] = QueueOrderResponse(
-                order_number=row["order_number"],
-                order_status=row["order_status"],
-                order_time=row["order_time"],
-                customer_name=row["customer_name"],
-                total_cost=0,
-                items=[],
-            )
-            
-        orders[o_id].items.append(
-        
-            QueueOrderLineResponse(
-                product_name=row["product_name"],
-                quantity_ordered=row["quantity_ordered"],
-            )
+    return [
+        HistoryItem(
+            order_id=row["order_id"],
+            order_number=row["order_number"],
+            customer_name=row["customer_name"]
         )
-        
-        # Add to total cost
-        orders[o_id].total_cost += row["unit_price_at_order"] * row["quantity_ordered"]
+        for row in rows
+    ]
 
-    return list(orders.values())
-
-
+@route.get(
+	"/queue/{stall_id}",
+	response_model=List[HistoryItem],
+	responses={
+		404: {"description": "Stall not found"},
+	},
+)
 async def get_preparing_queue(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
 
     query = text("""
@@ -272,57 +243,23 @@ async def get_preparing_queue(stall_id: int, db: Annotated[Connection, Depends(g
 
     get_rows_query = text("""
                     
-        SELECT
-            o.order_id,
-            o.order_number,
-            o.order_status,
-            o.order_time,
-            o.customer_name,
-            ol.order_line_id,
-            ol.product_id,
-            p.product_name,
-            ol.quantity_ordered,
-            ol.unit_price_at_order
-            
-        FROM orders o
-        JOIN order_line ol ON ol.order_id = o.order_id
-        JOIN product p    ON p.product_id = ol.product_id
+        SELECT order_id, order_number, customer_name
+        FROM orders
 
-        WHERE o.stall_id = :s_id AND o.order_status = 'Preparing'
-        ORDER BY o.order_time ASC, ol.order_line_id ASC
+        WHERE stall_id = :s_id AND order_status = 'Preparing'
+        ORDER BY order_time ASC
         """)
 
     rows = db.execute(get_rows_query, {"s_id": stall_id},).mappings().fetchall()
 
-    orders: dict[int, QueueOrderResponse] = {}
-
-    for row in rows:
-            
-        o_id = row["order_id"]
-        
-        if o_id not in orders:
-            
-            orders[o_id] = QueueOrderResponse(
-                order_number=row["order_number"],
-                order_status=row["order_status"],
-                order_time=row["order_time"],
-                customer_name=row["customer_name"],
-                total_cost=0,
-                items=[],
-            )
-            
-        orders[o_id].items.append(
-        
-            QueueOrderLineResponse(
-                product_name=row["product_name"],
-                quantity_ordered=row["quantity_ordered"],
-            )
+    return [
+        HistoryItem(
+            order_id=row["order_id"],
+            order_number=row["order_number"],
+            customer_name=row["customer_name"]
         )
-        
-        # Add to total cost
-        orders[o_id].total_cost += row["unit_price_at_order"] * row["quantity_ordered"]
-
-    return list(orders.values())
+        for row in rows
+    ]
 
 @route.post(
     "/{order_id}/submit",
