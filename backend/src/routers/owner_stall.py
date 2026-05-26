@@ -111,3 +111,43 @@ async def accept_orders(order_id: int, stall_id: int, db: Annotated[Connection, 
     except Exception as error:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
+    
+@route.delete("/orders/{order_id}")
+async def decline_order(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+    verification_query = text("""
+
+        SELECT *
+        FROM orders 
+        WHERE order_id = :o_id AND stall_id = :s_id AND order_status = 'Pending'                 
+        """)
+    
+    results = db.execute(verification_query, {"o_id": order_id, "s_id": stall_id}).mappings().fetchone()
+
+    if not results:
+        raise HTTPException(status_code=404, details="Order not found or Order is no longer in Pending phase.")
+
+    # First delete order line items, then delete the order
+    delete_line_items_query = text("""
+        DELETE FROM order_line 
+        WHERE order_id = :o_id        
+    """)
+    
+    delete_order_query = text("""
+        DELETE FROM orders 
+        WHERE order_id = :o_id        
+    """)
+    
+    try:
+        # Delete dependent order_line items first
+        db.execute(delete_line_items_query, {"o_id": order_id})
+        # Then delete the order
+        db.execute(delete_order_query, {"o_id": order_id})
+        db.commit()
+        
+        return {"message": f"Successfully declined order number: {order_id}"}
+        
+    except Exception as error:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
+    
