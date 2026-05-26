@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.src.routers import owner, products, stalls, history, orders
+from backend.src.routers import owner, products, stalls, history, orders, owner_stall
 
 app = FastAPI()
 
@@ -21,7 +21,10 @@ app.include_router(products.route, prefix="/products", tags=["Products"])
 app.include_router(stalls.route, prefix="/stalls", tags=["Stalls"])
 
 app.include_router(history.route, prefix="/history", tags=["History"])
+
 app.include_router(orders.route, prefix="/orders", tags=["Orders"])
+
+app.include_router(owner_stall.route, prefix="/owner_stall", tags=["Owner functionalities"])
 
 
 if __name__ == '__main__':
