@@ -140,6 +140,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                     onTap: () async {
                       var checkoutResponse = await orderService.checkout(selectedStall!.stallID!, currentUser);
                       var addOrderLineToDB = await orderService.insertItems(checkoutResponse['order_id'], cartProducts);
+                      var submitOrder = await orderService.submitOrder(checkoutResponse['order_id'], addOrderLineToDB);
                     },
                     child: Container(
                       height: 52,

@@ -6,7 +6,6 @@ import 'package:frontend/constants.dart';
 import 'package:frontend/models/product_model.dart';
 import 'package:frontend/models/order_line_model.dart';
 import 'package:frontend/providers/cart_provider.dart';
-import 'package:frontend/providers/menu_provider.dart';
 import 'package:frontend/providers/product_provider.dart';
 
 class ItemWindow extends ConsumerStatefulWidget {
