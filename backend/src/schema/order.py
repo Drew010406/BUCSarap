@@ -65,9 +65,9 @@ class QueueOrderLineResponse(BaseModel):
     quantity_ordered : int
     
 class QueueOrderResponse(BaseModel):
-    
+
+    customer_name : str | None    
     order_number: str
-    customer_name : str | None
     order_status : str
     order_time : datetime
     total_cost : Decimal

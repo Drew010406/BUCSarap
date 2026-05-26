@@ -385,3 +385,50 @@ async def update_order_status(order_id: int, payload: OrderStatusUpdate,db: Anno
         "order_status": payload.order_status,
         "message": f"Order {order_id} updated to '{payload.order_status}'",
     }
+    
+@route.get("/orders/{order_id}", response_model=QueueOrderResponse)
+async def get_order_details(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+    query = text("""
+                 
+        SELECT o.customer_name, o.order_number, o.order_status, o.order_time, o.stall_id, p.product_name, ol.quantity_ordered, ol.unit_price_at_order
+        FROM orders o
+        JOIN order_line ol ON ol.order_id = o.order_id
+        JOIN product p ON p.product_id = ol.product_id
+        WHERE o.order_id = :o_id
+        """)
+    
+    try:
+        results = db.execute(query, {"o_id": order_id}).mappings().fetchall()
+        
+        if not results:
+            raise HTTPException(status_code=404, detail="Order not found.")
+        
+        # Optional stall verification
+        if stall_id and results[0]["stall_id"] != stall_id:
+            raise HTTPException(status_code=403, detail="Order does not belong to this stall")
+        
+        order_details = QueueOrderResponse(
+            
+            customer_name=results[0]["customer_name"],
+            order_number=results[0]["order_number"],
+            order_status=results[0]["order_status"],
+            order_time=results[0]["order_time"],
+            total_cost=sum(row["unit_price_at_order"] * row["quantity_ordered"] for row in results),
+            
+            items=[
+                QueueOrderLineResponse(
+                    product_name=row["product_name"],
+                    quantity_ordered=row["quantity_ordered"]
+                )
+                for row in results
+            ]
+        )
+        
+        return order_details
+    
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
+
