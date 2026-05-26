@@ -5,7 +5,7 @@ import 'package:frontend/providers/cart_provider.dart';
 import 'package:frontend/providers/dio_provider.dart';
 import 'package:frontend/providers/stall_provider.dart';
 import 'package:frontend/services/history/history_service.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'transaction_history_provider.g.dart';
 
