@@ -7,18 +7,15 @@ from backend.src.schema.history import HistoryItem, RevenueResponse
 route = APIRouter()
 
 @route.get("/{stall_id}", response_model=List[HistoryItem])
-#gets all the completed orders of a stall. no filters pa dito, yung compilation lang ng lahat ng ordered items 
+
 async def get_stall_history(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
     
     query = text("""
                  
-        SELECT s.stall_name, s.stall_id, o.order_id, o.order_time, p.product_name, ol.unit_price_at_order AS item_total
-        FROM order_line ol
-        JOIN orders o ON o.order_id = ol.order_id
-        JOIN product p ON ol.product_id = p.product_id
-        JOIN stall s ON s.stall_id = o.stall_id
-        WHERE s.stall_id = :stall_id AND o.order_status = "Completed"
-        ORDER BY o.order_time DESC, o.order_id
+        SELECT order_id, customer_name, order_number
+        FROM orders
+        WHERE stall_id = 1 AND order_status = "Completed"
+        ORDER BY order_id
     """)
     
     try:

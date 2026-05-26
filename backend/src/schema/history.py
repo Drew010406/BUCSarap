@@ -4,12 +4,9 @@ from typing import List
 
 class HistoryItem(BaseModel):
     
-    stall_name: str
-    stall_id: int
-    order_id: int
-    order_time: datetime
-    product_name: str
-    item_total: float 
+    customer_name: str | None
+    order_id : int
+    order_number : str
 
 class OrderHistory(BaseModel):
     
