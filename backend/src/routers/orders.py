@@ -11,7 +11,8 @@ from backend.src.schema.order import (
     OrderStatusUpdate,
     VALID_STATUSES,
     OrderLineRequest,
-    OrderLineCreateResponse,
+    QueueOrderResponse,
+    QueueOrderLineResponse,
 )
 
 route = APIRouter()
@@ -106,16 +107,6 @@ async def add_items_to_order(
     payload: List[OrderLineRequest],
     db: Annotated[Connection, Depends(get_db)],
 ):
-    """
-    TODO: Change of plans.
-    
-    Expected attributes na matatanggap from the frontend:
-        - product_id, product_name, unit_price_order, quantity_ordered
-    
-    Error: Hindi nagamatch ung OrderLineRequest schema sa pinapass ko sa endpoint.
-    Solution: Dagdagan ng product_name na attribute ung OrderLineRequest schema
-    pero pag ipupush na sa DB wag idadamay ung product_name since ala syang attribute sa table.
-    """
     # Verify order exists and is in pending state
     query = text("""
                               
@@ -177,13 +168,15 @@ async def add_items_to_order(
         
         # Append to global items array - accumulates across multiple add_items calls
         added_items[order_id].append({
+            
             "product_id": item.product_id,
-            "product_name": product_row["product_name"],
-            "quantity_ordered": item.quantity,
-            "unit_price_at_order": float(product_row["product_price"]),
+            "product_name": item.product_name,
+            "quantity_ordered": item.quantity_ordered,
+            "unit_price_at_order": item.unit_price_order,
         })
     
     return {
+        
         "order_id": order_id,
         "items_added": len(added_items[order_id]),
         "items": added_items[order_id],
@@ -193,19 +186,13 @@ async def add_items_to_order(
 
 @route.get(
 	"/queue/{stall_id}",
-	response_model=List[OrderResponse],
+	response_model=List[QueueOrderResponse],
 	responses={
 		404: {"description": "Stall not found"},
 	},
 )
 async def get_queue(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
-    """
-    Expected attributes na irereturn netong endpoint:
-        - customer_name, order_no, order_status, order_time, total_cost(derived).
-        - and yung items(product_name, quantity)
-        
-    Gawin rin ata to sa stall_history.
-    """
+
     query = text("""
         SELECT stall_id 
         FROM stall 
@@ -242,33 +229,33 @@ async def get_queue(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
 
     rows = db.execute(get_rows_query, {"s_id": stall_id},).mappings().fetchall()
 
-    orders: dict[int, OrderResponse] = {}
-    
+    orders: dict[int, QueueOrderResponse] = {}
+
     for row in rows:
-        
+            
         o_id = row["order_id"]
         
         if o_id not in orders:
             
-            orders[o_id] = OrderResponse(
-                order_id=o_id,
+            orders[o_id] = QueueOrderResponse(
                 order_number=row["order_number"],
                 order_status=row["order_status"],
                 order_time=row["order_time"],
                 customer_name=row["customer_name"],
+                total_cost=0,
                 items=[],
             )
             
         orders[o_id].items.append(
         
-            OrderLineResponse(
-                order_line_id=row["order_line_id"],
-                product_id=row["product_id"],
+            QueueOrderLineResponse(
                 product_name=row["product_name"],
                 quantity_ordered=row["quantity_ordered"],
-                unit_price_at_order=row["unit_price_at_order"],
             )
         )
+        
+        # Add to total cost
+        orders[o_id].total_cost += row["unit_price_at_order"] * row["quantity_ordered"]
 
     return list(orders.values())
 

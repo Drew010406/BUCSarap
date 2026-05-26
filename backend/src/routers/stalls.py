@@ -24,7 +24,7 @@ async def get_all_stalls(db: Annotated[Connection, Depends(get_db)]):
 
 
 @route.get("/{stall_id}",response_model=StallResponse)
-#gets info of a stall using the stasll id 
+#gets info of a stall using the stall id 
 async def get_stall(stall_id: int,owner_id: int, db: Annotated[Connection, Depends(get_db)]):
     
 
@@ -51,7 +51,7 @@ async def get_stall(stall_id: int,owner_id: int, db: Annotated[Connection, Depen
 
 async def get_stall_with_categories(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
 
-    #gets the stall info tapos ang categories
+    #gets the stall info and categories
     query = text("""
         SELECT 
             s.stall_id,
@@ -70,12 +70,15 @@ async def get_stall_with_categories(stall_id: int, db: Annotated[Connection, Dep
         if not results:
             raise HTTPException(status_code=404, detail="Stall not found")
         
-        # Build stall with categories
+        # Build stall with categories and products
         stall_data = {
+            
             "stall_id": results[0]["stall_id"],
             "stall_name" : results[0]["stall_name"],
             "categories": [
-                {"category_id": r["category_id"], "category_name": r["category_name"]}
+                {
+                    "category_id": r["category_id"], 
+                    "category_name": r["category_name"]}
                 for r in results if r["category_id"]
             ]
         }
@@ -164,3 +167,4 @@ async def update_stall(stall_id: int, stall_update: StallUpdate, db: Annotated[C
         
         db.rollback()
         raise HTTPException(status_code=400, detail=f"Database error: {str(error)}")
+    

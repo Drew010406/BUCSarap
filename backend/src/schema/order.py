@@ -15,8 +15,10 @@ class CheckoutRequest(BaseModel):
 class OrderLineRequest(BaseModel):
     
     product_id: int
-    quantity: int = Field(gt=0)
-    unit_price_ordered : float
+    product_name: str
+    quantity_ordered: int = Field(gt=0)
+    unit_price_order: float
+    
 
     
 class OrderLineResponse(BaseModel):
@@ -56,6 +58,22 @@ class OrderLineCreateResponse(BaseModel):
     unit_price_at_order: Decimal
     message: str
 
+
+class QueueOrderLineResponse(BaseModel):
+    
+    product_name : str
+    quantity_ordered : int
+    
+class QueueOrderResponse(BaseModel):
+    
+    order_number: str
+    customer_name : str | None
+    order_status : str
+    order_time : datetime
+    total_cost : Decimal
+    items : List[QueueOrderLineResponse]
+    
+    model_config = ConfigDict(from_attributes=True)
 # Order states for the queue
 VALID_STATUSES = {"Pending", "Preparing", "Ready", "Completed", "Cancelled"}
 

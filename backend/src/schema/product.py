@@ -20,4 +20,3 @@ class ProductInfo(BaseModel):
     
     product_name : str
     photo_path : str
-    
