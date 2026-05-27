@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/components/stall_holder/navigation_panel.dart';
 
+import '../../components/stall_holder/navigation_panel.dart';
 import '../../shared/back_button_container.dart';
-
-class StallHolderScreen extends StatefulWidget {
-  const StallHolderScreen({super.key});
+class StallCategoryScreen extends StatefulWidget {
+  const StallCategoryScreen({super.key});
 
   @override
-  State<StallHolderScreen> createState() => _StallHolderScreenState();
+  State<StallCategoryScreen> createState() => _StallCategoryScreenState();
 }
 
-class _StallHolderScreenState extends State<StallHolderScreen> {
+class _StallCategoryScreenState extends State<StallCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final currentRoute = ModalRoute.of(context)?.settings.name;
@@ -130,7 +129,7 @@ class _StallHolderScreenState extends State<StallHolderScreen> {
             ),
           ),
           // Home, Queue, Processed History, Analytics?
-         NavigationPanel(currentRoute: currentRoute as String,)
+          NavigationPanel(currentRoute: currentRoute as String,)
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'product_model.freezed.dart';
+
 part 'product_model.g.dart';
 
 double? _parseDouble(dynamic val) =>
@@ -11,18 +12,29 @@ abstract class ProductResponseModel with _$ProductResponseModel {
   const factory ProductResponseModel({
     @JsonKey(name: "product_id") int? productID,
     @JsonKey(name: "product_name") String? productName,
-    @JsonKey(name: "product_price", fromJson: _parseDouble) double? productPrice,
+    @JsonKey(name: "product_price", fromJson: _parseDouble)
+    double? productPrice,
     @JsonKey(name: "product_status") @Default(false) bool productStatus,
-    @JsonKey(name: "product_quantity") int? productQuantity,
     @JsonKey(name: "photo_path") String? photoPath,
     @JsonKey(name: "stall_id") int? stallID,
     @JsonKey(name: "stall_name") String? stallName,
     @JsonKey(name: "category_id") int? categoryID,
-    @JsonKey(name: "category_name") String? categoryName
+    @JsonKey(name: "category_name") String? categoryName,
   }) = _ProductResponseModel;
 
   factory ProductResponseModel.fromJson(Map<String, dynamic> json) =>
       _$ProductResponseModelFromJson(json);
+}
+
+@freezed
+abstract class ProductInfoModel with _$ProductInfoModel {
+  const factory ProductInfoModel({
+    @JsonKey(name: "product_name") String? productName,
+    @JsonKey(name: "photo_path") String? photoPath,
+  }) = _ProductInfoModel;
+
+  factory ProductInfoModel.fromJson(Map<String, dynamic> json) =>
+      _$ProductInfoModelFromJson(json);
 }
 
 // @freezed

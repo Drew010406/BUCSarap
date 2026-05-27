@@ -13,3 +13,7 @@
                 also added the derived value ng order cost (total = unit price at order * quantity)            
 
 
+
+- TODO 6: Add a get_owner_stall endpoint, should return the stall_id owned by that specific owner; why cuz in stalls.py route--the get_stall() and get_owner_stall_categories() accepts a stall_id and naisip ko sana ibase nlng sa owner_id pero ampangit ata kung ganun, para stall for stall, owner for owner approach tas nde magulo
+
+- TODO(later): Modify the get_user endpoint wag mag accept ng owner_id, impement OAuth(last nato wag na muna isipin saka na pag natapos na ung main feats)

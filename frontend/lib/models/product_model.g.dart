@@ -13,7 +13,6 @@ _ProductResponseModel _$ProductResponseModelFromJson(
   productName: json['product_name'] as String?,
   productPrice: _parseDouble(json['product_price']),
   productStatus: json['product_status'] as bool? ?? false,
-  productQuantity: (json['product_quantity'] as num?)?.toInt(),
   photoPath: json['photo_path'] as String?,
   stallID: (json['stall_id'] as num?)?.toInt(),
   stallName: json['stall_name'] as String?,
@@ -28,10 +27,21 @@ Map<String, dynamic> _$ProductResponseModelToJson(
   'product_name': instance.productName,
   'product_price': instance.productPrice,
   'product_status': instance.productStatus,
-  'product_quantity': instance.productQuantity,
   'photo_path': instance.photoPath,
   'stall_id': instance.stallID,
   'stall_name': instance.stallName,
   'category_id': instance.categoryID,
   'category_name': instance.categoryName,
 };
+
+_ProductInfoModel _$ProductInfoModelFromJson(Map<String, dynamic> json) =>
+    _ProductInfoModel(
+      productName: json['product_name'] as String?,
+      photoPath: json['photo_path'] as String?,
+    );
+
+Map<String, dynamic> _$ProductInfoModelToJson(_ProductInfoModel instance) =>
+    <String, dynamic>{
+      'product_name': instance.productName,
+      'photo_path': instance.photoPath,
+    };
