@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/models/owner_model.dart';
 import 'package:frontend/providers/dio_provider.dart';
+import 'package:frontend/providers/owner_provider.dart';
 import 'package:frontend/services/auth/auth_service.dart';
 
 import '../shared/back_button_container.dart';
@@ -101,6 +102,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         );
                       }
+                      ref.watch(ownerNotifierProvider.notifier).addOwner(response.data["owner_id"]);
                       Navigator.pushNamed(context, '/stall_holder_screen');
                     }
                   } catch (e) {

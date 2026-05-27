@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/providers/owner_provider.dart';
+import 'package:frontend/providers/owner_stall_provider.dart';
 
 import '../../components/stall_holder/navigation_panel.dart';
 import '../../shared/back_button_container.dart';
-class StallCategoryScreen extends StatefulWidget {
+class StallCategoryScreen extends ConsumerStatefulWidget {
   const StallCategoryScreen({super.key});
 
   @override
-  State<StallCategoryScreen> createState() => _StallCategoryScreenState();
+  ConsumerState<StallCategoryScreen> createState() => _StallCategoryScreenState();
 }
 
-class _StallCategoryScreenState extends State<StallCategoryScreen> {
+class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final currentRoute = ModalRoute.of(context)?.settings.name;
-
+    final currentOwner = ref.watch(ownerNotifierProvider);
+    final categories = ref.watch(ownerStallCategoryProviderProvider(currentOwner!,2));
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 110,
