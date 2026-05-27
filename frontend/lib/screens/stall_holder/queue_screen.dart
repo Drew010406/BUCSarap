@@ -138,7 +138,7 @@ class _QueueScreenState extends State<QueueScreen> {
                     );
                   },
                   child: Hero(
-                    tag: "$itemTag-1",
+                    tag: "$queueTag-$index",
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 10),
                       padding: EdgeInsets.symmetric(horizontal: 15),

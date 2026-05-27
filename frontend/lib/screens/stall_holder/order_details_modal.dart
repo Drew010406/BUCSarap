@@ -10,7 +10,7 @@ class OrderDetailsModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Hero(
-        tag: "$itemTag-$index}",
+        tag: "$transactTag-$index}",
         child: Padding(
           padding: EdgeInsetsGeometry.symmetric(horizontal: 30, vertical: 240),
           child: Container(

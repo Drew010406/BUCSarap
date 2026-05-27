@@ -18,8 +18,8 @@ class NavigationPanel extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                if (currentRoute != '/stall_information') {
-                  Navigator.pushNamed(context, '/stall_information');
+                if (currentRoute != '/stall_holder_screen') {
+                  Navigator.pushNamed(context, '/stall_holder_screen');
                 }
               },
               child: Container(

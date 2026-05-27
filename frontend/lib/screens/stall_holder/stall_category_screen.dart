@@ -5,11 +5,13 @@ import 'package:frontend/providers/owner_stall_provider.dart';
 
 import '../../components/stall_holder/navigation_panel.dart';
 import '../../shared/back_button_container.dart';
+
 class StallCategoryScreen extends ConsumerStatefulWidget {
   const StallCategoryScreen({super.key});
 
   @override
-  ConsumerState<StallCategoryScreen> createState() => _StallCategoryScreenState();
+  ConsumerState<StallCategoryScreen> createState() =>
+      _StallCategoryScreenState();
 }
 
 class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
@@ -17,7 +19,9 @@ class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
   Widget build(BuildContext context) {
     final currentRoute = ModalRoute.of(context)?.settings.name;
     final currentOwner = ref.watch(ownerNotifierProvider);
-    final categories = ref.watch(ownerStallCategoryProviderProvider(currentOwner!,2));
+    final categories = ref.watch(
+      ownerStallCategoryProviderProvider(currentOwner!, 2),
+    );
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 110,
@@ -25,7 +29,10 @@ class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
         leadingWidth: 140,
         leading: BackButtonContainer(
           onTap: () {
-            Navigator.popUntil(context, ModalRoute.withName('/'));
+            Navigator.popUntil(
+              context,
+              ModalRoute.withName('/stall_holder_screen'),
+            );
           },
         ),
         actions: [
@@ -78,7 +85,9 @@ class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
                                   child: Container(
                                     height: 42,
                                     decoration: BoxDecoration(
-                                      color: Color(0xFFEC1C24).withValues(alpha: 0.8),
+                                      color: Color(
+                                        0xFFEC1C24,
+                                      ).withValues(alpha: 0.8),
                                       borderRadius: BorderRadius.circular(
                                         22,
                                       ), // rect feels more native than pill
@@ -102,7 +111,9 @@ class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
                                   child: Container(
                                     height: 38,
                                     decoration: BoxDecoration(
-                                      color: Color(0xFFFF9644).withValues(alpha: 0.50),
+                                      color: Color(
+                                        0xFFFF9644,
+                                      ).withValues(alpha: 0.50),
                                       borderRadius: BorderRadius.circular(22),
                                       border: Border.all(
                                         width: 2,
@@ -133,7 +144,7 @@ class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
             ),
           ),
           // Home, Queue, Processed History, Analytics?
-          NavigationPanel(currentRoute: currentRoute as String,)
+          NavigationPanel(currentRoute: currentRoute as String),
         ],
       ),
     );

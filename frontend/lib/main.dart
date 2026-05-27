@@ -46,7 +46,6 @@ class Main extends StatelessWidget {
         '/analytics_screen': (context) => AnalyticsScreen(),
         '/history_screen': (context) => TransactionHistoryScreen(),
         '/order_successful': (context) => OrderSuccessfulScreen(),
-        '/stall_information': (context) => StallInformationScreen(),
         '/stall_category': (context) => StallCategoryScreen()
       },
     );

@@ -64,7 +64,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                     );
                   },
                   child: Hero(
-                    tag: "$itemTag-1",
+                    tag: "$transactTag-$index",
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 10),
                       padding: EdgeInsets.symmetric(horizontal: 15),

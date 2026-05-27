@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/components/stall_holder/navigation_panel.dart';
+import 'package:frontend/constants.dart';
 
 import '../../shared/back_button_container.dart';
 
@@ -25,112 +26,117 @@ class _StallHolderScreenState extends State<StallHolderScreen> {
             Navigator.popUntil(context, ModalRoute.withName('/'));
           },
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/add_product_screen');
-            },
-            icon: Icon(Icons.add, color: Color(0xFFDA782B)),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       Navigator.pushNamed(context, '/add_product_screen');
+        //     },
+        //     icon: Icon(Icons.add, color: Color(0xFFDA782B)),
+        //   ),
+        // ],
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 8,
-                right: 8,
-                top: 0,
-                bottom: 0,
-              ),
-              child: GridView.builder(
-                itemCount: 10,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  childAspectRatio: 0.8,
+            child: Column(
+              children: [
+                Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.white70,
+                    borderRadius: BorderRadius.circular(75),
+                  ),
                 ),
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    padding: EdgeInsets.all(8),
+                Text.rich(
+                  TextSpan(
+                    text: 'Stall Name',
+                    style: kJetbrainsFontTitle.copyWith(fontSize: 24),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: ' # ',
+                        style: TextStyle(color: Colors.black45),
+                      ),
+                      TextSpan(
+                        text: 'Stall ID',
+                        style: TextStyle(color: Colors.black45),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  "# Owner ID",
+                  style: kJetbrainsDescription.copyWith(color: Colors.black45),
+                ),
+                Text.rich(
+                  TextSpan(
+                    text: 'Opening time: ',
+                    style: kJetbrainsDescription.copyWith(
+                      decoration: TextDecoration.none,
+                      color: kPrimaryColor,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Opening time',
+                        style: TextStyle(color: Colors.black45),
+                      ),
+                    ],
+                  ),
+                ),
+                Text.rich(
+                  TextSpan(
+                    text: 'Closing time: ',
+                    style: kJetbrainsDescription.copyWith(
+                      decoration: TextDecoration.none,
+                      color: kPrimaryColor,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Closing time',
+                        style: TextStyle(color: Colors.black45),
+                      ),
+                    ],
+                  ),
+                ),
+                Text.rich(
+                  TextSpan(
+                    text: 'Operating Days: ',
+                    style: kJetbrainsDescription.copyWith(
+                      decoration: TextDecoration.none,
+                      color: kPrimaryColor,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Operating Days',
+                        style: TextStyle(color: Colors.black45),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                GestureDetector(
+                  child: Container(
+                    height: 50,
+                    width: 150,
                     decoration: BoxDecoration(
-                      color: Color(0xFFFFE591),
-                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFFFF9644).withValues(alpha: 0.50),
+                      borderRadius: BorderRadius.circular(22),
+                      border: Border.all(width: 2, color: Color(0xFFDA782B)),
                     ),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Container(decoration: BoxDecoration()),
-                        ),
-                        SizedBox(
-                          height: 90,
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  child: Container(
-                                    height: 42,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFFEC1C24).withValues(alpha: 0.8),
-                                      borderRadius: BorderRadius.circular(
-                                        22,
-                                      ), // rect feels more native than pill
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Remove',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: 'Flame',
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 2),
-                              Expanded(
-                                child: GestureDetector(
-                                  child: Container(
-                                    height: 38,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFFFF9644).withValues(alpha: 0.50),
-                                      borderRadius: BorderRadius.circular(22),
-                                      border: Border.all(
-                                        width: 2,
-                                        color: Color(0xFFDA782B),
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Not available',
-                                        style: TextStyle(
-                                          color: Color(0xFF7A3D00),
-                                          fontFamily: 'Flame',
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    child: Center(
+                      child: Text(
+                        "Active",
+                        style: kJetbrainsFontTitle.copyWith(fontSize: 18),
+                      ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                ),
+              ],
             ),
           ),
           // Home, Queue, Processed History, Analytics?
-         NavigationPanel(currentRoute: currentRoute as String,)
+          NavigationPanel(currentRoute: currentRoute as String),
         ],
       ),
     );
