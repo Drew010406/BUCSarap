@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/components/stall_holder/navigation_panel.dart';
 import 'package:frontend/constants.dart';
+import 'package:frontend/models/stall_model.dart';
 import 'package:frontend/providers/owner_stall_provider.dart';
 
 import '../../shared/back_button_container.dart';
@@ -124,6 +125,21 @@ class _StallHolderScreenState extends ConsumerState<StallHolderScreen> {
                     ),
                     SizedBox(height: 10),
                     GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          final stallData = ref.read(ownerStallProvider).value;
+                          if(stallData == null) return;
+                          late StallResponseModel updated;
+                          if(data.stallStatus) {
+                            updated = stallData.copyWith(stallStatus: false);
+                          } else {
+                            updated = stallData.copyWith(stallStatus: true);
+                          }
+                          final json = updated.toJson();
+
+                          ref.read(ownerStallProvider.notifier).updateStallStatus(stallData.stallID!, StallUpdateModel.fromJson(json));
+                        });
+                      },
                       child: Container(
                         height: 50,
                         width: 150,

@@ -97,7 +97,7 @@ class StallService {
 
   Future<dynamic> updateStall(int stallId, StallUpdateModel update) async {
     try {
-      Response response = await _dio!.put('/$stallId', data: update.toJson());
+      Response response = await _dio!.put('/stalls/$stallId', data: update.toJson());
       print(response.data.toString());
     } on DioException catch (e) {
       if (e.response != null) {

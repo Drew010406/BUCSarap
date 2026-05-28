@@ -14,7 +14,7 @@ class OwnerStallService {
       if(kDebugMode) {
         print(response.data.toString());
       }
-      return response.data;
+      return StallResponseModel.fromJson(response.data);
     } on DioException catch(e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
