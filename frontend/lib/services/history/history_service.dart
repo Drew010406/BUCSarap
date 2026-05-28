@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../models/transaction_history_model.dart';
+
 class HistoryService {
   final Dio? _dio;
   HistoryService({dio}): _dio=dio;
@@ -141,7 +143,7 @@ class HistoryService {
       if(kDebugMode) {
         print(response.data.toString());
       }
-      return response.data;
+      return (response.data);
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;

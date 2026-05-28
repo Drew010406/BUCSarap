@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:frontend/models/transaction_history_model.dart';
 
 class QueueService {
   final Dio? _dio;
@@ -12,7 +13,7 @@ class QueueService {
       if (kDebugMode) {
         print(response.data.toString());
       }
-      return response.data;
+      return (response.data as List).map((json) => TransactionHistoryModel.fromJson(json)).toList();
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
@@ -38,7 +39,7 @@ class QueueService {
       if (kDebugMode) {
         print(response.data.toString());
       }
-      return response.data;
+      return (response.data as List).map((json) => TransactionHistoryModel.fromJson(json)).toList();
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
