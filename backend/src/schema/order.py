@@ -7,7 +7,7 @@ class OrderLineItem(BaseModel):
     product_id: int
     quantity: int = Field(gt=0)
 
-class CheckoutRequest(BaseModel):
+class CreateOrderRequest(BaseModel):
     
     stall_id: int
     customer_name: str = Field(max_length=55)
@@ -42,7 +42,8 @@ class OrderResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-class CheckoutResponse(BaseModel):
+class CreateOrderResponse(BaseModel):
+
     order_id: int
     order_number: str
     order_status: str

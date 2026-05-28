@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import text, Connection
@@ -5,8 +6,8 @@ from backend.src.schema.history import HistoryItem
 
 from backend.src.db.session import get_db
 from backend.src.schema.order import (
-    CheckoutRequest,
-    CheckoutResponse,
+    CreateOrderRequest,
+    CreateOrderResponse,
     OrderStatusUpdate,
     VALID_STATUSES,
     OrderLineRequest,
@@ -20,8 +21,8 @@ route = APIRouter()
 added_items = {}
 
 @route.post(
-    "/checkout",
-    response_model=CheckoutResponse,
+    "/create_order",
+    response_model=CreateOrderResponse,
     status_code=201,
     responses={
         400: {"description": "Bad Request - stall is closed"},
@@ -30,16 +31,16 @@ added_items = {}
     },
 )
 
-async def checkout(payload: CheckoutRequest, db: Annotated[Connection, Depends(get_db)]):
+async def CreateOrder(payload: CreateOrderRequest, db: Annotated[Connection, Depends(get_db)]):
     
-    query = text("""
+    verification_query = text("""
 
         SELECT stall_id, stall_status 
         FROM stall WHERE stall_id = :s_id
         """)
     
     try: 
-        stall_row = db.execute(query ,{"s_id": payload.stall_id}).mappings().fetchone()
+        stall_row = db.execute(verification_query ,{"s_id": payload.stall_id}).mappings().fetchone()
 
     except Exception as error:
         
@@ -49,41 +50,40 @@ async def checkout(payload: CheckoutRequest, db: Annotated[Connection, Depends(g
         
         raise HTTPException(status_code=400, detail="Stall is currently closed")
 
-    query = text("""
-                 
-        SELECT COUNT(*) AS total
-        FROM orders
-        WHERE stall_id = :s_id       
-        """)
-
-    count_row = db.execute(query, {"s_id": payload.stall_id}).mappings().fetchone()
-
-    next_seq = (count_row["total"] or 0) + 1
-    order_number = f"STL{payload.stall_id}-{next_seq:04d}"
-
+    order_number = f"STL{str(payload.stall_id)}-{datetime.now().strftime('%H.%S.%M')}"
+    
     insert_query = text("""
                         
-        INSERT INTO orders (stall_id, order_number, order_status, customer_name)
-        VALUES (:stall_id, :order_number, 'Pending', :customer_name)
+        INSERT INTO orders (stall_id, order_number,order_status, customer_name)
+        VALUES (:stall_id, :o_number,'Pending', :customer_name)
         """)
     
     try:
         result = db.execute(insert_query,    
                 {
                 "stall_id": payload.stall_id,
-                "order_number": order_number,
+                "o_number": order_number,
                 "customer_name": payload.customer_name,
                 })
 
         order_id = result.lastrowid
         db.commit()
-
+        
+        check_query = text("""
+                           
+            SELECT *
+            FROM orders             
+            WHERE order_number = :o_number                     
+            """)
+        
+        results = db.execute(check_query, {"o_number": order_number})
+        
     except Exception as error:
         
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Could not place order: {str(error)}") from error
 
-    return CheckoutResponse(
+    return CreateOrderResponse(
         
         order_id=order_id,
         order_number=order_number,
