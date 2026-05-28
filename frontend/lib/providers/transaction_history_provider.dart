@@ -16,10 +16,8 @@ class TransactionHistoryProvider extends _$TransactionHistoryProvider {
   Future<List<TransactionHistoryModel>> build(int stallID) async {
     final historyService = ref.watch(historyServiceProvider);
     final response = await historyService.getStallHistory(stallID);
-    return response.map((item) => TransactionHistoryModel.fromJson(item)).toList();
+    return (response as List).map((item) => TransactionHistoryModel.fromJson(item)).toList();
   }
-
-
 }
 
 final historyServiceProvider = Provider<HistoryService>((ref) {

@@ -10,11 +10,11 @@ class OwnerStallService {
 
   Future<List<CategoryInfoModel>> getOwnerStallCategories(int ownerID, int stallID) async {
     try {
-      Response response = await _dio.get("owners/$ownerID}/stalls/$stallID}/categories");
+      Response response = await _dio.get("/owner_stallowners/1/stalls/1/categories");
       if(kDebugMode) {
         print(response.data.toString());
       }
-      return response.data.map((json) => CategoryInfoModel.fromJson(json)).toList();
+      return (response.data as List).map((json) => CategoryInfoModel.fromJson(json)).toList();
     } on DioException catch(e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
@@ -36,7 +36,7 @@ class OwnerStallService {
 
   Future<List<ProductResponseModel>> getOwnerStallProductsByCategory(int categoryID) async {
     try {
-      Response response = await _dio.get("/category/$categoryID");
+      Response response = await _dio.get("/owner_stall/category/$categoryID");
       if(kDebugMode) {
         print(response.data.toString());
       }

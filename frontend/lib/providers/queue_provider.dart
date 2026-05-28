@@ -26,7 +26,7 @@ class PreparingQueueProvider extends _$PreparingQueueProvider {
   }
 }
 
-// However, I dunno if this is a good practice so Imma use the old shit( ata? )
+// However, I dunno if this is good practice so Imma use the old shit( ata? )
 @riverpod
 class QueueProvider extends _$QueueProvider {
   @override

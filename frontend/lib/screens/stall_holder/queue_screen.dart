@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/components/stall_holder/navigation_panel.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/main.dart';
+import 'package:frontend/providers/queue_provider.dart';
 import 'package:frontend/screens/stall_holder/order_details_modal.dart';
 
 import '../../shared/back_button_container.dart';
@@ -9,16 +11,15 @@ import '../page_route/hero_dialog_route.dart';
 
 enum Status { PENDING, PROCESSING }
 
-class QueueScreen extends StatefulWidget {
+class QueueScreen extends ConsumerStatefulWidget {
   const QueueScreen({super.key});
 
   @override
-  State<QueueScreen> createState() => _QueueScreenState();
+  ConsumerState<QueueScreen> createState() => _QueueScreenState();
 }
 
-class _QueueScreenState extends State<QueueScreen> {
+class _QueueScreenState extends ConsumerState<QueueScreen> {
   Status _status = Status.PENDING;
-
   final Color inactive = Color(0xFFFFC570).withValues(alpha: 0.8);
   final Color active = Color(0xFFDA782B);
 
@@ -28,6 +29,8 @@ class _QueueScreenState extends State<QueueScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final queueProvider = ref.watch(pendingQueueProviderProvider(2));
+
     final currentRoute = ModalRoute.of(context)?.settings.name;
     double cellWidth = ((MediaQuery.of(context).size.width - 50) / 2);
     double desiredCellHeight = 35;
@@ -117,91 +120,106 @@ class _QueueScreenState extends State<QueueScreen> {
               ],
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(height: 10),
           Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: childAspectRatio,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      HeroDialogRoute(
-                        builder: (context) {
-                          return OrderDetailsModal(index: index);
-                        },
-                      ),
-                    );
-                  },
-                  child: Hero(
-                    tag: "$queueTag-$index",
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFFC570),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      // height: 80,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(child: SizedBox()),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+            child: queueProvider.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (err, stack) => Text("Error: $err"),
+              data: (items) {
+                return GridView.builder(
+                  itemCount: items.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: childAspectRatio,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    final currentItem = items[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          HeroDialogRoute(
+                            builder: (context) {
+                              return OrderDetailsModal(index: index);
+                            },
+                          ),
+                        );
+                      },
+                      child: Hero(
+                        tag: "$queueTag-$index",
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFFFC570),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          // height: 80,
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                "Customer Name",
-                                style: kJetbrainsFontTitle.copyWith(fontSize: 17),
+                              Expanded(child: SizedBox()),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "${currentItem.customerName}",
+                                    style: kJetbrainsFontTitle.copyWith(
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                  Text(
+                                    "${currentItem.orderNumber}",
+                                    style: kJetbrainsDescription.copyWith(
+                                      color: Colors.black45,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "Order Number",
-                                style: kJetbrainsDescription.copyWith(
-                                  color: Colors.black45,
+                              Expanded(child: SizedBox()),
+                              GestureDetector(
+                                child: Container(
+                                  width: 80,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Color(
+                                      0xFFDA782B,
+                                    ).withValues(alpha: 0.5),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Accept",
+                                      style: kJetbrainsLoginRegister,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              GestureDetector(
+                                child: Container(
+                                  width: 80,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFDA782B),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Decline",
+                                      style: kJetbrainsLoginRegister,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                          Expanded(child: SizedBox()),
-                          GestureDetector(
-                            child: Container(
-                              width: 80,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: Color(0xFFDA782B).withValues(alpha: 0.5),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                child: Text("Accept", style: kJetbrainsLoginRegister),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          GestureDetector(
-                            child: Container(
-                              width: 80,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: Color(0xFFDA782B),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Decline",
-                                  style: kJetbrainsLoginRegister,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 );
               },
             ),

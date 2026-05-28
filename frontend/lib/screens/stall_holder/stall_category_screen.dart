@@ -4,6 +4,7 @@ import 'package:frontend/providers/owner_provider.dart';
 import 'package:frontend/providers/owner_stall_provider.dart';
 
 import '../../components/stall_holder/navigation_panel.dart';
+import '../../constants.dart';
 import '../../shared/back_button_container.dart';
 
 class StallCategoryScreen extends ConsumerStatefulWidget {
@@ -55,91 +56,48 @@ class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
                 top: 0,
                 bottom: 0,
               ),
-              child: GridView.builder(
-                itemCount: 10,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  childAspectRatio: 0.8,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFFFE591),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Container(decoration: BoxDecoration()),
+              child: categories.when(
+                loading: () => const Center(child: CircularProgressIndicator(),),
+                error: (err, stack) => Text('Error: $err'),
+                data: (data) {
+                  return GridView.builder(
+                  itemCount: data.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20,
+                    childAspectRatio: 0.8,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        // ref.read(ownerStallCategoryProviderProvider.notifier).selectedCategory(data[index]);
+                        Navigator.pushNamed(context, '/menu_screen');
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFFFE591),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        SizedBox(
-                          height: 90,
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  child: Container(
-                                    height: 42,
-                                    decoration: BoxDecoration(
-                                      color: Color(
-                                        0xFFEC1C24,
-                                      ).withValues(alpha: 0.8),
-                                      borderRadius: BorderRadius.circular(
-                                        22,
-                                      ), // rect feels more native than pill
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Remove',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: 'Flame',
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              data[index].categoryName ?? "No name",
+                              style: TextStyle(
+                                color: kPrimaryColor,
+                                fontFamily: "flame",
+                                fontSize: 18,
                               ),
-                              SizedBox(height: 2),
-                              Expanded(
-                                child: GestureDetector(
-                                  child: Container(
-                                    height: 38,
-                                    decoration: BoxDecoration(
-                                      color: Color(
-                                        0xFFFF9644,
-                                      ).withValues(alpha: 0.50),
-                                      borderRadius: BorderRadius.circular(22),
-                                      border: Border.all(
-                                        width: 2,
-                                        color: Color(0xFFDA782B),
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Not available',
-                                        style: TextStyle(
-                                          color: Color(0xFF7A3D00),
-                                          fontFamily: 'Flame',
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(height: 10),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                },
+                      ),
+                    );
+                  },
+                );},
               ),
             ),
           ),
