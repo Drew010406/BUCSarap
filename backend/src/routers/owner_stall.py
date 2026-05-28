@@ -5,7 +5,7 @@ from sqlalchemy import text, Connection
 from backend.src.db.session import get_db
 from backend.src.schema.owner_stall import *
 from backend.src.schema.stalls import CategoryInfo
-from backend.src.schema.product import ProductResponse
+from backend.src.schema.product import ProductResponse, CreateProduct
 from backend.src.schema.owner_stall import ProductUpdate
 
 route = APIRouter()
@@ -292,3 +292,62 @@ async def delete_product(owner_id: int, product_id: int, db: Annotated[Connectio
         db.rollback()
         raise HTTPException(status_code=500, detail= f"Error: {str(error)}")
     
+@route.post("owners/{owner_id}/stalls/{stall_id}/categories/{category_id}/add_product")
+async def add_product(owner_id: int, category_id: int, stall_id: int, product_data: CreateProduct, db: Annotated[Connection, Depends(get_db)]):
+    
+    verification_query = text("""
+           
+           SELECT *
+           FROM stall s
+           JOIN product_category pc ON pc.stall_id = s.stall_id
+           WHERE s.stall_id = :s_id AND s.owner_id = :o_id AND pc.category_id = :c_id                
+        """)
+    
+    results = db.execute(verification_query, {"s_id": stall_id, "o_id": owner_id, "c_id": category_id}).mappings().fetchone()
+    
+    if not results:
+        raise HTTPException(status_code=404, detail=f"No results for Owner ID {owner_id}, Stall ID {stall_id} with Category ID {category_id}")
+    
+    
+    existing_check_query = text("""
+                            
+        SELECT *
+        FROM product
+        WHERE product_name = :p_name                     
+    """)
+    
+    results = db.execute(existing_check_query, {"p_name": product_data.product_name}).mappings().fetchall()
+
+    if len(results) > 0:
+        raise HTTPException(status_code=400, detail=f"Product '{product_data.product_name}' already exists.")
+
+    insertion_query = text("""
+           
+        INSERT INTO product (category_id, product_name, product_price, product_status, photo_path)
+        VALUES (:c_id, :p_name, :p_price, :p_status, :p_path)
+        """)
+    
+    try:
+        results = db.execute(insertion_query, {
+                "c_id": category_id, 
+                "p_name": product_data.product_name, 
+                "p_price": product_data.product_price, 
+                "p_status": product_data.product_status, 
+                "p_path": product_data.photo_path           
+                })
+        
+        db.commit()
+        
+        check_query = text("""
+                       
+            SELECT * 
+            FROM product
+            WHERE product_name = :p_name          
+            """)
+        
+        results = db.execute(check_query, {"p_name": product_data.product_name}).mappings().fetchone()
+        return results
+        
+    except Exception as error:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")        

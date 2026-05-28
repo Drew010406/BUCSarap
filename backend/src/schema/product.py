@@ -20,3 +20,10 @@ class ProductInfo(BaseModel):
     
     product_name : str
     photo_path : str
+    
+class CreateProduct(BaseModel):
+    
+    product_name: str
+    product_price: Decimal
+    product_status: bool | None
+    photo_path: str
