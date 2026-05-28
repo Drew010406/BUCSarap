@@ -260,14 +260,26 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       final currentItem = items[index];
                       return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            HeroDialogRoute(
-                              builder: (context) {
-                                return QueueItemDetailsModal(index: index);
-                              },
-                            ),
+                        onTap: () async {
+                          final orderService = ref.read(orderServiceProvider);
+                          final orderDetails = await orderService
+                              .getOrderDetails(
+                            items[index].orderID!,
+                            stallData!.stallID!,
                           );
+                          setState(() {
+                            Navigator.of(context).push(
+                              HeroDialogRoute(
+                                builder: (context) {
+                                  return QueueItemDetailsModal(
+                                    index: index,
+                                    orderDetails: orderDetails,
+                                    orderID: items[index].orderID,
+                                  );
+                                },
+                              ),
+                            );
+                          });
                         },
                         child: Hero(
                           tag: "$queueTag-$index",
