@@ -62,13 +62,13 @@ class QueueService {
   Future<dynamic> acceptOrder(int orderID, int stallID) async {
     try {
       Response response = await _dio!.patch(
-        "/orders/$orderID",
+        "/owner_stall/$orderID",
         queryParameters: {"stall_id": stallID},
       );
       if (kDebugMode) {
         print(response.data.toString());
       }
-      return response.data;
+      return response.statusCode;
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
@@ -90,14 +90,14 @@ class QueueService {
 
   Future<dynamic> declineOrder(int orderID, int stallID) async {
     try {
-      Response response = await _dio!.patch(
-        "/orders/orders/$orderID",
+      Response response = await _dio!.delete(
+        "/owner_stall/orders/$orderID",
         queryParameters: {"stall_id": stallID},
       );
       if (kDebugMode) {
         print(response.data.toString());
       }
-      return response.data;
+      return response;
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/models/order_details_model.dart';
+import 'package:frontend/providers/owner_stall_provider.dart';
+import 'package:frontend/providers/queue_provider.dart';
 
 import '../../constants.dart';
 
 class QueueItemDetailsModal extends ConsumerStatefulWidget {
   final int? index;
   final OrderDetailsModel? orderDetails;
-  const QueueItemDetailsModal({super.key, required this.index, this.orderDetails});
+  final int? orderID;
+  const QueueItemDetailsModal({super.key, required this.index, this.orderDetails, this.orderID});
 
   @override
   ConsumerState<QueueItemDetailsModal> createState() => _QueueItemDetailsModalState();
@@ -17,6 +20,9 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
   @override
   Widget build(BuildContext context) {
     final items = widget.orderDetails!.items ?? [];
+    final queueService = ref.watch(pendingQueueProviderProvider.notifier);
+    final currentStall = ref.watch(ownerStallProvider).value;
+
     return Center(
       child: Hero(
         tag: "$queueTag-${widget.index}",
@@ -185,6 +191,11 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                   children: [
                     Expanded(
                       child: GestureDetector(
+                        onTap: () async {
+                          final response = await queueService.acceptOrder(widget.orderID!, currentStall!.stallID!);
+                          if (!mounted) return;
+                          Navigator.pop(context);
+                        },
                         child: Container(
                           width: 80,
                           height: 40,
@@ -206,6 +217,11 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                     SizedBox(width: 10),
                     Expanded(
                       child: GestureDetector(
+                        onTap: () async {
+                          final response = await queueService.declineOrder(widget.orderID!, currentStall!.stallID!);
+                          if (!mounted) return;
+                          Navigator.pop(context);
+                        },
                         child: Container(
                           width: 80,
                           height: 40,

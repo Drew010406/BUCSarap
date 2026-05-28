@@ -33,9 +33,9 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
   @override
   Widget build(BuildContext context) {
     final stallData = ref.read(ownerStallProvider).value;
-    final pendingQueue = ref.watch(pendingQueueProviderProvider(stallData!.stallID!));
-    final preparingQueue = ref.watch(preparingQueueProviderProvider(stallData.stallID!));
-    
+    final pendingQueue = ref.watch(pendingQueueProviderProvider);
+    final preparingQueue = ref.watch(preparingQueueProviderProvider);
+
     final currentRoute = ModalRoute.of(context)?.settings.name;
     double cellWidth = ((MediaQuery.of(context).size.width - 50) / 2);
     double desiredCellHeight = 35;
@@ -127,7 +127,7 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
             ),
           ),
           SizedBox(height: 10),
-          if(_status == Status.PENDING)
+          if (_status == Status.PENDING)
             Expanded(
               child: pendingQueue.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
@@ -146,14 +146,24 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
                       return GestureDetector(
                         onTap: () async {
                           final orderService = ref.read(orderServiceProvider);
-                          final orderDetails = await orderService.getOrderDetails(items[index].orderID!, stallData.stallID!);
-                          Navigator.of(context).push(
-                            HeroDialogRoute(
-                              builder: (context) {
-                                return QueueItemDetailsModal(index: index, orderDetails: orderDetails,);
-                              },
-                            ),
-                          );
+                          final orderDetails = await orderService
+                              .getOrderDetails(
+                                items[index].orderID!,
+                                stallData!.stallID!,
+                              );
+                          setState(() {
+                            Navigator.of(context).push(
+                              HeroDialogRoute(
+                                builder: (context) {
+                                  return QueueItemDetailsModal(
+                                    index: index,
+                                    orderDetails: orderDetails,
+                                    orderID: items[index].orderID,
+                                  );
+                                },
+                              ),
+                            );
+                          });
                         },
                         child: Hero(
                           tag: "$queueTag-$index",

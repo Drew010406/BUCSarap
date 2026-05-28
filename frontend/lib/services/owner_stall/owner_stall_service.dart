@@ -11,11 +11,11 @@ class OwnerStallService {
   Future<StallResponseModel> getOwnerStall(int ownerID) async {
     try {
       Response response = await _dio.get("/users/$ownerID/stall");
-      if(kDebugMode) {
+      if (kDebugMode) {
         print(response.data.toString());
       }
       return StallResponseModel.fromJson(response.data);
-    } on DioException catch(e) {
+    } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
         final errorData = e.response?.data;
@@ -34,14 +34,21 @@ class OwnerStallService {
     }
   }
 
-  Future<List<CategoryInfoModel>> getOwnerStallCategories(int ownerID, int stallID) async {
+  Future<List<CategoryInfoModel>> getOwnerStallCategories(
+    int ownerID,
+    int stallID,
+  ) async {
     try {
-      Response response = await _dio.get("/owner_stall/owners/1/stalls/1/categories");
-      if(kDebugMode) {
+      Response response = await _dio.get(
+        "/owner_stall/owners/1/stalls/1/categories",
+      );
+      if (kDebugMode) {
         print(response.data.toString());
       }
-      return (response.data as List).map((json) => CategoryInfoModel.fromJson(json)).toList();
-    } on DioException catch(e) {
+      return (response.data as List)
+          .map((json) => CategoryInfoModel.fromJson(json))
+          .toList();
+    } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
         final errorData = e.response?.data;
@@ -60,14 +67,18 @@ class OwnerStallService {
     }
   }
 
-  Future<List<ProductResponseModel>> getOwnerStallProductsByCategory(int categoryID) async {
+  Future<List<ProductResponseModel>> getOwnerStallProductsByCategory(
+    int categoryID,
+  ) async {
     try {
       Response response = await _dio.get("/owner_stall/category/$categoryID");
-      if(kDebugMode) {
+      if (kDebugMode) {
         print(response.data.toString());
       }
-      return response.data.map((json) => ProductResponseModel.fromJson(json)).toList();
-    } on DioException catch(e) {
+      return response.data
+          .map((json) => ProductResponseModel.fromJson(json))
+          .toList();
+    } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
         final errorData = e.response?.data;
@@ -86,14 +97,22 @@ class OwnerStallService {
     }
   }
 
-  Future<dynamic> addProduct(int ownerID, int categoryID, int stallID, ProductCreateModel data) async {
+  Future<dynamic> addProduct(
+    int ownerID,
+    int categoryID,
+    int stallID,
+    ProductCreateModel data,
+  ) async {
     try {
-      Response response = await _dio.post("/owner_stallowners/$ownerID/stalls/$stallID/categories/$categoryID/add_product", data: data);
-      if(kDebugMode) {
+      Response response = await _dio.post(
+        "/owner_stallowners/$ownerID/stalls/$stallID/categories/$categoryID/add_product",
+        data: data,
+      );
+      if (kDebugMode) {
         print(response.data.toString());
       }
       return response;
-    } on DioException catch(e) {
+    } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
         final errorData = e.response?.data;
@@ -114,12 +133,14 @@ class OwnerStallService {
 
   Future<dynamic> deleteProduct(int ownerID, int productID) async {
     try {
-      Response response = await _dio.delete("/owner_stall/$ownerID/products/$productID");
-      if(kDebugMode) {
+      Response response = await _dio.delete(
+        "/owner_stall/$ownerID/products/$productID",
+      );
+      if (kDebugMode) {
         print(response.data.toString());
       }
       return response;
-    } on DioException catch(e) {
+    } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
         final errorData = e.response?.data;
@@ -140,12 +161,14 @@ class OwnerStallService {
 
   Future<dynamic> toggleProductStatus(int ownerID, int productID) async {
     try {
-      Response response = await _dio.patch("/owner_stall/$ownerID/products/$productID/toggle-status");
-      if(kDebugMode) {
+      Response response = await _dio.patch(
+        "/owner_stall/$ownerID/products/$productID/toggle-status",
+      );
+      if (kDebugMode) {
         print(response.data.toString());
       }
       return response;
-    } on DioException catch(e) {
+    } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
         final errorData = e.response?.data;
@@ -167,7 +190,8 @@ class OwnerStallService {
   Future<dynamic> updateProduct(int ownerID, int productID) async {
     try {
       Response response = await _dio.patch(
-          "/owner_stall/$ownerID/products/$productID/toggle-status");
+        "/owner_stall/$ownerID/products/$productID/toggle-status",
+      );
       if (kDebugMode) {
         print(response.data.toString());
       }
@@ -182,8 +206,7 @@ class OwnerStallService {
           throw Exception(errorMessage);
         } else {
           throw Exception(
-            'Server error: $statusCode = ${errorData['detail'] ??
-                "Unknown Error"}',
+            'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
           );
         }
       } else {

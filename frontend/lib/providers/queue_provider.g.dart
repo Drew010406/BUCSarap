@@ -10,7 +10,7 @@ part of 'queue_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(PendingQueueProvider)
-final pendingQueueProviderProvider = PendingQueueProviderFamily._();
+final pendingQueueProviderProvider = PendingQueueProviderProvider._();
 
 final class PendingQueueProviderProvider
     extends
@@ -18,76 +18,31 @@ final class PendingQueueProviderProvider
           PendingQueueProvider,
           List<TransactionHistoryModel>
         > {
-  PendingQueueProviderProvider._({
-    required PendingQueueProviderFamily super.from,
-    required int super.argument,
-  }) : super(
-         retry: null,
-         name: r'pendingQueueProviderProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
+  PendingQueueProviderProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pendingQueueProviderProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$pendingQueueProviderHash();
 
-  @override
-  String toString() {
-    return r'pendingQueueProviderProvider'
-        ''
-        '($argument)';
-  }
-
   @$internal
   @override
   PendingQueueProvider create() => PendingQueueProvider();
-
-  @override
-  bool operator ==(Object other) {
-    return other is PendingQueueProviderProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
 }
 
 String _$pendingQueueProviderHash() =>
-    r'959d06e7d58890fe2dc37aa615a5813c4986233f';
-
-final class PendingQueueProviderFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          PendingQueueProvider,
-          AsyncValue<List<TransactionHistoryModel>>,
-          List<TransactionHistoryModel>,
-          FutureOr<List<TransactionHistoryModel>>,
-          int
-        > {
-  PendingQueueProviderFamily._()
-    : super(
-        retry: null,
-        name: r'pendingQueueProviderProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  PendingQueueProviderProvider call(int stallID) =>
-      PendingQueueProviderProvider._(argument: stallID, from: this);
-
-  @override
-  String toString() => r'pendingQueueProviderProvider';
-}
+    r'87476096dc5b6121ab0c78745827ff66f975e794';
 
 abstract class _$PendingQueueProvider
     extends $AsyncNotifier<List<TransactionHistoryModel>> {
-  late final _$args = ref.$arg as int;
-  int get stallID => _$args;
-
-  FutureOr<List<TransactionHistoryModel>> build(int stallID);
+  FutureOr<List<TransactionHistoryModel>> build();
   @$mustCallSuper
   @override
   void runBuild() {
@@ -108,12 +63,12 @@ abstract class _$PendingQueueProvider
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args));
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(PreparingQueueProvider)
-final preparingQueueProviderProvider = PreparingQueueProviderFamily._();
+final preparingQueueProviderProvider = PreparingQueueProviderProvider._();
 
 final class PreparingQueueProviderProvider
     extends
@@ -121,77 +76,31 @@ final class PreparingQueueProviderProvider
           PreparingQueueProvider,
           List<TransactionHistoryModel>
         > {
-  PreparingQueueProviderProvider._({
-    required PreparingQueueProviderFamily super.from,
-    required int super.argument,
-  }) : super(
-         retry: null,
-         name: r'preparingQueueProviderProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
+  PreparingQueueProviderProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'preparingQueueProviderProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$preparingQueueProviderHash();
 
-  @override
-  String toString() {
-    return r'preparingQueueProviderProvider'
-        ''
-        '($argument)';
-  }
-
   @$internal
   @override
   PreparingQueueProvider create() => PreparingQueueProvider();
-
-  @override
-  bool operator ==(Object other) {
-    return other is PreparingQueueProviderProvider &&
-        other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
 }
 
 String _$preparingQueueProviderHash() =>
-    r'0fd113d3c59124d21a42530ef30f70745892e5df';
-
-final class PreparingQueueProviderFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          PreparingQueueProvider,
-          AsyncValue<List<TransactionHistoryModel>>,
-          List<TransactionHistoryModel>,
-          FutureOr<List<TransactionHistoryModel>>,
-          int
-        > {
-  PreparingQueueProviderFamily._()
-    : super(
-        retry: null,
-        name: r'preparingQueueProviderProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  PreparingQueueProviderProvider call(int stallID) =>
-      PreparingQueueProviderProvider._(argument: stallID, from: this);
-
-  @override
-  String toString() => r'preparingQueueProviderProvider';
-}
+    r'accf0c1b2b4238146a5869a2892f696e5662251f';
 
 abstract class _$PreparingQueueProvider
     extends $AsyncNotifier<List<TransactionHistoryModel>> {
-  late final _$args = ref.$arg as int;
-  int get stallID => _$args;
-
-  FutureOr<List<TransactionHistoryModel>> build(int stallID);
+  FutureOr<List<TransactionHistoryModel>> build();
   @$mustCallSuper
   @override
   void runBuild() {
@@ -212,7 +121,7 @@ abstract class _$PreparingQueueProvider
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args));
+    element.handleCreate(ref, build);
   }
 }
 
@@ -257,7 +166,7 @@ final class QueueProviderProvider
   }
 }
 
-String _$queueProviderHash() => r'5d38355cc487b59fab5d397cf213e7760dee5838';
+String _$queueProviderHash() => r'56a7819b901291f9bf2e7e05ac54b5089feb67b4';
 
 final class QueueProviderFamily extends $Family
     with
