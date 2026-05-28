@@ -49,7 +49,7 @@ class OwnerStall extends _$OwnerStall {
     final ownerID = ref.watch(ownerNotifierProvider);
     if (ownerID == null) throw Exception("Not logged in");
     final ownerService = ref.watch(ownerStallServiceProvider);
-    return await ownerService.getOwnerStall(ownerID!);
+    return await ownerService.getOwnerStall(ownerID);
   }
 }
 
