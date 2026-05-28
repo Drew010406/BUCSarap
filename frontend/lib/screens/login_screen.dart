@@ -4,6 +4,7 @@ import 'package:frontend/constants.dart';
 import 'package:frontend/models/owner_model.dart';
 import 'package:frontend/providers/dio_provider.dart';
 import 'package:frontend/providers/owner_provider.dart';
+import 'package:frontend/providers/owner_stall_provider.dart';
 import 'package:frontend/services/auth/auth_service.dart';
 
 import '../shared/back_button_container.dart';

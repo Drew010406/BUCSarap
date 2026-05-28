@@ -37,14 +37,42 @@ abstract class ProductInfoModel with _$ProductInfoModel {
       _$ProductInfoModelFromJson(json);
 }
 
-// @freezed
-// abstract class ProductWithDetailsModel with _$ProductWithDetailsModel {
-//   const factory ProductWithDetailsModel({
-//     @JsonKey(name: "product_id") int? productID,
-//     @JsonKey(name: "product_name") String? productName,
-//     @JsonKey(name: "product_price") double? productPrice,
-//   }) = _ProductWithDetailsModel;
-//
-//   factory ProductWithDetailsModel.fromJson(Map<String, dynamic> json) =>
-//       _$ProductWithDetailsModelFromJson(json);
-// }
+// product_name: str
+// product_price: Decimal
+// product_status: bool | None
+// photo_path: str
+@freezed
+abstract class ProductCreateModel with _$ProductCreateModel {
+  const factory ProductCreateModel({
+    @JsonKey(name: "product_name") String? productName,
+    @JsonKey(name: "product_price", fromJson: _parseDouble)
+    double? productPrice,
+    @JsonKey(name: "product_status") bool? productStatus,
+    @JsonKey(name: "photo_path") String? photoPath,
+  }) = _ProductCreateModel;
+
+  factory ProductCreateModel.fromJson(Map<String, dynamic> json) =>
+      _$ProductCreateModelFromJson(json);
+}
+
+// product_id : Optional[int] = None
+// category_id : Optional[int] = None
+// product_name: Optional[str] = None
+// product_price: Optional[Decimal] = None
+// product_status: Optional[bool] = None
+// photo_path: Optional[str] = None
+@freezed
+abstract class ProductUpdateModel with _$ProductUpdateModel {
+  const factory ProductUpdateModel({
+    @JsonKey(name: "product_id") int? productID,
+    @JsonKey(name: "category_id") int? categoryID,
+    @JsonKey(name: "product_name") String? productName,
+    @JsonKey(name: "product_price", fromJson: _parseDouble)
+    double? productPrice,
+    @JsonKey(name: "product_status") @Default(false) bool productStatus,
+    @JsonKey(name: "photo_path") String? photoPath,
+  }) = _ProductUpdateModel;
+
+  factory ProductUpdateModel.fromJson(Map<String, dynamic> json) =>
+      _$ProductUpdateModelFromJson(json);
+}

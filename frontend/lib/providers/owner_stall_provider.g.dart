@@ -56,7 +56,7 @@ final class OwnerStallCategoryProviderProvider
 }
 
 String _$ownerStallCategoryProviderHash() =>
-    r'bf4113dc5c6d954dbd2204f4c79881ada9b7ad9b';
+    r'd45d6fc150b7cae1c4f4168b9e9fd566bc3f4143';
 
 final class OwnerStallCategoryProviderFamily extends $Family
     with
@@ -167,7 +167,7 @@ final class OwnerStallProductsByCategoryProviderProvider
 }
 
 String _$ownerStallProductsByCategoryProviderHash() =>
-    r'0316a249370a09e7be87be151184ddb496afe120';
+    r'25d2635b8c1495540b50729d71a99ed39668d090';
 
 final class OwnerStallProductsByCategoryProviderFamily extends $Family
     with
@@ -224,5 +224,50 @@ abstract class _$OwnerStallProductsByCategoryProvider
               Object?
             >;
     element.handleCreate(ref, () => build(_$args));
+  }
+}
+
+@ProviderFor(OwnerStall)
+final ownerStallProvider = OwnerStallProvider._();
+
+final class OwnerStallProvider
+    extends $AsyncNotifierProvider<OwnerStall, StallResponseModel> {
+  OwnerStallProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'ownerStallProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$ownerStallHash();
+
+  @$internal
+  @override
+  OwnerStall create() => OwnerStall();
+}
+
+String _$ownerStallHash() => r'62cf720ea908200bbb18ed5fad661f97b18dc16f';
+
+abstract class _$OwnerStall extends $AsyncNotifier<StallResponseModel> {
+  FutureOr<StallResponseModel> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref =
+        this.ref as $Ref<AsyncValue<StallResponseModel>, StallResponseModel>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<StallResponseModel>, StallResponseModel>,
+              AsyncValue<StallResponseModel>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
   }
 }

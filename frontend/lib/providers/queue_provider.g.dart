@@ -257,7 +257,7 @@ final class QueueProviderProvider
   }
 }
 
-String _$queueProviderHash() => r'b7a40607348d1eab0c4248f8ec458625c4164407';
+String _$queueProviderHash() => r'5d38355cc487b59fab5d397cf213e7760dee5838';
 
 final class QueueProviderFamily extends $Family
     with

@@ -45,3 +45,39 @@ Map<String, dynamic> _$ProductInfoModelToJson(_ProductInfoModel instance) =>
       'product_name': instance.productName,
       'photo_path': instance.photoPath,
     };
+
+_ProductCreateModel _$ProductCreateModelFromJson(Map<String, dynamic> json) =>
+    _ProductCreateModel(
+      productName: json['product_name'] as String?,
+      productPrice: _parseDouble(json['product_price']),
+      productStatus: json['product_status'] as bool?,
+      photoPath: json['photo_path'] as String?,
+    );
+
+Map<String, dynamic> _$ProductCreateModelToJson(_ProductCreateModel instance) =>
+    <String, dynamic>{
+      'product_name': instance.productName,
+      'product_price': instance.productPrice,
+      'product_status': instance.productStatus,
+      'photo_path': instance.photoPath,
+    };
+
+_ProductUpdateModel _$ProductUpdateModelFromJson(Map<String, dynamic> json) =>
+    _ProductUpdateModel(
+      productID: (json['product_id'] as num?)?.toInt(),
+      categoryID: (json['category_id'] as num?)?.toInt(),
+      productName: json['product_name'] as String?,
+      productPrice: _parseDouble(json['product_price']),
+      productStatus: json['product_status'] as bool? ?? false,
+      photoPath: json['photo_path'] as String?,
+    );
+
+Map<String, dynamic> _$ProductUpdateModelToJson(_ProductUpdateModel instance) =>
+    <String, dynamic>{
+      'product_id': instance.productID,
+      'category_id': instance.categoryID,
+      'product_name': instance.productName,
+      'product_price': instance.productPrice,
+      'product_status': instance.productStatus,
+      'photo_path': instance.photoPath,
+    };

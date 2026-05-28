@@ -8,9 +8,35 @@ class OwnerStallService {
 
   const OwnerStallService({required Dio dio}) : _dio = dio;
 
+  Future<StallResponseModel> getOwnerStall(int ownerID) async {
+    try {
+      Response response = await _dio.get("/users/$ownerID/stall");
+      if(kDebugMode) {
+        print(response.data.toString());
+      }
+      return response.data;
+    } on DioException catch(e) {
+      if (e.response != null) {
+        final statusCode = e.response?.statusCode;
+        final errorData = e.response?.data;
+
+        if (statusCode == 500) {
+          final errorMessage = errorData['detail'] ?? 'Database error';
+          throw Exception(errorMessage);
+        } else {
+          throw Exception(
+            'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
+          );
+        }
+      } else {
+        throw Exception('Network error: ${e.message}');
+      }
+    }
+  }
+
   Future<List<CategoryInfoModel>> getOwnerStallCategories(int ownerID, int stallID) async {
     try {
-      Response response = await _dio.get("/owner_stallowners/1/stalls/1/categories");
+      Response response = await _dio.get("/owner_stall/owners/1/stalls/1/categories");
       if(kDebugMode) {
         print(response.data.toString());
       }
@@ -52,6 +78,112 @@ class OwnerStallService {
         } else {
           throw Exception(
             'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
+          );
+        }
+      } else {
+        throw Exception('Network error: ${e.message}');
+      }
+    }
+  }
+
+  Future<dynamic> addProduct(int ownerID, int categoryID, int stallID, ProductCreateModel data) async {
+    try {
+      Response response = await _dio.post("/owner_stallowners/$ownerID/stalls/$stallID/categories/$categoryID/add_product", data: data);
+      if(kDebugMode) {
+        print(response.data.toString());
+      }
+      return response;
+    } on DioException catch(e) {
+      if (e.response != null) {
+        final statusCode = e.response?.statusCode;
+        final errorData = e.response?.data;
+
+        if (statusCode == 500) {
+          final errorMessage = errorData['detail'] ?? 'Database error';
+          throw Exception(errorMessage);
+        } else {
+          throw Exception(
+            'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
+          );
+        }
+      } else {
+        throw Exception('Network error: ${e.message}');
+      }
+    }
+  }
+
+  Future<dynamic> deleteProduct(int ownerID, int productID) async {
+    try {
+      Response response = await _dio.delete("/owner_stall/$ownerID/products/$productID");
+      if(kDebugMode) {
+        print(response.data.toString());
+      }
+      return response;
+    } on DioException catch(e) {
+      if (e.response != null) {
+        final statusCode = e.response?.statusCode;
+        final errorData = e.response?.data;
+
+        if (statusCode == 500) {
+          final errorMessage = errorData['detail'] ?? 'Database error';
+          throw Exception(errorMessage);
+        } else {
+          throw Exception(
+            'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
+          );
+        }
+      } else {
+        throw Exception('Network error: ${e.message}');
+      }
+    }
+  }
+
+  Future<dynamic> toggleProductStatus(int ownerID, int productID) async {
+    try {
+      Response response = await _dio.patch("/owner_stall/$ownerID/products/$productID/toggle-status");
+      if(kDebugMode) {
+        print(response.data.toString());
+      }
+      return response;
+    } on DioException catch(e) {
+      if (e.response != null) {
+        final statusCode = e.response?.statusCode;
+        final errorData = e.response?.data;
+
+        if (statusCode == 500) {
+          final errorMessage = errorData['detail'] ?? 'Database error';
+          throw Exception(errorMessage);
+        } else {
+          throw Exception(
+            'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
+          );
+        }
+      } else {
+        throw Exception('Network error: ${e.message}');
+      }
+    }
+  }
+
+  Future<dynamic> updateProduct(int ownerID, int productID) async {
+    try {
+      Response response = await _dio.patch(
+          "/owner_stall/$ownerID/products/$productID/toggle-status");
+      if (kDebugMode) {
+        print(response.data.toString());
+      }
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        final statusCode = e.response?.statusCode;
+        final errorData = e.response?.data;
+
+        if (statusCode == 500) {
+          final errorMessage = errorData['detail'] ?? 'Database error';
+          throw Exception(errorMessage);
+        } else {
+          throw Exception(
+            'Server error: $statusCode = ${errorData['detail'] ??
+                "Unknown Error"}',
           );
         }
       } else {

@@ -10,7 +10,7 @@ class OrderService {
   Future<dynamic> checkout(int stallID, String? customerName) async {
     try {
       Response response = await _dio!.post(
-        "/orders/checkout",
+        "/orders/create_order",
         data: {"stall_id": stallID, "customer_name": customerName},
       );
       if (kDebugMode) {

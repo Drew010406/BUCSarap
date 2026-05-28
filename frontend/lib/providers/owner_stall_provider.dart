@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/models/product_model.dart';
 import 'package:frontend/models/stall_model.dart';
 import 'package:frontend/providers/dio_provider.dart';
+import 'package:frontend/providers/owner_provider.dart';
 import 'package:frontend/services/owner_stall/owner_stall_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -14,6 +15,14 @@ class OwnerStallCategoryProvider extends _$OwnerStallCategoryProvider {
     final ownerStallService = ref.watch(ownerStallServiceProvider);
     return await ownerStallService.getOwnerStallCategories(ownerID, stallID);
   }
+
+  Future<dynamic> deleteCategory(int categoryID) async {
+
+  }
+
+  Future<dynamic> renameCategory(int categoryID) async {
+
+  }
 }
 
 @riverpod
@@ -23,9 +32,29 @@ class OwnerStallProductsByCategoryProvider extends _$OwnerStallProductsByCategor
     final ownerStallService = ref.watch(ownerStallServiceProvider);
     return await ownerStallService.getOwnerStallProductsByCategory(categoryID);
   }
+
+  Future<dynamic> deleteProduct(int ownerID, int productID) async {
+
+  }
+
+  Future<dynamic> addProduct(int ownerID, int stallID, int categoryID) async {
+
+  }
+}
+
+@riverpod
+class OwnerStall extends _$OwnerStall {
+  @override
+  Future<StallResponseModel> build() async {
+    final ownerID = ref.watch(ownerNotifierProvider);
+    if (ownerID == null) throw Exception("Not logged in");
+    final ownerService = ref.watch(ownerStallServiceProvider);
+    return await ownerService.getOwnerStall(ownerID!);
+  }
 }
 
 final ownerStallServiceProvider = Provider<OwnerStallService>((ref) {
   final dio = ref.watch(dioProvider);
   return OwnerStallService(dio: dio);
 });
+
