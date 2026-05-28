@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/constants.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/models/order_details_model.dart';
 
-class OrderDetailsModal extends StatelessWidget {
+import '../../constants.dart';
+
+class QueueItemDetailsModal extends ConsumerStatefulWidget {
   final int? index;
-
-  const OrderDetailsModal({super.key, required this.index});
+  final OrderDetailsModel? orderDetails;
+  const QueueItemDetailsModal({super.key, required this.index, this.orderDetails});
 
   @override
+  ConsumerState<QueueItemDetailsModal> createState() => _QueueItemDetailsModalState();
+}
+
+class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
+  @override
   Widget build(BuildContext context) {
+    final items = widget.orderDetails!.items ?? [];
     return Center(
       child: Hero(
-        tag: "$transactTag-$index}",
+        tag: "$queueTag-${widget.index}",
         child: Padding(
           padding: EdgeInsetsGeometry.symmetric(horizontal: 30, vertical: 240),
           child: Container(
@@ -41,7 +50,7 @@ class OrderDetailsModal extends StatelessWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Customer Name',
+                        text: '${widget.orderDetails!.customerName}',
                         style: TextStyle(color: Colors.black45),
                       ),
                     ],
@@ -56,7 +65,7 @@ class OrderDetailsModal extends StatelessWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Order Number',
+                        text: '${widget.orderDetails!.orderNumber}',
                         style: TextStyle(color: Colors.black45),
                       ),
                     ],
@@ -71,7 +80,7 @@ class OrderDetailsModal extends StatelessWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Pending',
+                        text: '${widget.orderDetails!.orderStatus}',
                         style: TextStyle(color: Colors.black45),
                       ),
                     ],
@@ -86,7 +95,7 @@ class OrderDetailsModal extends StatelessWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Order Time',
+                        text: '${widget.orderDetails!.orderTime}',
                         style: TextStyle(color: Colors.black45),
                       ),
                     ],
@@ -101,7 +110,7 @@ class OrderDetailsModal extends StatelessWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Cost',
+                        text: '${widget.orderDetails!.totalCost}',
                         style: TextStyle(color: Colors.black45),
                       ),
                     ],
@@ -140,7 +149,7 @@ class OrderDetailsModal extends StatelessWidget {
                 Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.symmetric(vertical: 9),
-                    itemCount: 13,
+                    itemCount: items.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Row(
                         children: [
@@ -148,7 +157,7 @@ class OrderDetailsModal extends StatelessWidget {
                           Expanded(
                             flex: 2,
                             child: Text(
-                              "Product Name",
+                              "${items[index].productName}",
                               style: kJetbrainsDescription.copyWith(
                                 decoration: TextDecoration.none,
                                 color: kPrimaryColor,
@@ -158,7 +167,7 @@ class OrderDetailsModal extends StatelessWidget {
                           Expanded(child: SizedBox()),
                           Expanded(
                             child: Text(
-                              "x 10",
+                              "x ${items[index].quantityOrdered}",
                               style: kJetbrainsDescription.copyWith(
                                 decoration: TextDecoration.none,
                                 color: kPrimaryColor,
@@ -185,7 +194,7 @@ class OrderDetailsModal extends StatelessWidget {
                           ),
                           child: Center(
                             child: Text(
-                              "Delete",
+                              "Accept",
                               style: kJetbrainsLoginRegister.copyWith(
                                 decoration: TextDecoration.none,
                               ),
@@ -206,7 +215,7 @@ class OrderDetailsModal extends StatelessWidget {
                           ),
                           child: Center(
                             child: Text(
-                              "Close",
+                              "Decline",
                               style: kJetbrainsLoginRegister.copyWith(
                                 decoration: TextDecoration.none,
                               ),

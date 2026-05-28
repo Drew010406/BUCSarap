@@ -4,6 +4,7 @@ import 'package:frontend/providers/transaction_history_provider.dart';
 
 import '../../components/stall_holder/navigation_panel.dart';
 import '../../constants.dart';
+import '../../providers/owner_stall_provider.dart';
 import '../../shared/back_button_container.dart';
 import '../page_route/hero_dialog_route.dart';
 import 'order_details_modal.dart';
@@ -20,7 +21,8 @@ class _TransactionHistoryScreenState
     extends ConsumerState<TransactionHistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    final transactionHistory = ref.watch(transactionHistoryProviderProvider(1));
+    final stallData = ref.read(ownerStallProvider).value;
+    final transactionHistory = ref.watch(transactionHistoryProviderProvider(stallData!.stallID!));
 
     final currentRoute = ModalRoute.of(context)?.settings.name;
     double cellWidth = ((MediaQuery.of(context).size.width - 50) / 2);

@@ -251,7 +251,7 @@ final class OwnerStallProvider
   OwnerStall create() => OwnerStall();
 }
 
-String _$ownerStallHash() => r'62cf720ea908200bbb18ed5fad661f97b18dc16f';
+String _$ownerStallHash() => r'118b6236af6bd67e0bcaff831f34e79a6f0cf8cb';
 
 abstract class _$OwnerStall extends $AsyncNotifier<StallResponseModel> {
   FutureOr<StallResponseModel> build();

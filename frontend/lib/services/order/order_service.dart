@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:frontend/models/order_details_model.dart';
 import 'package:frontend/models/order_line_model.dart';
 
 class OrderService {
@@ -94,16 +95,16 @@ class OrderService {
     }
   }
 
-  Future<dynamic> getOrderDetails(int orderID, int stallID) async {
+  Future<OrderDetailsModel> getOrderDetails(int orderID, int stallID) async {
     try {
       Response response = await _dio!.get(
-        "/orders/${orderID}/submit",
+        "/orders/orders/${orderID}",
         queryParameters: {"stall_id": stallID},
       );
       if (kDebugMode) {
         print(response.data.toString());
       }
-      return response.data;
+      return OrderDetailsModel.fromJson(response.data);
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;

@@ -14,7 +14,7 @@ _OrderDetailsModel _$OrderDetailsModelFromJson(Map<String, dynamic> json) =>
       orderTime: json['order_time'] == null
           ? null
           : DateTime.parse(json['order_time'] as String),
-      totalCost: (json['total_cost'] as num?)?.toDouble(),
+      totalCost: _parseDouble(json['total_cost']),
       items: (json['items'] as List<dynamic>?)
           ?.map(
             (e) =>
@@ -37,7 +37,7 @@ _QueueOrderLineResponseModel _$QueueOrderLineResponseModelFromJson(
   Map<String, dynamic> json,
 ) => _QueueOrderLineResponseModel(
   productName: json['product_name'] as String?,
-  quantityOrdered: (json['quantity_ordered'] as num?)?.toInt(),
+  quantityOrdered: _parseInt(json['quantity_ordered']),
 );
 
 Map<String, dynamic> _$QueueOrderLineResponseModelToJson(
