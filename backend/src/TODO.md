@@ -14,8 +14,9 @@
 
 
 
-- TODO 6: Add a get_owner_stall endpoint, should return the stall_id owned by that specific owner; why cuz in stalls.py route--the get_stall() and get_owner_stall_categories() accepts a stall_id and naisip ko sana ibase nlng sa owner_id pero ampangit ata kung ganun, para stall for stall, owner for owner approach tas nde magulo
-- TODO 7: Add endpoint for delete transaction history.
+- TODO 6: [DONE] Add a get_owner_stall endpoint, should return the stall_id owned by that specific owner; why cuz in stalls.py route--the get_stall() and get_owner_stall_categories() accepts a stall_id and naisip ko sana ibase nlng sa owner_id pero ampangit ata kung ganun, para stall for stall, owner for owner approach tas nde magulo
+
+- TODO 7:  Add endpoint for delete transaction history.
 - TODO 8: Add endpoint deleting, updating(rename lang ata) stall categories. Sa deleting once na idelete ang isang category damay na kung anoman laman nun.
 - TODO 9: Add endpoint for adding new category.
 

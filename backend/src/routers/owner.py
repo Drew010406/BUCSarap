@@ -6,6 +6,7 @@ from backend.src.core.rate_limiter import rate_limit
 from backend.src.db.session import get_db
 from backend.src.schema.owner import UserCreate, UserLogin, UserResponse
 from backend.src.core.security import create_access_token, create_refresh_token, hash_password, verify_hash, verify_token
+from backend.src.schema.stalls import StallResponse 
 
 route = APIRouter()
 
@@ -166,3 +167,33 @@ async def get_user(owner_id: int, db: Annotated[Connection, Depends(get_db)]):
         return UserResponse(**result)
     else:
         raise HTTPException(status_code=404, detail="User not found")
+
+@route.get("/{owner_id}/stall", response_model=StallResponse)
+async def get_owner_stall(owner_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+    verification_query = text("""
+                              
+           SELECT *
+           FROM owner
+           WHERE owner_id = :o_id              
+        """)
+    
+    results = db.execute(verification_query, {"o_id": owner_id}).mappings().fetchone()
+    
+    if not results:
+        raise HTTPException(status_code=404, detail=f"User {str(owner_id)} was not found.")
+    
+    query = text("""
+           
+        SELECT *
+        FROM stall
+        WHERE owner_id = :o_id      
+        """)
+    
+    try:
+        results = db.execute(query, {"o_id": owner_id}).mappings().fetchone()
+        return results
+    
+    except Exception as error: 
+        
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
