@@ -5,13 +5,16 @@ from datetime import timedelta
 
 class StallUpdate(BaseModel):
     
-    stall_name: Optional[str]     
-    opening_time: Optional[str]
-    closing_time: Optional[str]
-    operating_days: Optional[str]  
-    stall_status : bool   
-    photo_path: Optional[str]
+    stall_name: Optional[str] = None  
+    opening_time: Optional[str] = None
+    closing_time: Optional[str] = None
+    operating_days: Optional[str] = None
+    stall_status : bool = None
+    photo_path: Optional[str] = None
 
+    class Config:
+        from_attributes = True
+        
 class CategoryInfo(BaseModel):
     category_id: int
     category_name: str
