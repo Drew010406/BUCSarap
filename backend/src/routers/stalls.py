@@ -43,6 +43,7 @@ async def get_stall(stall_id: int,owner_id: int, db: Annotated[Connection, Depen
         return result
     except HTTPException:
         raise
+    
     except Exception as error:
         raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
 
@@ -96,7 +97,9 @@ async def update_stall(stall_id: int, stall_update: StallUpdate, db: Annotated[C
 
     # Check if stall exists
     check_query = text("""
-        SELECT stall_id FROM stall WHERE stall_id = :id
+        SELECT stall_id 
+        FROM stall 
+        WHERE stall_id = :id
     """)
     
     existing_stall = db.execute(check_query, {"id": stall_id}).mappings().fetchone()
@@ -104,43 +107,18 @@ async def update_stall(stall_id: int, stall_update: StallUpdate, db: Annotated[C
     if not existing_stall:
         raise HTTPException(status_code=404, detail="Stall not found")
     
-    # Build dynamic update query
+    update_data = stall_update.model_dump(exclude_unset=True)
+    
+    if not update_data:
+        raise HTTPException(status_code=400, detail="No fields to update")
+    
+    # Build dynamiDc update query
     update_fields = []
     params = {"id": stall_id}
     
-    if stall_update.stall_name is not None:
-        
-        update_fields.append("stall_name = :stall_name")
-        params["stall_name"] = stall_update.stall_name
-    
-    if stall_update.opening_time is not None:
-        
-        update_fields.append("opening_time = :opening_time")
-        params["opening_time"] = stall_update.opening_time
-    
-    if stall_update.closing_time is not None:
-        
-        update_fields.append("closing_time = :closing_time")
-        params["closing_time"] = stall_update.closing_time
-    
-    if stall_update.operating_days is not None:
-        
-        update_fields.append("operating_days = :operating_days")
-        params["operating_days"] = stall_update.operating_days
-    
-    if stall_update.stall_status is not None:
-        
-        update_fields.append("stall_status = :stall_status")
-        params["stall_status"] = stall_update.stall_status
-    
-    if stall_update.photo_path is not None:
-        
-        update_fields.append("photo_path = :photo_path")
-        params["photo_path"] = stall_update.photo_path
-    
-    if not update_fields:
-        
-        raise HTTPException(status_code=400, detail="No fields to update")
+    for field, value in update_data.items():
+        update_fields.append(f"{field} = :{field}")
+        params[field] = value
     
     update_query = text(f"""
         UPDATE stall
@@ -153,7 +131,6 @@ async def update_stall(stall_id: int, stall_update: StallUpdate, db: Annotated[C
         db.execute(update_query, params)
         db.commit()
         
-        # Fetch and return the updated stall
         select_query = text("""
             SELECT stall_id, owner_id, stall_name, opening_time, closing_time, operating_days, stall_status, photo_path
             FROM stall
