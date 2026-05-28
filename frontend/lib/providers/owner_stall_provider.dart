@@ -12,7 +12,11 @@ part 'owner_stall_provider.g.dart';
 @riverpod
 class OwnerStallCategoryProvider extends _$OwnerStallCategoryProvider {
   @override
-  Future<List<CategoryInfoModel>> build(int ownerID, int stallID) async {
+  Future<List<CategoryInfoModel>> build() async {
+    final ownerID = ref.watch(ownerNotifierProvider);
+    final stallData = ref.read(ownerStallProvider).value;
+    final int stallID = stallData!.stallID!;
+    if (ownerID == null) throw Exception("Not logged in");
     final ownerStallService = ref.watch(ownerStallServiceProvider);
     return await ownerStallService.getOwnerStallCategories(ownerID, stallID);
   }
@@ -26,12 +30,24 @@ class OwnerStallCategoryProvider extends _$OwnerStallCategoryProvider {
   }
 }
 
+class CurrentCategory extends Notifier<int?> {
+  @override
+  int? build() {
+    return 0;
+  }
+  set categoryID(int catID) {
+    state = catID;
+  }
+}
+
+final currentCategoryProvider = NotifierProvider<CurrentCategory, int?>(() => CurrentCategory());
 @riverpod
 class OwnerStallProductsByCategoryProvider extends _$OwnerStallProductsByCategoryProvider {
   @override
-  Future<List<ProductResponseModel>> build(int categoryID) async {
+  Future<List<ProductResponseModel>> build() async {
     final ownerStallService = ref.watch(ownerStallServiceProvider);
-    return await ownerStallService.getOwnerStallProductsByCategory(categoryID);
+    final categoryID = ref.watch(currentCategoryProvider);
+    return await ownerStallService.getOwnerStallProductsByCategory(categoryID!);
   }
 
   Future<dynamic> deleteProduct(int ownerID, int productID) async {

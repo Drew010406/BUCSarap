@@ -75,7 +75,7 @@ class OwnerStallService {
       if (kDebugMode) {
         print(response.data.toString());
       }
-      return response.data
+      return (response.data as List)
           .map((json) => ProductResponseModel.fromJson(json))
           .toList();
     } on DioException catch (e) {

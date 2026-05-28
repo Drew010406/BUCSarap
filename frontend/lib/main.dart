@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/screens/stall_holder/order_details_modal.dart';
 import 'package:frontend/screens/stall_holder/stall_category_screen.dart';
 import 'package:frontend/screens/stall_holder/stall_information_screen.dart';
+import 'package:frontend/screens/stall_holder/stall_product_screen.dart';
 import 'package:frontend/screens/student/add_name_modal.dart';
 import 'package:frontend/screens/student/cart_screen.dart';
 import 'package:frontend/screens/student/category_screen.dart';
@@ -46,7 +47,8 @@ class Main extends StatelessWidget {
         '/analytics_screen': (context) => AnalyticsScreen(),
         '/history_screen': (context) => TransactionHistoryScreen(),
         '/order_successful': (context) => OrderSuccessfulScreen(),
-        '/stall_category': (context) => StallCategoryScreen()
+        '/stall_category': (context) => StallCategoryScreen(),
+        '/stall_product': (context) =>StallProductScreen()
       },
     );
   }

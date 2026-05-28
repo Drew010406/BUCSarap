@@ -19,9 +19,8 @@ class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final currentRoute = ModalRoute.of(context)?.settings.name;
-    final currentOwner = ref.watch(ownerNotifierProvider);
     final categories = ref.watch(
-      ownerStallCategoryProviderProvider(currentOwner!, 2),
+      ownerStallCategoryProviderProvider,
     );
     return Scaffold(
       appBar: AppBar(
@@ -48,6 +47,8 @@ class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          Text("Stall Category", style: kJetbrainsFontTitle,),
+          SizedBox(height: 10,),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(
@@ -71,8 +72,8 @@ class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
-                        // ref.read(ownerStallCategoryProviderProvider.notifier).selectedCategory(data[index]);
-                        Navigator.pushNamed(context, '/menu_screen');
+                        ref.read(currentCategoryProvider.notifier).categoryID = data[index].categoryID!;
+                        Navigator.pushNamed(context, '/stall_product');
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 10),

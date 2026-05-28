@@ -10,7 +10,8 @@ part of 'owner_stall_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(OwnerStallCategoryProvider)
-final ownerStallCategoryProviderProvider = OwnerStallCategoryProviderFamily._();
+final ownerStallCategoryProviderProvider =
+    OwnerStallCategoryProviderProvider._();
 
 final class OwnerStallCategoryProviderProvider
     extends
@@ -18,81 +19,31 @@ final class OwnerStallCategoryProviderProvider
           OwnerStallCategoryProvider,
           List<CategoryInfoModel>
         > {
-  OwnerStallCategoryProviderProvider._({
-    required OwnerStallCategoryProviderFamily super.from,
-    required (int, int) super.argument,
-  }) : super(
-         retry: null,
-         name: r'ownerStallCategoryProviderProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
+  OwnerStallCategoryProviderProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'ownerStallCategoryProviderProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$ownerStallCategoryProviderHash();
 
-  @override
-  String toString() {
-    return r'ownerStallCategoryProviderProvider'
-        ''
-        '$argument';
-  }
-
   @$internal
   @override
   OwnerStallCategoryProvider create() => OwnerStallCategoryProvider();
-
-  @override
-  bool operator ==(Object other) {
-    return other is OwnerStallCategoryProviderProvider &&
-        other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
 }
 
 String _$ownerStallCategoryProviderHash() =>
-    r'd45d6fc150b7cae1c4f4168b9e9fd566bc3f4143';
-
-final class OwnerStallCategoryProviderFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          OwnerStallCategoryProvider,
-          AsyncValue<List<CategoryInfoModel>>,
-          List<CategoryInfoModel>,
-          FutureOr<List<CategoryInfoModel>>,
-          (int, int)
-        > {
-  OwnerStallCategoryProviderFamily._()
-    : super(
-        retry: null,
-        name: r'ownerStallCategoryProviderProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  OwnerStallCategoryProviderProvider call(int ownerID, int stallID) =>
-      OwnerStallCategoryProviderProvider._(
-        argument: (ownerID, stallID),
-        from: this,
-      );
-
-  @override
-  String toString() => r'ownerStallCategoryProviderProvider';
-}
+    r'3ebc2f30473859d131cd776d64f0700b0eb81a8a';
 
 abstract class _$OwnerStallCategoryProvider
     extends $AsyncNotifier<List<CategoryInfoModel>> {
-  late final _$args = ref.$arg as (int, int);
-  int get ownerID => _$args.$1;
-  int get stallID => _$args.$2;
-
-  FutureOr<List<CategoryInfoModel>> build(int ownerID, int stallID);
+  FutureOr<List<CategoryInfoModel>> build();
   @$mustCallSuper
   @override
   void runBuild() {
@@ -113,13 +64,13 @@ abstract class _$OwnerStallCategoryProvider
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args.$1, _$args.$2));
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(OwnerStallProductsByCategoryProvider)
 final ownerStallProductsByCategoryProviderProvider =
-    OwnerStallProductsByCategoryProviderFamily._();
+    OwnerStallProductsByCategoryProviderProvider._();
 
 final class OwnerStallProductsByCategoryProviderProvider
     extends
@@ -127,82 +78,33 @@ final class OwnerStallProductsByCategoryProviderProvider
           OwnerStallProductsByCategoryProvider,
           List<ProductResponseModel>
         > {
-  OwnerStallProductsByCategoryProviderProvider._({
-    required OwnerStallProductsByCategoryProviderFamily super.from,
-    required int super.argument,
-  }) : super(
-         retry: null,
-         name: r'ownerStallProductsByCategoryProviderProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
+  OwnerStallProductsByCategoryProviderProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'ownerStallProductsByCategoryProviderProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() =>
       _$ownerStallProductsByCategoryProviderHash();
 
-  @override
-  String toString() {
-    return r'ownerStallProductsByCategoryProviderProvider'
-        ''
-        '($argument)';
-  }
-
   @$internal
   @override
   OwnerStallProductsByCategoryProvider create() =>
       OwnerStallProductsByCategoryProvider();
-
-  @override
-  bool operator ==(Object other) {
-    return other is OwnerStallProductsByCategoryProviderProvider &&
-        other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
 }
 
 String _$ownerStallProductsByCategoryProviderHash() =>
-    r'25d2635b8c1495540b50729d71a99ed39668d090';
-
-final class OwnerStallProductsByCategoryProviderFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          OwnerStallProductsByCategoryProvider,
-          AsyncValue<List<ProductResponseModel>>,
-          List<ProductResponseModel>,
-          FutureOr<List<ProductResponseModel>>,
-          int
-        > {
-  OwnerStallProductsByCategoryProviderFamily._()
-    : super(
-        retry: null,
-        name: r'ownerStallProductsByCategoryProviderProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  OwnerStallProductsByCategoryProviderProvider call(int categoryID) =>
-      OwnerStallProductsByCategoryProviderProvider._(
-        argument: categoryID,
-        from: this,
-      );
-
-  @override
-  String toString() => r'ownerStallProductsByCategoryProviderProvider';
-}
+    r'3a5a7729c9cd93481414fb2209eb2e60a0d9fd7a';
 
 abstract class _$OwnerStallProductsByCategoryProvider
     extends $AsyncNotifier<List<ProductResponseModel>> {
-  late final _$args = ref.$arg as int;
-  int get categoryID => _$args;
-
-  FutureOr<List<ProductResponseModel>> build(int categoryID);
+  FutureOr<List<ProductResponseModel>> build();
   @$mustCallSuper
   @override
   void runBuild() {
@@ -223,7 +125,7 @@ abstract class _$OwnerStallProductsByCategoryProvider
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args));
+    element.handleCreate(ref, build);
   }
 }
 

@@ -38,7 +38,7 @@ final class PendingQueueProviderProvider
 }
 
 String _$pendingQueueProviderHash() =>
-    r'87476096dc5b6121ab0c78745827ff66f975e794';
+    r'01c09806da193594afc7208e7abfe95569fd722a';
 
 abstract class _$PendingQueueProvider
     extends $AsyncNotifier<List<TransactionHistoryModel>> {

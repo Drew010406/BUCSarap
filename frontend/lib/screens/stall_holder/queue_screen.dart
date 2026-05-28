@@ -6,6 +6,7 @@ import 'package:frontend/main.dart';
 import 'package:frontend/providers/cart_provider.dart';
 import 'package:frontend/providers/queue_provider.dart';
 import 'package:frontend/screens/stall_holder/order_details_modal.dart';
+import 'package:frontend/screens/stall_holder/preparing_item_details_modal.dart';
 import 'package:frontend/screens/stall_holder/queue_item_details_modal.dart';
 
 import '../../providers/owner_stall_provider.dart';
@@ -271,7 +272,7 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
                             Navigator.of(context).push(
                               HeroDialogRoute(
                                 builder: (context) {
-                                  return QueueItemDetailsModal(
+                                  return PreparingItemDetailsModal(
                                     index: index,
                                     orderDetails: orderDetails,
                                     orderID: items[index].orderID,
@@ -314,41 +315,28 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
                                   ],
                                 ),
                                 Expanded(child: SizedBox()),
-                                GestureDetector(
-                                  child: Container(
-                                    width: 80,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Color(
-                                        0xFFDA782B,
-                                      ).withValues(alpha: 0.5),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "Accept",
-                                        style: kJetbrainsLoginRegister,
+                                Expanded(
+                                  flex: 3,
+                                  child: GestureDetector(
+                                    child: Container(
+                                      width: 80,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: Color(
+                                          0xFFDA782B,
+                                        ).withValues(alpha: 0.5),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "Complete",
+                                          style: kJetbrainsLoginRegister,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                                 SizedBox(width: 10),
-                                GestureDetector(
-                                  child: Container(
-                                    width: 80,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFFDA782B),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "Decline",
-                                        style: kJetbrainsLoginRegister,
-                                      ),
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                           ),
