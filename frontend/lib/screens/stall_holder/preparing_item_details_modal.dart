@@ -10,13 +10,21 @@ class PreparingItemDetailsModal extends ConsumerStatefulWidget {
   final int? index;
   final OrderDetailsModel? orderDetails;
   final int? orderID;
-  const PreparingItemDetailsModal({super.key, required this.index, this.orderDetails, this.orderID});
+
+  const PreparingItemDetailsModal({
+    super.key,
+    required this.index,
+    this.orderDetails,
+    this.orderID,
+  });
 
   @override
-  ConsumerState<PreparingItemDetailsModal> createState() => _QueueItemDetailsModalState();
+  ConsumerState<PreparingItemDetailsModal> createState() =>
+      _QueueItemDetailsModalState();
 }
 
-class _QueueItemDetailsModalState extends ConsumerState<PreparingItemDetailsModal> {
+class _QueueItemDetailsModalState
+    extends ConsumerState<PreparingItemDetailsModal> {
   @override
   Widget build(BuildContext context) {
     final items = widget.orderDetails!.items ?? [];
@@ -204,6 +212,12 @@ class _QueueItemDetailsModalState extends ConsumerState<PreparingItemDetailsModa
                               SnackBar(content: Text("Error: $e")),
                             );
                           }
+                          await preparingService.markAsCompleted(
+                            widget.orderID!,
+                            currentStall!.stallID!,
+                          );
+                          if (!mounted) return;
+                          Navigator.pop(context);
                         },
                         child: Container(
                           width: 80,

@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'product_model.freezed.dart';
+part 'freezed/product_model.freezed.dart';
 
-part 'product_model.g.dart';
+part '_g/product_model.g.dart';
 
 double? _parseDouble(dynamic val) =>
     val == null ? null : double.tryParse(val.toString());

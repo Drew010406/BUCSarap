@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'stall_model.dart';
+part of '../stall_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
