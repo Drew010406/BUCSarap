@@ -72,17 +72,19 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.of(context).push(
-                                HeroDialogRoute(
-                                  builder: (context) {
-                                    return ItemWindow(
-                                      productID: product[index].productID,
-                                      unitPrice: product[index].productPrice,
-                                      index: index,
-                                    );
-                                  },
-                                ),
-                              );
+                              if(product[index].productStatus) {
+                                Navigator.of(context).push(
+                                  HeroDialogRoute(
+                                    builder: (context) {
+                                      return ItemWindow(
+                                        productID: product[index].productID,
+                                        unitPrice: product[index].productPrice,
+                                        index: index,
+                                      );
+                                    },
+                                  ),
+                                );
+                              }
                             },
                             child: Hero(
                               tag: "$itemTag-$index",
@@ -95,6 +97,8 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
+                                    if(!product[index].productStatus)
+                                      Text("Unavailable", style: kJetbrainsFontTitle.copyWith(fontSize: 24),),
                                     Expanded(
                                       child: Container(
                                         decoration: BoxDecoration(
