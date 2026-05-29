@@ -23,7 +23,7 @@ class _TransactionHistoryScreenState
   @override
   Widget build(BuildContext context) {
     final stallData = ref.read(ownerStallProvider).value;
-    final transactionHistory = ref.watch(transactionHistoryProviderProvider(stallData!.stallID!));
+    final transactionHistory = ref.watch(transactionHistoryProviderProvider);
 
     final currentRoute = ModalRoute.of(context)?.settings.name;
     double cellWidth = ((MediaQuery.of(context).size.width - 50) / 2);
@@ -81,7 +81,7 @@ class _TransactionHistoryScreenState
                         final orderDetails = await orderService
                             .getOrderDetails(
                           data[index].orderID!,
-                          stallData.stallID!,
+                          stallData!.stallID!,
                         );
                         setState(() {
                           Navigator.of(context).push(

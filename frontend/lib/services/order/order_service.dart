@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:frontend/models/order_details_model.dart';
 import 'package:frontend/models/order_line_model.dart';
+import 'package:frontend/models/order_model.dart';
 
 class OrderService {
   final Dio? _dio;

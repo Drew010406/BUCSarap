@@ -20,7 +20,7 @@ class _QueueItemDetailsModalState extends ConsumerState<PreparingItemDetailsModa
   @override
   Widget build(BuildContext context) {
     final items = widget.orderDetails!.items ?? [];
-    final queueService = ref.watch(pendingQueueProviderProvider.notifier);
+    final preparingService = ref.watch(preparingQueueProviderProvider.notifier);
     final currentStall = ref.watch(ownerStallProvider).value;
 
     return Center(
@@ -192,9 +192,18 @@ class _QueueItemDetailsModalState extends ConsumerState<PreparingItemDetailsModa
                     Expanded(
                       child: GestureDetector(
                         onTap: () async {
-                          final response = await queueService.acceptOrder(widget.orderID!, currentStall!.stallID!);
-                          if (!mounted) return;
-                          Navigator.pop(context);
+                          try {
+                            await preparingService.markAsCompleted(widget.orderID!, currentStall!.stallID!);
+                            if (!mounted) return;
+                            Navigator.pop(context);
+                          } catch (e) {
+                            debugPrint("markAsCompleted error: $e");
+                            if (!mounted) return;
+                            // optionally show a snackbar so you can see the error on screen
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Error: $e")),
+                            );
+                          }
                         },
                         child: Container(
                           width: 80,

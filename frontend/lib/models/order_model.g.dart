@@ -23,3 +23,9 @@ Map<String, dynamic> _$OrderResponseModelToJson(_OrderResponseModel instance) =>
       'customer_name': instance.customerName,
       'stall_id': instance.stallID,
     };
+
+_OrderStatus _$OrderStatusFromJson(Map<String, dynamic> json) =>
+    _OrderStatus(orderStatus: json['order_status'] as String?);
+
+Map<String, dynamic> _$OrderStatusToJson(_OrderStatus instance) =>
+    <String, dynamic>{'order_status': instance.orderStatus};

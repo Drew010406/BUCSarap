@@ -11,12 +11,23 @@ part 'transaction_history_provider.g.dart';
 @riverpod
 class TransactionHistoryProvider extends _$TransactionHistoryProvider {
   @override
-  Future<List<TransactionHistoryModel>> build(int stallID) async {
+  Future<List<TransactionHistoryModel>> build() async {
     final historyService = ref.watch(historyServiceProvider);
+    final stallData = ref.read(ownerStallProvider).value;
+    final stallID = stallData!.stallID!;
     final response = await historyService.getStallHistory(stallID);
     return (response as List)
         .map((item) => TransactionHistoryModel.fromJson(item))
         .toList();
+  }
+
+  Future<dynamic> deleteItemHistory(int orderID) async {
+    final historyService = ref.read(historyServiceProvider);
+    final stallData = ref.read(ownerStallProvider).value;
+    final stallID = stallData!.stallID!;
+    final response =  await historyService.deleteItemHistory(stallID, orderID);
+    ref.invalidateSelf();
+    return response;
   }
 }
 
