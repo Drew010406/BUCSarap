@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'product_category_model.freezed.dart';
-part 'product_category_model.g.dart';
+part 'freezed/product_category_model.freezed.dart';
+part '_g/product_category_model.g.dart';
 
 @freezed
 abstract class ProductCategoryResponseModel with _$ProductCategoryResponseModel {

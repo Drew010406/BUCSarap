@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/models/transaction_history_model.dart';
+import 'package:frontend/providers/transaction_history_provider.dart';
 
 import '../../models/order_details_model.dart';
 
-class OrderDetailsModal extends StatelessWidget {
+class OrderDetailsModal extends ConsumerWidget {
   final int? index;
   final OrderDetailsModel? data;
   final int? orderID;
@@ -17,7 +19,7 @@ class OrderDetailsModal extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final items = data!.items ?? [];
 
     return Center(
@@ -188,6 +190,11 @@ class OrderDetailsModal extends StatelessWidget {
                   children: [
                     Expanded(
                       child: GestureDetector(
+                        onTap: () async {
+                          final transaction = ref.read(transactionHistoryProviderProvider.notifier);
+                          await transaction.deleteItemHistory(orderID!);
+                          Navigator.pop(context);
+                        },
                         child: Container(
                           width: 80,
                           height: 40,

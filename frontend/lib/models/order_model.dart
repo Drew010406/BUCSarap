@@ -1,7 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'order_model.freezed.dart';
-part 'order_model.g.dart';
+part 'freezed/order_model.freezed.dart';
+
+part '_g/order_model.g.dart';
 
 @freezed
 abstract class OrderResponseModel with _$OrderResponseModel {
@@ -15,4 +16,14 @@ abstract class OrderResponseModel with _$OrderResponseModel {
 
   factory OrderResponseModel.fromJson(Map<String, dynamic> json) =>
       _$OrderResponseModelFromJson(json);
+}
+
+@freezed
+abstract class OrderStatus with _$OrderStatus {
+  const factory OrderStatus({
+    @JsonKey(name: "order_status") String? orderStatus,
+  }) = _OrderStatus;
+
+  factory OrderStatus.fromJson(Map<String, dynamic> json) =>
+      _$OrderStatusFromJson(json);
 }

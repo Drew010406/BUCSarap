@@ -10,17 +10,25 @@ class PreparingItemDetailsModal extends ConsumerStatefulWidget {
   final int? index;
   final OrderDetailsModel? orderDetails;
   final int? orderID;
-  const PreparingItemDetailsModal({super.key, required this.index, this.orderDetails, this.orderID});
+
+  const PreparingItemDetailsModal({
+    super.key,
+    required this.index,
+    this.orderDetails,
+    this.orderID,
+  });
 
   @override
-  ConsumerState<PreparingItemDetailsModal> createState() => _QueueItemDetailsModalState();
+  ConsumerState<PreparingItemDetailsModal> createState() =>
+      _QueueItemDetailsModalState();
 }
 
-class _QueueItemDetailsModalState extends ConsumerState<PreparingItemDetailsModal> {
+class _QueueItemDetailsModalState
+    extends ConsumerState<PreparingItemDetailsModal> {
   @override
   Widget build(BuildContext context) {
     final items = widget.orderDetails!.items ?? [];
-    final queueService = ref.watch(pendingQueueProviderProvider.notifier);
+    final preparingService = ref.watch(preparingQueueProviderProvider.notifier);
     final currentStall = ref.watch(ownerStallProvider).value;
 
     return Center(
@@ -192,7 +200,22 @@ class _QueueItemDetailsModalState extends ConsumerState<PreparingItemDetailsModa
                     Expanded(
                       child: GestureDetector(
                         onTap: () async {
-                          final response = await queueService.acceptOrder(widget.orderID!, currentStall!.stallID!);
+                          try {
+                            await preparingService.markAsCompleted(widget.orderID!, currentStall!.stallID!);
+                            if (!mounted) return;
+                            Navigator.pop(context);
+                          } catch (e) {
+                            debugPrint("markAsCompleted error: $e");
+                            if (!mounted) return;
+                            // optionally show a snackbar so you can see the error on screen
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Error: $e")),
+                            );
+                          }
+                          await preparingService.markAsCompleted(
+                            widget.orderID!,
+                            currentStall!.stallID!,
+                          );
                           if (!mounted) return;
                           Navigator.pop(context);
                         },

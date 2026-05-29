@@ -10,7 +10,8 @@ part of 'transaction_history_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(TransactionHistoryProvider)
-final transactionHistoryProviderProvider = TransactionHistoryProviderFamily._();
+final transactionHistoryProviderProvider =
+    TransactionHistoryProviderProvider._();
 
 final class TransactionHistoryProviderProvider
     extends
@@ -18,77 +19,31 @@ final class TransactionHistoryProviderProvider
           TransactionHistoryProvider,
           List<TransactionHistoryModel>
         > {
-  TransactionHistoryProviderProvider._({
-    required TransactionHistoryProviderFamily super.from,
-    required int super.argument,
-  }) : super(
-         retry: null,
-         name: r'transactionHistoryProviderProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
+  TransactionHistoryProviderProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'transactionHistoryProviderProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$transactionHistoryProviderHash();
 
-  @override
-  String toString() {
-    return r'transactionHistoryProviderProvider'
-        ''
-        '($argument)';
-  }
-
   @$internal
   @override
   TransactionHistoryProvider create() => TransactionHistoryProvider();
-
-  @override
-  bool operator ==(Object other) {
-    return other is TransactionHistoryProviderProvider &&
-        other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
 }
 
 String _$transactionHistoryProviderHash() =>
-    r'6eb08f27076d30516e1bbdb122b0c6e4b71c9b29';
-
-final class TransactionHistoryProviderFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          TransactionHistoryProvider,
-          AsyncValue<List<TransactionHistoryModel>>,
-          List<TransactionHistoryModel>,
-          FutureOr<List<TransactionHistoryModel>>,
-          int
-        > {
-  TransactionHistoryProviderFamily._()
-    : super(
-        retry: null,
-        name: r'transactionHistoryProviderProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  TransactionHistoryProviderProvider call(int stallID) =>
-      TransactionHistoryProviderProvider._(argument: stallID, from: this);
-
-  @override
-  String toString() => r'transactionHistoryProviderProvider';
-}
+    r'dfbfb1dc536f333fd4a0f3c310234df2ce43a4d4';
 
 abstract class _$TransactionHistoryProvider
     extends $AsyncNotifier<List<TransactionHistoryModel>> {
-  late final _$args = ref.$arg as int;
-  int get stallID => _$args;
-
-  FutureOr<List<TransactionHistoryModel>> build(int stallID);
+  FutureOr<List<TransactionHistoryModel>> build();
   @$mustCallSuper
   @override
   void runBuild() {
@@ -109,7 +64,7 @@ abstract class _$TransactionHistoryProvider
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args));
+    element.handleCreate(ref, build);
   }
 }
 

@@ -1,4 +1,7 @@
+import 'package:frontend/models/order_model.dart';
 import 'package:frontend/models/transaction_history_model.dart';
+import 'package:frontend/providers/cart_provider.dart';
+import 'package:frontend/providers/transaction_history_provider.dart';
 import 'package:frontend/services/queue/queue_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,6 +43,14 @@ class PreparingQueueProvider extends _$PreparingQueueProvider {
     final stallData = ref.read(ownerStallProvider).value;
     final queueService = ref.read(queueServiceProvider);
     return await queueService.getPreparingOrder(stallData!.stallID!);
+  }
+
+  Future<dynamic> markAsCompleted(int orderID, int stallID) async {
+    final queueService = ref.read(queueServiceProvider);
+    final response =  await queueService.completeOrder(orderID, stallID);
+    ref.invalidateSelf();
+    ref.invalidate(transactionHistoryProviderProvider);
+    return response;
   }
 }
 
