@@ -22,7 +22,7 @@ async def get_stall_history(stall_id: int, db: Annotated[Connection, Depends(get
         results = db.execute(query, {"stall_id": stall_id}).mappings().fetchall()
         
         if not results:
-            raise HTTPException(status_code=404, detail="No order history found for this stall")
+            raise HTTPException(status_code=204, detail="No order history found for this stall")
         
         return results
     except HTTPException:
@@ -53,7 +53,7 @@ async def get_stall_revenue(stall_id: int, db: Annotated[Connection, Depends(get
         result = db.execute(query, {"stall_id": stall_id}).mappings().fetchone()
         
         if not result:
-            raise HTTPException(status_code=404, detail="No revenue data found for this stall")
+            raise HTTPException(status_code=204, detail="No revenue data found for this stall")
         
         return result
 
@@ -84,7 +84,7 @@ async def get_stall_revenue_daily(stall_id : int, db: Annotated[Connection, Depe
             result = db.execute(query, {"stall_id": stall_id}).mappings().fetchone()
         
             if not result:
-                raise HTTPException(status_code=404, detail="No revenue data found for this stall")
+                raise HTTPException(status_code=204, detail="No revenue data found for this stall")
         
             return result
 
@@ -115,7 +115,7 @@ async def get_stall_revenue_weekly(stall_id : int, db: Annotated[Connection, Dep
             result = db.execute(query, {"stall_id": stall_id}).mappings().fetchone()
         
             if not result:
-                raise HTTPException(status_code=404, detail="No revenue data found for this stall")
+                raise HTTPException(status_code=204, detail="No revenue data found for this stall")
         
             return result
 
@@ -146,7 +146,7 @@ async def get_stall_revenue_monthly(stall_id : int, db: Annotated[Connection, De
             result = db.execute(query, {"stall_id": stall_id}).mappings().fetchone()
         
             if not result:
-                raise HTTPException(status_code=404, detail="No revenue data found for this stall")
+                raise HTTPException(status_code=204, detail="No revenue data found for this stall")
         
             return result
 
