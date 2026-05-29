@@ -91,24 +91,14 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
                       Expanded(
                         flex: 3,
                         child: Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xFFD66F1D),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                          // decoration: BoxDecoration(
+                          //   color: Color(0xFFD66F1D),
+                          //   borderRadius: BorderRadius.circular(10),
+                          // ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Center(
-                                child: DefaultTextStyle(
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: "flame",
-                                    fontSize: 30,
-                                  ),
-                                  child: Text("$itemQuantity"),
-                                ),
-                              ),
                               Expanded(child: SizedBox()),
                               IconButton(
                                 onPressed: () {
@@ -124,6 +114,16 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
                                   "images/icons/subtract_icon.png",
                                 ),
                               ),
+                              Center(
+                                child: DefaultTextStyle(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "flame",
+                                    fontSize: 35,
+                                  ),
+                                  child: Text("$itemQuantity"),
+                                ),
+                              ),
                               IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -136,6 +136,7 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
                                   "images/icons/add_icon.png",
                                 ),
                               ),
+                              Expanded(child: SizedBox()),
                             ],
                           ),
                         ),
@@ -185,6 +186,7 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
                                           quantityOrdered: itemQuantity,
                                         ),
                                       );
+                                  Navigator.of(context).pop();
                                 }
                               },
                               child: Container(

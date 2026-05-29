@@ -64,9 +64,13 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
                         return GestureDetector(
                           onTap: () {
                             final stall = stalls[index];
-                            debugPrint('Selected stallID: ${stall.stallID}');
-                            ref.read(selectedStallProvider.notifier).selectStall(stall);
-                            Navigator.pushNamed(context, '/category_screen');
+                            if(stall.stallStatus) {
+                              debugPrint('Selected stallID: ${stall.stallID}');
+                              ref
+                                  .read(selectedStallProvider.notifier)
+                                  .selectStall(stall);
+                              Navigator.pushNamed(context, '/category_screen');
+                            }
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 10),
@@ -75,16 +79,18 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
                                   stalls[index].stallName!,
                                   style: TextStyle(
                                     color: kPrimaryColor,
                                     fontFamily: "flame",
-                                    fontSize: 14,
+                                    fontSize: 18,
                                   ),
                                 ),
+                                if(!stalls[index].stallStatus)
+                                  Text("Unavailable", style: kJetbrainsFontTitle.copyWith(fontSize: 24),),
                               ],
                             ),
                           ),
