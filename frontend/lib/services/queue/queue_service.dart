@@ -62,7 +62,7 @@ class QueueService {
   Future<dynamic> acceptOrder(int orderID, int stallID) async {
     try {
       Response response = await _dio!.patch(
-        "/owner_stall/$orderID",
+        "/owner_stallaccept_order/$orderID",
         queryParameters: {"stall_id": stallID},
       );
       if (kDebugMode) {
