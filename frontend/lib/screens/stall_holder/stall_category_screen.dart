@@ -38,7 +38,7 @@ class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/add_product_screen');
+              Navigator.pushNamed(context, '/add_category');
             },
             icon: Icon(Icons.add, color: Color(0xFFDA782B)),
           ),

@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/constants.dart';
+import 'package:frontend/models/transaction_history_model.dart';
+
+import '../../models/order_details_model.dart';
 
 class OrderDetailsModal extends StatelessWidget {
   final int? index;
+  final OrderDetailsModel? data;
+  final int? orderID;
 
-  const OrderDetailsModal({super.key, required this.index});
+  const OrderDetailsModal({
+    super.key,
+    required this.index,
+    this.data,
+    this.orderID,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final items = data!.items ?? [];
+
     return Center(
       child: Hero(
         tag: "$transactTag-$index}",
@@ -41,7 +53,7 @@ class OrderDetailsModal extends StatelessWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Customer Name',
+                        text: '${data!.customerName}',
                         style: TextStyle(color: Colors.black45),
                       ),
                     ],
@@ -56,7 +68,7 @@ class OrderDetailsModal extends StatelessWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Order Number',
+                        text: '${data!.orderNumber}',
                         style: TextStyle(color: Colors.black45),
                       ),
                     ],
@@ -71,7 +83,7 @@ class OrderDetailsModal extends StatelessWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Pending',
+                        text: '${data!.orderStatus}',
                         style: TextStyle(color: Colors.black45),
                       ),
                     ],
@@ -86,7 +98,7 @@ class OrderDetailsModal extends StatelessWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Order Time',
+                        text: '${data!.orderTime}',
                         style: TextStyle(color: Colors.black45),
                       ),
                     ],
@@ -101,7 +113,7 @@ class OrderDetailsModal extends StatelessWidget {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Cost',
+                        text: '${data!.totalCost}',
                         style: TextStyle(color: Colors.black45),
                       ),
                     ],
@@ -140,7 +152,7 @@ class OrderDetailsModal extends StatelessWidget {
                 Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.symmetric(vertical: 9),
-                    itemCount: 13,
+                    itemCount: items.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Row(
                         children: [
@@ -148,7 +160,7 @@ class OrderDetailsModal extends StatelessWidget {
                           Expanded(
                             flex: 2,
                             child: Text(
-                              "Product Name",
+                              "${items[index].productName}",
                               style: kJetbrainsDescription.copyWith(
                                 decoration: TextDecoration.none,
                                 color: kPrimaryColor,
@@ -158,7 +170,7 @@ class OrderDetailsModal extends StatelessWidget {
                           Expanded(child: SizedBox()),
                           Expanded(
                             child: Text(
-                              "x 10",
+                              "x ${items[index].quantityOrdered}",
                               style: kJetbrainsDescription.copyWith(
                                 decoration: TextDecoration.none,
                                 color: kPrimaryColor,
@@ -197,6 +209,9 @@ class OrderDetailsModal extends StatelessWidget {
                     SizedBox(width: 10),
                     Expanded(
                       child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
                         child: Container(
                           width: 80,
                           height: 40,

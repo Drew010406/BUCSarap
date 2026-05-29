@@ -141,6 +141,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                       var checkoutResponse = await orderService.checkout(selectedStall!.stallID!, currentUser);
                       var addOrderLineToDB = await orderService.insertItems(checkoutResponse['order_id'], cartProducts);
                       var submitOrder = await orderService.submitOrder(checkoutResponse['order_id'], addOrderLineToDB);
+                      ref.read(cartNotifierProvider.notifier).resetCart();
+                      Navigator.of(context ).pushNamed("/order_successful");
                     },
                     child: Container(
                       height: 52,

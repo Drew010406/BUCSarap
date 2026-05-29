@@ -118,6 +118,10 @@ class CartNotifier extends Notifier<Set<OrderLineModel>> {
           .toSet();
     }
   }
+
+  void resetCart() {
+    state = const {};
+  }
 }
 
 final cartNotifierProvider =

@@ -1,11 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/models/order_details_model.dart';
+import 'package:frontend/models/revenue_model.dart';
 import 'package:frontend/models/transaction_history_model.dart';
-import 'package:frontend/providers/cart_provider.dart';
 import 'package:frontend/providers/dio_provider.dart';
-import 'package:frontend/providers/stall_provider.dart';
 import 'package:frontend/services/history/history_service.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'transaction_history_provider.g.dart';
 
@@ -17,6 +14,30 @@ class TransactionHistoryProvider extends _$TransactionHistoryProvider {
     final historyService = ref.watch(historyServiceProvider);
     final response = await historyService.getStallHistory(stallID);
     return (response as List).map((item) => TransactionHistoryModel.fromJson(item)).toList();
+  }
+}
+
+@riverpod
+class MonthlyRevenue extends _$MonthlyRevenue {
+  @override
+  Future<RevenueModel> build() async {
+    throw UnimplementedError();
+  }
+}
+
+@riverpod
+class WeeklyRevenue extends _$WeeklyRevenue {
+  @override
+  Future<RevenueModel> build() async {
+    throw UnimplementedError();
+  }
+}
+
+@riverpod
+class DailyRevenue extends _$DailyRevenue {
+  @override
+  Future<RevenueModel> build() async {
+    throw UnimplementedError();
   }
 }
 

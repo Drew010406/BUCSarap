@@ -4,6 +4,7 @@ import 'package:frontend/providers/transaction_history_provider.dart';
 
 import '../../components/stall_holder/navigation_panel.dart';
 import '../../constants.dart';
+import '../../providers/cart_provider.dart';
 import '../../providers/owner_stall_provider.dart';
 import '../../shared/back_button_container.dart';
 import '../page_route/hero_dialog_route.dart';
@@ -75,14 +76,26 @@ class _TransactionHistoryScreenState
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          HeroDialogRoute(
-                            builder: (context) {
-                              return OrderDetailsModal(index: index);
-                            },
-                          ),
+                      onTap: () async {
+                        final orderService = ref.read(orderServiceProvider);
+                        final orderDetails = await orderService
+                            .getOrderDetails(
+                          data[index].orderID!,
+                          stallData.stallID!,
                         );
+                        setState(() {
+                          Navigator.of(context).push(
+                            HeroDialogRoute(
+                              builder: (context) {
+                                return OrderDetailsModal(
+                                  index: index,
+                                  data: orderDetails,
+                                  orderID: data[index].orderID,
+                                );
+                              },
+                            ),
+                          );
+                        });
                       },
                       child: Hero(
                         tag: "$transactTag-$index",
