@@ -73,7 +73,7 @@ async def get_owner_products_by_category(category_id : int, db : Annotated[Conne
         
         JOIN product_category pc ON pc.stall_id = s.stall_id
         JOIN product p ON p.category_id = pc.category_id
-        WHERE pc.category_id = :category_id AND p.product_status = 1
+        WHERE pc.category_id = :category_id
     """)
     
     try:
