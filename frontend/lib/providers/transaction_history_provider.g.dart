@@ -137,7 +137,7 @@ final class MonthlyRevenueProvider
   MonthlyRevenue create() => MonthlyRevenue();
 }
 
-String _$monthlyRevenueHash() => r'0d7079f9e58b68586f83834f631beee36caf5507';
+String _$monthlyRevenueHash() => r'6d0dd23d7ee870269309e4c90d5fe87b6989b131';
 
 abstract class _$MonthlyRevenue extends $AsyncNotifier<RevenueModel> {
   FutureOr<RevenueModel> build();
@@ -181,7 +181,7 @@ final class WeeklyRevenueProvider
   WeeklyRevenue create() => WeeklyRevenue();
 }
 
-String _$weeklyRevenueHash() => r'800352c3594d8a4576e9bc177e264a18a5c0bc38';
+String _$weeklyRevenueHash() => r'0fff192f0c8e43b068ebebbd789dd6f5b73b7d89';
 
 abstract class _$WeeklyRevenue extends $AsyncNotifier<RevenueModel> {
   FutureOr<RevenueModel> build();
@@ -225,7 +225,7 @@ final class DailyRevenueProvider
   DailyRevenue create() => DailyRevenue();
 }
 
-String _$dailyRevenueHash() => r'bf722fdb3f3dd047c1043835534ac18bda72aeb9';
+String _$dailyRevenueHash() => r'59859b932feb36028850cfb876705a1e106ada25';
 
 abstract class _$DailyRevenue extends $AsyncNotifier<RevenueModel> {
   FutureOr<RevenueModel> build();

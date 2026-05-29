@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:frontend/models/revenue_model.dart';
 
 import '../../models/transaction_history_model.dart';
 
@@ -59,13 +60,13 @@ class HistoryService {
     }
   }
 
-  Future<dynamic> getStallDailyRevenue(int stallID) async {
+  Future<RevenueModel> getStallDailyRevenue(int stallID) async {
     try {
       Response response = await _dio!.get("/history/revenue/$stallID/daily");
       if(kDebugMode) {
         print(response.data.toString());
       }
-      return response.data;
+      return RevenueModel.fromJson(response.data);
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
@@ -85,13 +86,13 @@ class HistoryService {
     }
   }
 
-  Future<dynamic> getStallWeeklyRevenue(int stallID) async {
+  Future<RevenueModel> getStallWeeklyRevenue(int stallID) async {
     try {
       Response response = await _dio!.get("/history/revenue/$stallID/weekly");
       if(kDebugMode) {
         print(response.data.toString());
       }
-      return response.data;
+      return RevenueModel.fromJson(response.data);
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;
@@ -111,13 +112,13 @@ class HistoryService {
     }
   }
 
-  Future<dynamic> getStallMonthlyRevenue(int stallID) async {
+  Future<RevenueModel> getStallMonthlyRevenue(int stallID) async {
     try {
       Response response = await _dio!.get("/history/revenue/$stallID/monthly");
       if(kDebugMode) {
         print(response.data.toString());
       }
-      return response.data;
+      return RevenueModel.fromJson(response.data);
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../transaction_history_model.dart';
+part of 'transaction_history_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

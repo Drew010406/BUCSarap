@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'freezed/order_line_model.freezed.dart';
+part 'order_line_model.freezed.dart';
 
-part '_g/order_line_model.g.dart';
+part 'order_line_model.g.dart';
 
 @freezed
 abstract class OrderLineModel with _$OrderLineModel {
