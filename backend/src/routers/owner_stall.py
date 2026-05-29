@@ -83,7 +83,7 @@ async def get_owner_products_by_category(category_id : int, db : Annotated[Conne
         raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
     
 """Accept order endpoint. pass in lang ang order id tapos return yung order number."""
-@route.patch("/{order_id}")
+@route.patch("accept_order/{order_id}")
 async def accept_orders(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
     
     update_query = text("""
@@ -351,3 +351,33 @@ async def add_product(owner_id: int, category_id: int, stall_id: int, product_da
     except Exception as error:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error: {str(error)}")        
+    
+@route.patch("complete_order/{order_id}")
+async def complete_order(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+    update_query = text("""
+           
+        UPDATE orders
+        SET order_status = 'Completed'
+        WHERE order_id = :o_id AND stall_id = :s_id
+        """)
+    
+    get_order_number = text("""
+               
+        SELECT order_number
+        FROM orders             
+        WHERE order_id = :o_id
+        """)
+    
+    try: 
+        results = db.execute(update_query, {"o_id": order_id, "s_id": stall_id})
+        db.commit()
+        
+        results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()        
+        order_number = results["order_number"]
+        
+        return {"message": "Successfully completed order, please come to the cashier to claim!\nYour order nunmber: {order_number}", "order_number": order_number}
+    
+    except Exception as error:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")

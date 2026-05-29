@@ -31,7 +31,7 @@ added_items = {}
     },
 )
 
-async def CreateOrder(payload: CreateOrderRequest, db: Annotated[Connection, Depends(get_db)]):
+async def Create_Order(payload: CreateOrderRequest, db: Annotated[Connection, Depends(get_db)]):
     
     verification_query = text("""
 

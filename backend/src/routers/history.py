@@ -155,3 +155,43 @@ async def get_stall_revenue_monthly(stall_id : int, db: Annotated[Connection, De
 
         except Exception as error:
             raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
+
+@route.delete("stall/{stall_id}/delete_order/{order_id}")
+async def delete_order(stall_id : int, order_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+    delete_order_line_query = text("""
+           
+        DELETE
+        FROM order_line
+        WHERE order_id = :o_id                            
+        """)
+    
+    delete_order_query =  text("""
+           
+        DELETE 
+        FROM orders
+        WHERE order_id = :o_id                            
+        """)
+    
+    check_query =  text("""
+           
+        SELECT *
+        FROM orders
+        WHERE order_id = :o_id                            
+        """)
+    
+    try: 
+        results = db.execute(delete_order_line_query, {"o_id": order_id})
+        db.commit()
+        
+        results = db.execute(delete_order_query, {"o_id": order_id})
+        db.commit()
+        
+        check = db.execute(check_query, {"o_id": order_id}).mappings().fetchone()
+        if not check:
+            return {"message": f"Successfully deleted order number {order_id} from transaction history."}
+        
+    except Exception as error:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
+        
