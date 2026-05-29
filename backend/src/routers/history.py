@@ -2,7 +2,7 @@ from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import text, Connection
 from backend.src.db.session import get_db
-from backend.src.schema.history import HistoryItem, RevenueResponse
+from backend.src.schema.history import HistoryItem, RevenueResponse, RevenueComparison
 
 route = APIRouter()
 
@@ -195,3 +195,148 @@ async def delete_order(stall_id : int, order_id: int, db: Annotated[Connection, 
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
         
+@route.get("/{stall_id}/one_day_comparison", response_model=RevenueComparison)
+async def one_day_comparison(stall_id: int, owner_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+    query = text("""
+                 
+        SELECT
+            SUM(CASE WHEN DATE(o.order_time) = CURRENT_DATE() 
+            THEN ol.quantity_ordered * ol.unit_price_at_order 
+            ELSE 0 END) AS revenue_today,
+            
+            SUM(CASE WHEN DATE(o.order_time) = CURRENT_DATE() - INTERVAL 1 DAY 
+            THEN ol.quantity_ordered * ol.unit_price_at_order 
+            ELSE 0 END) AS revenue_yesterday
+    
+        FROM orders o
+
+        JOIN stall s ON s.stall_id = o.stall_id
+        JOIN order_line ol ON ol.order_id = o.order_id
+
+        WHERE DATE(o.order_time) >= CURRENT_DATE() - INTERVAL 1 DAY AND s.stall_id = :s_id AND o.order_status = "Completed"
+        """)
+    
+    try:
+        result = db.execute(query, {"s_id": stall_id}).mappings().first()
+        
+        if result is None:
+            
+            revenue_today = 0
+            revenue_yesterday = 0
+            
+        else:
+            revenue_today = result["revenue_today"] or 0
+            revenue_yesterday = result["revenue_yesterday"] or 0
+        
+        return await comparison_helper_function(stall_id, revenue_today, revenue_yesterday)
+
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")        
+    
+    
+@route.get("/{stall_id}/weekly_comparison", response_model=RevenueComparison)
+async def weekly_comparison(stall_id: int, owner_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+    query = text("""
+                 
+        SELECT
+            SUM(CASE WHEN WEEK(o.order_time, 1) = WEEK(CURRENT_DATE(), 1) AND YEAR(CURRENT_DATE()) = YEAR(o.order_time) 
+            THEN ol.quantity_ordered * ol.unit_price_at_order 
+            ELSE 0 END) AS revenue_this_week,
+            
+            SUM(CASE WHEN WEEK(o.order_time, 1) = WEEK(CURRENT_DATE() -  INTERVAL 1 WEEK, 1) AND YEAR(CURRENT_DATE()) = YEAR(o.order_time)
+            THEN ol.quantity_ordered * ol.unit_price_at_order 
+            ELSE 0 END) AS revenue_last_week
+    
+        FROM orders o
+
+        JOIN stall s ON s.stall_id = o.stall_id
+        JOIN order_line ol ON ol.order_id = o.order_id
+
+        WHERE DATE(o.order_time) >= CURRENT_DATE() - INTERVAL 1 WEEK AND s.stall_id = :s_id AND o.order_status = "Completed"
+        """)
+    
+    try:
+        result = db.execute(query, {"s_id": stall_id}).mappings().first()
+        
+        if result is None:
+
+            revenue_this_week = 0
+            revenue_last_week = 0
+            
+        else:
+
+            revenue_this_week = result["revenue_this_week"] or 0
+            revenue_last_week = result["revenue_last_week"] or 0
+        
+        return await comparison_helper_function(stall_id, revenue_this_week, revenue_last_week)
+
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")        
+    
+    
+@route.get("/{stall_id}/monthly_comparison", response_model=RevenueComparison)
+async def monthly_comparison(stall_id: int, owner_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+    query = text("""
+                 
+        SELECT
+            SUM(CASE WHEN MONTH(o.order_time) = MONTH(CURRENT_DATE()) AND YEAR(CURRENT_DATE()) = YEAR(o.order_time) 
+            THEN ol.quantity_ordered * ol.unit_price_at_order 
+            ELSE 0 END) AS revenue_this_month,
+            
+            SUM(CASE WHEN MONTH(o.order_time) = MONTH(CURRENT_DATE() -  INTERVAL 1 MONTH) AND YEAR(CURRENT_DATE()) = YEAR(o.order_time)
+            THEN ol.quantity_ordered * ol.unit_price_at_order 
+            ELSE 0 END) AS revenue_last_month
+    
+        FROM orders o
+
+        JOIN stall s ON s.stall_id = o.stall_id
+        JOIN order_line ol ON ol.order_id = o.order_id
+
+        WHERE DATE(o.order_time) >= CURRENT_DATE() - INTERVAL 2 MONTH AND s.stall_id = :s_id AND o.order_status = "Completed"
+        """)
+    
+    try:
+        result = db.execute(query, {"s_id": stall_id}).mappings().first()
+        
+        if result is None:
+
+            revenue_this_month = 0
+            revenue_last_month = 0
+            
+        else:
+            revenue_this_month = result["revenue_this_month"] or 0
+            revenue_last_month = result["revenue_last_month"] or 0
+        
+        return await comparison_helper_function(stall_id, revenue_this_month, revenue_last_month)
+
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")        
+    
+    
+async def comparison_helper_function(stall_id: int, current_rev: float, prev_rev: float):
+        
+    revenue_difference = current_rev - prev_rev
+    
+    if prev_rev > 0:
+        percentage_change = ((current_rev - prev_rev) / prev_rev) * 100
+        
+    else:
+        percentage_change = 0 if current_rev == 0 else 100
+        
+    return RevenueComparison(
+        
+        stall_id = stall_id,
+        current_revenue = current_rev,
+        previous_revenue = prev_rev,
+        revenue_difference = revenue_difference,
+        percentage_change = round(percentage_change, 2)
+    )

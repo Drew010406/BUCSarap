@@ -1,7 +1,7 @@
 - TODO 1: Update the get_stall endpoint to also return the products of that stall
 - TODO 2: [DONE] Make a PUT/PATCH method for updating the products in a stall e.g. Remove product or mark product as Not Available
 - TODO 3: [DONE] Make a POST method for creating/adding new product/s(The product feature to)
-- TODO 4: Calculate how much increase/decrease gained based on prev month(if filtered by month), week(if filtered by week), day(and so on)
+- TODO 4: [DONE] Calculate how much increase/decrease gained based on prev month(if filtered by month), week(if filtered by week), day(and so on)
 
 - TODO 5 [DONE]: May comments akong nilagay sa orders route look for functions get_queue and add_items_
     

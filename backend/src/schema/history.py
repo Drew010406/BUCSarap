@@ -28,10 +28,19 @@ class HistoryResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     
 class RevenueResponse(BaseModel):
-    """Stall revenue summary"""
+
     stall_name: str
     stall_id: int
     stall_revenue: float
     
     model_config = ConfigDict(from_attributes=True)
     
+class RevenueComparison(BaseModel):
+    
+    stall_id: int
+    current_revenue: float
+    previous_revenue: float
+    revenue_difference: float
+    percentage_change: float
+    
+    model_config = ConfigDict(from_attributes=True)
