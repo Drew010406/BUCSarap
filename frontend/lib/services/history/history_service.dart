@@ -202,7 +202,10 @@ class HistoryService {
     }
   }
 
-  Future<RevenueComparison> getOneDayComparison(int stallID, int ownerID) async {
+  Future<RevenueComparison> getOneDayComparison(
+    int stallID,
+    int ownerID,
+  ) async {
     try {
       Response response = await _dio!.get(
         "/history/$stallID/one_day_comparison",
@@ -234,7 +237,10 @@ class HistoryService {
     }
   }
 
-  Future<RevenueComparison> getWeeklyComparison(int stallID, int ownerID) async {
+  Future<RevenueComparison> getWeeklyComparison(
+    int stallID,
+    int ownerID,
+  ) async {
     try {
       Response response = await _dio!.get(
         "/history/$stallID/weekly_comparison",
@@ -266,7 +272,10 @@ class HistoryService {
     }
   }
 
-  Future<RevenueComparison> getMonthlyComparison(int stallID, int ownerID) async {
+  Future<RevenueComparison> getMonthlyComparison(
+    int stallID,
+    int ownerID,
+  ) async {
     try {
       Response response = await _dio!.get(
         "/history/$stallID/monthly_comparison",
@@ -279,6 +288,39 @@ class HistoryService {
         return const RevenueComparison();
       }
       return RevenueComparison.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        final statusCode = e.response?.statusCode;
+        final errorData = e.response?.data;
+
+        if (statusCode == 500) {
+          final errorMessage = errorData['detail'] ?? 'Database error';
+          throw Exception(errorMessage);
+        } else {
+          throw Exception(
+            'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
+          );
+        }
+      } else {
+        throw Exception('Network error: ${e.message}');
+      }
+    }
+  }
+
+  Future<List<DailyRevenue>> getLastTenDaysRevenue(int stallID) async {
+    try {
+      Response response = await _dio!.get(
+        "/history/revenue/{stall_id}/last_10_days",
+      );
+      if (kDebugMode) {
+        print(response.data.toString());
+      }
+      if (response.data is! List) {
+        return const [];
+      }
+      return (response.data as List)
+          .map((json) => DailyRevenue.fromJson(json))
+          .toList();
     } on DioException catch (e) {
       if (e.response != null) {
         final statusCode = e.response?.statusCode;

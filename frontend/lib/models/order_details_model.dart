@@ -12,7 +12,7 @@ abstract class OrderDetailsModel with _$OrderDetailsModel {
     @JsonKey(name: "customer_name") String? customerName,
     @JsonKey(name: "order_number") String? orderNumber,
     @JsonKey(name: "order_status") String? orderStatus,
-    @JsonKey(name: "order_date") DateTime? orderTime,
+    @JsonKey(name: "order_date") String? orderTime,
     @JsonKey(name: "total_cost", fromJson: _parseDouble) double? totalCost,
     @JsonKey(name: "items") List<QueueOrderLineResponseModel>? items,
   }) = _OrderDetailsModel;

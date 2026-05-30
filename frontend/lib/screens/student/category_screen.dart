@@ -72,7 +72,10 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                           return GestureDetector(
                             onTap: () {
                               ref.read(selectedCategoryProvider.notifier).selectedCategory(stallCategories[index]);
-                              Navigator.pushNamed(context, '/menu_screen');
+                              final products = ref.watch(productsProvider);
+                              if(products.value!.isNotEmpty) {
+                                Navigator.pushNamed(context, '/menu_screen');
+                              }
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 10),

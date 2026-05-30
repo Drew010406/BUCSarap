@@ -43,15 +43,9 @@ abstract class RevenueComparison with _$RevenueComparison {
 @freezed
 abstract class DailyRevenue with _$DailyRevenue {
   const factory DailyRevenue({
-    @JsonKey(name: "stall_id") int? stallID,
-    @JsonKey(name: "current_revenue", fromJson: _parseDouble)
-    double? currentRevenue,
-    @JsonKey(name: "previous_revenue", fromJson: _parseDouble)
-    double? previousRevenue,
-    @JsonKey(name: "revenue_difference", fromJson: _parseDouble)
-    double? revenueDifference,
-    @JsonKey(name: "percentage_change", fromJson: _parseDouble)
-    double? percentageChange,
+    @JsonKey(name: "order_date") String? orderDate,
+    @JsonKey(name: "daily_revenue", fromJson: _parseDouble)
+    double? dailyRevenue,
   }) = _DailyRevenue;
 
   factory DailyRevenue.fromJson(Map<String, dynamic> json) =>

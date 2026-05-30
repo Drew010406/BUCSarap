@@ -151,8 +151,8 @@ class _StallProductScreenState extends ConsumerState<StallProductScreen> {
                                         child: Center(
                                           child: Text(
                                             data[index].productStatus
-                                                ? "Mark as Available"
-                                                : "Mark as Unavailable",
+                                                ? "Mark as Unavailable"
+                                                : "Mark as Available",
                                             style: TextStyle(
                                               color: Color(0xFF7A3D00),
                                               fontFamily: 'Flame',

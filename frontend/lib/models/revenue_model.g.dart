@@ -40,18 +40,12 @@ Map<String, dynamic> _$RevenueComparisonToJson(_RevenueComparison instance) =>
 
 _DailyRevenue _$DailyRevenueFromJson(Map<String, dynamic> json) =>
     _DailyRevenue(
-      stallID: (json['stall_id'] as num?)?.toInt(),
-      currentRevenue: _parseDouble(json['current_revenue']),
-      previousRevenue: _parseDouble(json['previous_revenue']),
-      revenueDifference: _parseDouble(json['revenue_difference']),
-      percentageChange: _parseDouble(json['percentage_change']),
+      orderDate: json['order_date'] as String?,
+      dailyRevenue: _parseDouble(json['daily_revenue']),
     );
 
 Map<String, dynamic> _$DailyRevenueToJson(_DailyRevenue instance) =>
     <String, dynamic>{
-      'stall_id': instance.stallID,
-      'current_revenue': instance.currentRevenue,
-      'previous_revenue': instance.previousRevenue,
-      'revenue_difference': instance.revenueDifference,
-      'percentage_change': instance.percentageChange,
+      'order_date': instance.orderDate,
+      'daily_revenue': instance.dailyRevenue,
     };

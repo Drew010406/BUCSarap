@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OrderDetailsModel {
 
-@JsonKey(name: "customer_name") String? get customerName;@JsonKey(name: "order_number") String? get orderNumber;@JsonKey(name: "order_status") String? get orderStatus;@JsonKey(name: "order_date") DateTime? get orderTime;@JsonKey(name: "total_cost", fromJson: _parseDouble) double? get totalCost;@JsonKey(name: "items") List<QueueOrderLineResponseModel>? get items;
+@JsonKey(name: "customer_name") String? get customerName;@JsonKey(name: "order_number") String? get orderNumber;@JsonKey(name: "order_status") String? get orderStatus;@JsonKey(name: "order_date") String? get orderTime;@JsonKey(name: "total_cost", fromJson: _parseDouble) double? get totalCost;@JsonKey(name: "items") List<QueueOrderLineResponseModel>? get items;
 /// Create a copy of OrderDetailsModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $OrderDetailsModelCopyWith<$Res>  {
   factory $OrderDetailsModelCopyWith(OrderDetailsModel value, $Res Function(OrderDetailsModel) _then) = _$OrderDetailsModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: "customer_name") String? customerName,@JsonKey(name: "order_number") String? orderNumber,@JsonKey(name: "order_status") String? orderStatus,@JsonKey(name: "order_date") DateTime? orderTime,@JsonKey(name: "total_cost", fromJson: _parseDouble) double? totalCost,@JsonKey(name: "items") List<QueueOrderLineResponseModel>? items
+@JsonKey(name: "customer_name") String? customerName,@JsonKey(name: "order_number") String? orderNumber,@JsonKey(name: "order_status") String? orderStatus,@JsonKey(name: "order_date") String? orderTime,@JsonKey(name: "total_cost", fromJson: _parseDouble) double? totalCost,@JsonKey(name: "items") List<QueueOrderLineResponseModel>? items
 });
 
 
@@ -71,7 +71,7 @@ customerName: freezed == customerName ? _self.customerName : customerName // ign
 as String?,orderNumber: freezed == orderNumber ? _self.orderNumber : orderNumber // ignore: cast_nullable_to_non_nullable
 as String?,orderStatus: freezed == orderStatus ? _self.orderStatus : orderStatus // ignore: cast_nullable_to_non_nullable
 as String?,orderTime: freezed == orderTime ? _self.orderTime : orderTime // ignore: cast_nullable_to_non_nullable
-as DateTime?,totalCost: freezed == totalCost ? _self.totalCost : totalCost // ignore: cast_nullable_to_non_nullable
+as String?,totalCost: freezed == totalCost ? _self.totalCost : totalCost // ignore: cast_nullable_to_non_nullable
 as double?,items: freezed == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
 as List<QueueOrderLineResponseModel>?,
   ));
@@ -158,7 +158,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "customer_name")  String? customerName, @JsonKey(name: "order_number")  String? orderNumber, @JsonKey(name: "order_status")  String? orderStatus, @JsonKey(name: "order_date")  DateTime? orderTime, @JsonKey(name: "total_cost", fromJson: _parseDouble)  double? totalCost, @JsonKey(name: "items")  List<QueueOrderLineResponseModel>? items)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "customer_name")  String? customerName, @JsonKey(name: "order_number")  String? orderNumber, @JsonKey(name: "order_status")  String? orderStatus, @JsonKey(name: "order_date")  String? orderTime, @JsonKey(name: "total_cost", fromJson: _parseDouble)  double? totalCost, @JsonKey(name: "items")  List<QueueOrderLineResponseModel>? items)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderDetailsModel() when $default != null:
 return $default(_that.customerName,_that.orderNumber,_that.orderStatus,_that.orderTime,_that.totalCost,_that.items);case _:
@@ -179,7 +179,7 @@ return $default(_that.customerName,_that.orderNumber,_that.orderStatus,_that.ord
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "customer_name")  String? customerName, @JsonKey(name: "order_number")  String? orderNumber, @JsonKey(name: "order_status")  String? orderStatus, @JsonKey(name: "order_date")  DateTime? orderTime, @JsonKey(name: "total_cost", fromJson: _parseDouble)  double? totalCost, @JsonKey(name: "items")  List<QueueOrderLineResponseModel>? items)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "customer_name")  String? customerName, @JsonKey(name: "order_number")  String? orderNumber, @JsonKey(name: "order_status")  String? orderStatus, @JsonKey(name: "order_date")  String? orderTime, @JsonKey(name: "total_cost", fromJson: _parseDouble)  double? totalCost, @JsonKey(name: "items")  List<QueueOrderLineResponseModel>? items)  $default,) {final _that = this;
 switch (_that) {
 case _OrderDetailsModel():
 return $default(_that.customerName,_that.orderNumber,_that.orderStatus,_that.orderTime,_that.totalCost,_that.items);case _:
@@ -199,7 +199,7 @@ return $default(_that.customerName,_that.orderNumber,_that.orderStatus,_that.ord
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "customer_name")  String? customerName, @JsonKey(name: "order_number")  String? orderNumber, @JsonKey(name: "order_status")  String? orderStatus, @JsonKey(name: "order_date")  DateTime? orderTime, @JsonKey(name: "total_cost", fromJson: _parseDouble)  double? totalCost, @JsonKey(name: "items")  List<QueueOrderLineResponseModel>? items)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "customer_name")  String? customerName, @JsonKey(name: "order_number")  String? orderNumber, @JsonKey(name: "order_status")  String? orderStatus, @JsonKey(name: "order_date")  String? orderTime, @JsonKey(name: "total_cost", fromJson: _parseDouble)  double? totalCost, @JsonKey(name: "items")  List<QueueOrderLineResponseModel>? items)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderDetailsModel() when $default != null:
 return $default(_that.customerName,_that.orderNumber,_that.orderStatus,_that.orderTime,_that.totalCost,_that.items);case _:
@@ -220,7 +220,7 @@ class _OrderDetailsModel implements OrderDetailsModel {
 @override@JsonKey(name: "customer_name") final  String? customerName;
 @override@JsonKey(name: "order_number") final  String? orderNumber;
 @override@JsonKey(name: "order_status") final  String? orderStatus;
-@override@JsonKey(name: "order_date") final  DateTime? orderTime;
+@override@JsonKey(name: "order_date") final  String? orderTime;
 @override@JsonKey(name: "total_cost", fromJson: _parseDouble) final  double? totalCost;
  final  List<QueueOrderLineResponseModel>? _items;
 @override@JsonKey(name: "items") List<QueueOrderLineResponseModel>? get items {
@@ -265,7 +265,7 @@ abstract mixin class _$OrderDetailsModelCopyWith<$Res> implements $OrderDetailsM
   factory _$OrderDetailsModelCopyWith(_OrderDetailsModel value, $Res Function(_OrderDetailsModel) _then) = __$OrderDetailsModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: "customer_name") String? customerName,@JsonKey(name: "order_number") String? orderNumber,@JsonKey(name: "order_status") String? orderStatus,@JsonKey(name: "order_date") DateTime? orderTime,@JsonKey(name: "total_cost", fromJson: _parseDouble) double? totalCost,@JsonKey(name: "items") List<QueueOrderLineResponseModel>? items
+@JsonKey(name: "customer_name") String? customerName,@JsonKey(name: "order_number") String? orderNumber,@JsonKey(name: "order_status") String? orderStatus,@JsonKey(name: "order_date") String? orderTime,@JsonKey(name: "total_cost", fromJson: _parseDouble) double? totalCost,@JsonKey(name: "items") List<QueueOrderLineResponseModel>? items
 });
 
 
@@ -288,7 +288,7 @@ customerName: freezed == customerName ? _self.customerName : customerName // ign
 as String?,orderNumber: freezed == orderNumber ? _self.orderNumber : orderNumber // ignore: cast_nullable_to_non_nullable
 as String?,orderStatus: freezed == orderStatus ? _self.orderStatus : orderStatus // ignore: cast_nullable_to_non_nullable
 as String?,orderTime: freezed == orderTime ? _self.orderTime : orderTime // ignore: cast_nullable_to_non_nullable
-as DateTime?,totalCost: freezed == totalCost ? _self.totalCost : totalCost // ignore: cast_nullable_to_non_nullable
+as String?,totalCost: freezed == totalCost ? _self.totalCost : totalCost // ignore: cast_nullable_to_non_nullable
 as double?,items: freezed == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
 as List<QueueOrderLineResponseModel>?,
   ));
