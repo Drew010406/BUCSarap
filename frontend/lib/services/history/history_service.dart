@@ -307,10 +307,10 @@ class HistoryService {
     }
   }
 
-  Future<List<DailyRevenue>> getLastTenDaysRevenue(int stallID) async {
+  Future<List<LastTenDaysRevenue>> getLastTenDaysRevenue(int stallID) async {
     try {
       Response response = await _dio!.get(
-        "/history/revenue/{stall_id}/last_10_days",
+        "/history/revenue/$stallID/last_10_days",
       );
       if (kDebugMode) {
         print(response.data.toString());
@@ -319,7 +319,7 @@ class HistoryService {
         return const [];
       }
       return (response.data as List)
-          .map((json) => DailyRevenue.fromJson(json))
+          .map((json) => LastTenDaysRevenue.fromJson(json))
           .toList();
     } on DioException catch (e) {
       if (e.response != null) {

@@ -557,22 +557,22 @@ as double?,
 
 
 /// @nodoc
-mixin _$DailyRevenue {
+mixin _$LastTenDaysRevenue {
 
-@JsonKey(name: "order_date") String? get orderDate;@JsonKey(name: "daily_revenue", fromJson: _parseDouble) double? get dailyRevenue;
-/// Create a copy of DailyRevenue
+@JsonKey(name: "order_date") String? get orderDate;@JsonKey(name: "revenue_for_the_day", fromJson: _parseDouble) double? get dailyRevenue;
+/// Create a copy of LastTenDaysRevenue
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$DailyRevenueCopyWith<DailyRevenue> get copyWith => _$DailyRevenueCopyWithImpl<DailyRevenue>(this as DailyRevenue, _$identity);
+$LastTenDaysRevenueCopyWith<LastTenDaysRevenue> get copyWith => _$LastTenDaysRevenueCopyWithImpl<LastTenDaysRevenue>(this as LastTenDaysRevenue, _$identity);
 
-  /// Serializes this DailyRevenue to a JSON map.
+  /// Serializes this LastTenDaysRevenue to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DailyRevenue&&(identical(other.orderDate, orderDate) || other.orderDate == orderDate)&&(identical(other.dailyRevenue, dailyRevenue) || other.dailyRevenue == dailyRevenue));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LastTenDaysRevenue&&(identical(other.orderDate, orderDate) || other.orderDate == orderDate)&&(identical(other.dailyRevenue, dailyRevenue) || other.dailyRevenue == dailyRevenue));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -581,18 +581,18 @@ int get hashCode => Object.hash(runtimeType,orderDate,dailyRevenue);
 
 @override
 String toString() {
-  return 'DailyRevenue(orderDate: $orderDate, dailyRevenue: $dailyRevenue)';
+  return 'LastTenDaysRevenue(orderDate: $orderDate, dailyRevenue: $dailyRevenue)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $DailyRevenueCopyWith<$Res>  {
-  factory $DailyRevenueCopyWith(DailyRevenue value, $Res Function(DailyRevenue) _then) = _$DailyRevenueCopyWithImpl;
+abstract mixin class $LastTenDaysRevenueCopyWith<$Res>  {
+  factory $LastTenDaysRevenueCopyWith(LastTenDaysRevenue value, $Res Function(LastTenDaysRevenue) _then) = _$LastTenDaysRevenueCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: "order_date") String? orderDate,@JsonKey(name: "daily_revenue", fromJson: _parseDouble) double? dailyRevenue
+@JsonKey(name: "order_date") String? orderDate,@JsonKey(name: "revenue_for_the_day", fromJson: _parseDouble) double? dailyRevenue
 });
 
 
@@ -600,14 +600,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$DailyRevenueCopyWithImpl<$Res>
-    implements $DailyRevenueCopyWith<$Res> {
-  _$DailyRevenueCopyWithImpl(this._self, this._then);
+class _$LastTenDaysRevenueCopyWithImpl<$Res>
+    implements $LastTenDaysRevenueCopyWith<$Res> {
+  _$LastTenDaysRevenueCopyWithImpl(this._self, this._then);
 
-  final DailyRevenue _self;
-  final $Res Function(DailyRevenue) _then;
+  final LastTenDaysRevenue _self;
+  final $Res Function(LastTenDaysRevenue) _then;
 
-/// Create a copy of DailyRevenue
+/// Create a copy of LastTenDaysRevenue
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? orderDate = freezed,Object? dailyRevenue = freezed,}) {
   return _then(_self.copyWith(
@@ -620,8 +620,8 @@ as double?,
 }
 
 
-/// Adds pattern-matching-related methods to [DailyRevenue].
-extension DailyRevenuePatterns on DailyRevenue {
+/// Adds pattern-matching-related methods to [LastTenDaysRevenue].
+extension LastTenDaysRevenuePatterns on LastTenDaysRevenue {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -634,10 +634,10 @@ extension DailyRevenuePatterns on DailyRevenue {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _DailyRevenue value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _LastTenDaysRevenue value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _DailyRevenue() when $default != null:
+case _LastTenDaysRevenue() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -656,10 +656,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _DailyRevenue value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _LastTenDaysRevenue value)  $default,){
 final _that = this;
 switch (_that) {
-case _DailyRevenue():
+case _LastTenDaysRevenue():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -677,10 +677,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _DailyRevenue value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _LastTenDaysRevenue value)?  $default,){
 final _that = this;
 switch (_that) {
-case _DailyRevenue() when $default != null:
+case _LastTenDaysRevenue() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -698,9 +698,9 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "order_date")  String? orderDate, @JsonKey(name: "daily_revenue", fromJson: _parseDouble)  double? dailyRevenue)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "order_date")  String? orderDate, @JsonKey(name: "revenue_for_the_day", fromJson: _parseDouble)  double? dailyRevenue)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _DailyRevenue() when $default != null:
+case _LastTenDaysRevenue() when $default != null:
 return $default(_that.orderDate,_that.dailyRevenue);case _:
   return orElse();
 
@@ -719,9 +719,9 @@ return $default(_that.orderDate,_that.dailyRevenue);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "order_date")  String? orderDate, @JsonKey(name: "daily_revenue", fromJson: _parseDouble)  double? dailyRevenue)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "order_date")  String? orderDate, @JsonKey(name: "revenue_for_the_day", fromJson: _parseDouble)  double? dailyRevenue)  $default,) {final _that = this;
 switch (_that) {
-case _DailyRevenue():
+case _LastTenDaysRevenue():
 return $default(_that.orderDate,_that.dailyRevenue);case _:
   throw StateError('Unexpected subclass');
 
@@ -739,9 +739,9 @@ return $default(_that.orderDate,_that.dailyRevenue);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "order_date")  String? orderDate, @JsonKey(name: "daily_revenue", fromJson: _parseDouble)  double? dailyRevenue)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "order_date")  String? orderDate, @JsonKey(name: "revenue_for_the_day", fromJson: _parseDouble)  double? dailyRevenue)?  $default,) {final _that = this;
 switch (_that) {
-case _DailyRevenue() when $default != null:
+case _LastTenDaysRevenue() when $default != null:
 return $default(_that.orderDate,_that.dailyRevenue);case _:
   return null;
 
@@ -753,27 +753,27 @@ return $default(_that.orderDate,_that.dailyRevenue);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _DailyRevenue implements DailyRevenue {
-  const _DailyRevenue({@JsonKey(name: "order_date") this.orderDate, @JsonKey(name: "daily_revenue", fromJson: _parseDouble) this.dailyRevenue});
-  factory _DailyRevenue.fromJson(Map<String, dynamic> json) => _$DailyRevenueFromJson(json);
+class _LastTenDaysRevenue implements LastTenDaysRevenue {
+  const _LastTenDaysRevenue({@JsonKey(name: "order_date") this.orderDate, @JsonKey(name: "revenue_for_the_day", fromJson: _parseDouble) this.dailyRevenue});
+  factory _LastTenDaysRevenue.fromJson(Map<String, dynamic> json) => _$LastTenDaysRevenueFromJson(json);
 
 @override@JsonKey(name: "order_date") final  String? orderDate;
-@override@JsonKey(name: "daily_revenue", fromJson: _parseDouble) final  double? dailyRevenue;
+@override@JsonKey(name: "revenue_for_the_day", fromJson: _parseDouble) final  double? dailyRevenue;
 
-/// Create a copy of DailyRevenue
+/// Create a copy of LastTenDaysRevenue
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$DailyRevenueCopyWith<_DailyRevenue> get copyWith => __$DailyRevenueCopyWithImpl<_DailyRevenue>(this, _$identity);
+_$LastTenDaysRevenueCopyWith<_LastTenDaysRevenue> get copyWith => __$LastTenDaysRevenueCopyWithImpl<_LastTenDaysRevenue>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$DailyRevenueToJson(this, );
+  return _$LastTenDaysRevenueToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DailyRevenue&&(identical(other.orderDate, orderDate) || other.orderDate == orderDate)&&(identical(other.dailyRevenue, dailyRevenue) || other.dailyRevenue == dailyRevenue));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LastTenDaysRevenue&&(identical(other.orderDate, orderDate) || other.orderDate == orderDate)&&(identical(other.dailyRevenue, dailyRevenue) || other.dailyRevenue == dailyRevenue));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -782,18 +782,18 @@ int get hashCode => Object.hash(runtimeType,orderDate,dailyRevenue);
 
 @override
 String toString() {
-  return 'DailyRevenue(orderDate: $orderDate, dailyRevenue: $dailyRevenue)';
+  return 'LastTenDaysRevenue(orderDate: $orderDate, dailyRevenue: $dailyRevenue)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$DailyRevenueCopyWith<$Res> implements $DailyRevenueCopyWith<$Res> {
-  factory _$DailyRevenueCopyWith(_DailyRevenue value, $Res Function(_DailyRevenue) _then) = __$DailyRevenueCopyWithImpl;
+abstract mixin class _$LastTenDaysRevenueCopyWith<$Res> implements $LastTenDaysRevenueCopyWith<$Res> {
+  factory _$LastTenDaysRevenueCopyWith(_LastTenDaysRevenue value, $Res Function(_LastTenDaysRevenue) _then) = __$LastTenDaysRevenueCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: "order_date") String? orderDate,@JsonKey(name: "daily_revenue", fromJson: _parseDouble) double? dailyRevenue
+@JsonKey(name: "order_date") String? orderDate,@JsonKey(name: "revenue_for_the_day", fromJson: _parseDouble) double? dailyRevenue
 });
 
 
@@ -801,17 +801,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$DailyRevenueCopyWithImpl<$Res>
-    implements _$DailyRevenueCopyWith<$Res> {
-  __$DailyRevenueCopyWithImpl(this._self, this._then);
+class __$LastTenDaysRevenueCopyWithImpl<$Res>
+    implements _$LastTenDaysRevenueCopyWith<$Res> {
+  __$LastTenDaysRevenueCopyWithImpl(this._self, this._then);
 
-  final _DailyRevenue _self;
-  final $Res Function(_DailyRevenue) _then;
+  final _LastTenDaysRevenue _self;
+  final $Res Function(_LastTenDaysRevenue) _then;
 
-/// Create a copy of DailyRevenue
+/// Create a copy of LastTenDaysRevenue
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? orderDate = freezed,Object? dailyRevenue = freezed,}) {
-  return _then(_DailyRevenue(
+  return _then(_LastTenDaysRevenue(
 orderDate: freezed == orderDate ? _self.orderDate : orderDate // ignore: cast_nullable_to_non_nullable
 as String?,dailyRevenue: freezed == dailyRevenue ? _self.dailyRevenue : dailyRevenue // ignore: cast_nullable_to_non_nullable
 as double?,

@@ -1,6 +1,8 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/constants.dart';
+import 'package:frontend/models/revenue_model.dart';
 import 'package:frontend/providers/transaction_history_provider.dart';
 
 import '../../components/stall_holder/navigation_panel.dart';
@@ -33,6 +35,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
     final dayComparison = ref.watch(dailyComparisonProvider);
     final weekComparison = ref.watch(weeklyComparisonProvider);
     final monthComparison = ref.watch(monthlyComparisonProvider);
+    final lastTenDaysRevenue = ref.watch(tenDaysRevenueProvider);
 
     final currentRoute = ModalRoute.of(context)?.settings.name;
 
@@ -240,18 +243,24 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                   color: Colors.green,
                                                 ),
                                                 dayComparison.when(
-                                                  loading: () => Center(child: CircularProgressIndicator(),),
-                                                  error: (err, stack) => Text("Error: $err"),
+                                                  loading: () => Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                                  error: (err, stack) =>
+                                                      Text("Error: $err"),
                                                   data: (data) {
                                                     return Text(
                                                       "+${data.percentageChange}% increase",
-                                                      style: kJetbrainsDescription
-                                                          .copyWith(
-                                                        color: Colors.green,
-                                                        fontSize: 18,
-                                                      ),
+                                                      style:
+                                                          kJetbrainsDescription
+                                                              .copyWith(
+                                                                color: Colors
+                                                                    .green,
+                                                                fontSize: 18,
+                                                              ),
                                                     );
-                                                  }
+                                                  },
                                                 ),
                                               ],
                                             ),
@@ -341,18 +350,24 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                   color: Colors.green,
                                                 ),
                                                 weekComparison.when(
-                                                    loading: () => Center(child: CircularProgressIndicator(),),
-                                                    error: (err, stack) => Text("Error: $err"),
-                                                    data: (data) {
-                                                      return Text(
-                                                        "+${data.percentageChange}% increase",
-                                                        style: kJetbrainsDescription
-                                                            .copyWith(
-                                                          color: Colors.green,
-                                                          fontSize: 18,
-                                                        ),
-                                                      );
-                                                    }
+                                                  loading: () => Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                                  error: (err, stack) =>
+                                                      Text("Error: $err"),
+                                                  data: (data) {
+                                                    return Text(
+                                                      "+${data.percentageChange}% increase",
+                                                      style:
+                                                          kJetbrainsDescription
+                                                              .copyWith(
+                                                                color: Colors
+                                                                    .green,
+                                                                fontSize: 18,
+                                                              ),
+                                                    );
+                                                  },
                                                 ),
                                               ],
                                             ),
@@ -442,18 +457,24 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                   color: Colors.green,
                                                 ),
                                                 monthComparison.when(
-                                                    loading: () => Center(child: CircularProgressIndicator(),),
-                                                    error: (err, stack) => Text("Error: $err"),
-                                                    data: (data) {
-                                                      return Text(
-                                                        "+${data.percentageChange}% increase",
-                                                        style: kJetbrainsDescription
-                                                            .copyWith(
-                                                          color: Colors.green,
-                                                          fontSize: 18,
-                                                        ),
-                                                      );
-                                                    }
+                                                  loading: () => Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                                  error: (err, stack) =>
+                                                      Text("Error: $err"),
+                                                  data: (data) {
+                                                    return Text(
+                                                      "+${data.percentageChange}% increase",
+                                                      style:
+                                                          kJetbrainsDescription
+                                                              .copyWith(
+                                                                color: Colors
+                                                                    .green,
+                                                                fontSize: 18,
+                                                              ),
+                                                    );
+                                                  },
                                                 ),
                                               ],
                                             ),
@@ -473,18 +494,59 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                       SizedBox(height: 15),
                       Text("Income History", style: kJetbrainsFontTitle),
                       SizedBox(height: 10),
-                      Container(
-                        height: 250,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFFFC570).withValues(alpha: 0.8),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 10,
-                        ),
-                        child: Column(children: []),
+                      lastTenDaysRevenue.when(
+                        loading: () =>
+                            Center(child: CircularProgressIndicator()),
+                        error: (err, stack) => Text("Error: $err"),
+                        data: (data) {
+                          var x = 0.0;
+                          return Container(
+                            height: 250,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFFFC570).withValues(alpha: 0.8),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 10,
+                            ),
+                            child: LineChart( // https://www.youtube.com/watch?v=LB7B3zudivI
+                              LineChartData(
+                                minX: 0,
+                                maxX: 9,
+                                minY: 0,
+                                gridData: FlGridData(
+                                  show: true,
+                                  getDrawingHorizontalLine: (value) {
+                                    return FlLine(strokeWidth: 1);
+                                  },
+                                  drawVerticalLine: true,
+                                  getDrawingVerticalLine: (value) {
+                                    return FlLine(strokeWidth: 1);
+                                  },
+                                ),
+                                borderData: FlBorderData(
+                                  show: true,
+                                  border: Border.all(width: 1),
+                                ),
+                                lineBarsData: [
+                                  LineChartBarData(
+                                    spots: data
+                                        .map(
+                                          (item) => FlSpot(
+                                            x++,
+                                            item.dailyRevenue?.toDouble() ??
+                                                0.0,
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),

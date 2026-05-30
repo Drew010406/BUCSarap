@@ -111,6 +111,18 @@ class MonthlyComparison extends _$MonthlyComparison {
   }
 }
 
+@riverpod
+class TenDaysRevenue extends _$TenDaysRevenue {
+  @override
+  Future<List<LastTenDaysRevenue>> build() async {
+    final historyService = ref.read(historyServiceProvider);
+    final stallData = ref.read(ownerStallProvider).value;
+    final stallID = stallData!.stallID!;
+    final response = await historyService.getLastTenDaysRevenue(stallID);
+    return response;
+  }
+}
+
 
 final historyServiceProvider = Provider<HistoryService>((ref) {
   final dio = ref.watch(dioProvider);

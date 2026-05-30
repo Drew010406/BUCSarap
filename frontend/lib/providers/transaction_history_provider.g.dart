@@ -334,3 +334,56 @@ abstract class _$MonthlyComparison extends $AsyncNotifier<RevenueComparison> {
     element.handleCreate(ref, build);
   }
 }
+
+@ProviderFor(TenDaysRevenue)
+final tenDaysRevenueProvider = TenDaysRevenueProvider._();
+
+final class TenDaysRevenueProvider
+    extends $AsyncNotifierProvider<TenDaysRevenue, List<LastTenDaysRevenue>> {
+  TenDaysRevenueProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'tenDaysRevenueProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$tenDaysRevenueHash();
+
+  @$internal
+  @override
+  TenDaysRevenue create() => TenDaysRevenue();
+}
+
+String _$tenDaysRevenueHash() => r'ab8ab6461146220025a122f4b7c936de18603fcd';
+
+abstract class _$TenDaysRevenue
+    extends $AsyncNotifier<List<LastTenDaysRevenue>> {
+  FutureOr<List<LastTenDaysRevenue>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<List<LastTenDaysRevenue>>,
+              List<LastTenDaysRevenue>
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<List<LastTenDaysRevenue>>,
+                List<LastTenDaysRevenue>
+              >,
+              AsyncValue<List<LastTenDaysRevenue>>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}

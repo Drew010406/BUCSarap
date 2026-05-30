@@ -38,14 +38,14 @@ Map<String, dynamic> _$RevenueComparisonToJson(_RevenueComparison instance) =>
       'percentage_change': instance.percentageChange,
     };
 
-_DailyRevenue _$DailyRevenueFromJson(Map<String, dynamic> json) =>
-    _DailyRevenue(
+_LastTenDaysRevenue _$LastTenDaysRevenueFromJson(Map<String, dynamic> json) =>
+    _LastTenDaysRevenue(
       orderDate: json['order_date'] as String?,
-      dailyRevenue: _parseDouble(json['daily_revenue']),
+      dailyRevenue: _parseDouble(json['revenue_for_the_day']),
     );
 
-Map<String, dynamic> _$DailyRevenueToJson(_DailyRevenue instance) =>
+Map<String, dynamic> _$LastTenDaysRevenueToJson(_LastTenDaysRevenue instance) =>
     <String, dynamic>{
       'order_date': instance.orderDate,
-      'daily_revenue': instance.dailyRevenue,
+      'revenue_for_the_day': instance.dailyRevenue,
     };
