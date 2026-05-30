@@ -16,7 +16,6 @@ from backend.src.schema.order import (
 )
 
 route = APIRouter()
-
 # Key: order_id, Value: list of added items
 added_items = {}
 
@@ -30,7 +29,6 @@ added_items = {}
         500: {"description": "Could not place order"}
     },
 )
-
 async def Create_Order(payload: CreateOrderRequest, db: Annotated[Connection, Depends(get_db)]):
     
     verification_query = text("""
@@ -181,7 +179,6 @@ async def add_items_to_order(
         "items": added_items[order_id],
         "message": f"Successfully validated items. Total items for this order: {len(added_items[order_id])}."
     }
-
 
 @route.get(
 	"/preparing_queue/{stall_id}",
@@ -434,3 +431,100 @@ async def get_order_details(order_id: int, stall_id: int, db: Annotated[Connecti
     except Exception as error:
         raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
 
+@route.patch("accept_order/{order_id}")
+async def accept_orders(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+    update_query = text("""
+           
+        UPDATE orders
+        SET order_status = 'Preparing'
+        WHERE order_id = :o_id AND stall_id = :s_id
+        """)
+    
+    get_order_number = text("""
+               
+        SELECT order_number
+        FROM orders             
+        WHERE order_id = :o_id
+        """)
+    
+    try: 
+        results = db.execute(update_query, {"o_id": order_id, "s_id": stall_id})
+        db.commit()
+        
+        results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()        
+        order_number = results["order_number"]
+        
+        return {"message": "Successfully accepted order, please wait while your order is being prepared!\nYour order nunmber: {order_number}", "order_number": order_number}
+    
+    except Exception as error:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
+
+@route.delete("/orders/{order_id}")
+async def decline_order(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+    verification_query = text("""
+
+        SELECT *
+        FROM orders 
+        WHERE order_id = :o_id AND stall_id = :s_id AND order_status = 'Pending'                 
+        """)
+    
+    results = db.execute(verification_query, {"o_id": order_id, "s_id": stall_id}).mappings().fetchone()
+
+    if not results:
+        raise HTTPException(status_code=404, detail="Order not found or Order is no longer in Pending phase.")
+
+    # First delete order line items, then delete the order
+    delete_line_items_query = text("""
+        DELETE FROM order_line 
+        WHERE order_id = :o_id        
+    """)
+    
+    delete_order_query = text("""
+        DELETE FROM orders 
+        WHERE order_id = :o_id        
+    """)
+    
+    try:
+
+        db.execute(delete_line_items_query, {"o_id": order_id})
+        db.execute(delete_order_query, {"o_id": order_id})
+        db.commit()
+        
+        return {"message": f"Successfully declined order number: {order_id}"}
+        
+    except Exception as error:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
+    
+@route.patch("complete_order/{order_id}")
+async def complete_order(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+    update_query = text("""
+           
+        UPDATE orders
+        SET order_status = 'Completed'
+        WHERE order_id = :o_id AND stall_id = :s_id
+        """)
+    
+    get_order_number = text("""
+               
+        SELECT order_number
+        FROM orders             
+        WHERE order_id = :o_id
+        """)
+    
+    try: 
+        results = db.execute(update_query, {"o_id": order_id, "s_id": stall_id})
+        db.commit()
+        
+        results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()        
+        order_number = results["order_number"]
+        
+        return {"message": "Successfully completed order, please come to the cashier to claim!\nYour order nunmber: {order_number}", "order_number": order_number}
+    
+    except Exception as error:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")

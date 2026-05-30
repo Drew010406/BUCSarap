@@ -82,37 +82,6 @@ async def get_owner_products_by_category(category_id : int, db : Annotated[Conne
     except Exception as error:
         raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
     
-"""Accept order endpoint. pass in lang ang order id tapos return yung order number."""
-@route.patch("accept_order/{order_id}")
-async def accept_orders(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
-    
-    update_query = text("""
-           
-        UPDATE orders
-        SET order_status = 'Preparing'
-        WHERE order_id = :o_id AND stall_id = :s_id
-        """)
-    
-    get_order_number = text("""
-               
-        SELECT order_number
-        FROM orders             
-        WHERE order_id = :o_id
-        """)
-    
-    try: 
-        results = db.execute(update_query, {"o_id": order_id, "s_id": stall_id})
-        db.commit()
-        
-        results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()        
-        order_number = results["order_number"]
-        
-        return {"message": "Successfully accepted order, please wait while your order is being prepared!\nYour order nunmber: {order_number}", "order_number": order_number}
-    
-    except Exception as error:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
-    
 @route.patch("/{owner_id}/products/{product_id}")
 async def update_product(product_id: int, owner_id: int, product_update: ProductUpdate, db: Annotated[Connection, Depends(get_db)]):
     
@@ -217,44 +186,6 @@ async def toggle_product_status(product_id: int, owner_id:int, db: Annotated[Con
         db.rollback()
         raise HTTPException(status_code= 500, detail=f"Database error: {str(error)}")    
 
-@route.delete("/orders/{order_id}")
-async def decline_order(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
-    
-    verification_query = text("""
-
-        SELECT *
-        FROM orders 
-        WHERE order_id = :o_id AND stall_id = :s_id AND order_status = 'Pending'                 
-        """)
-    
-    results = db.execute(verification_query, {"o_id": order_id, "s_id": stall_id}).mappings().fetchone()
-
-    if not results:
-        raise HTTPException(status_code=404, detail="Order not found or Order is no longer in Pending phase.")
-
-    # First delete order line items, then delete the order
-    delete_line_items_query = text("""
-        DELETE FROM order_line 
-        WHERE order_id = :o_id        
-    """)
-    
-    delete_order_query = text("""
-        DELETE FROM orders 
-        WHERE order_id = :o_id        
-    """)
-    
-    try:
-
-        db.execute(delete_line_items_query, {"o_id": order_id})
-        db.execute(delete_order_query, {"o_id": order_id})
-        db.commit()
-        
-        return {"message": f"Successfully declined order number: {order_id}"}
-        
-    except Exception as error:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
-
 @route.delete("/{owner_id}/products/{product_id}")
 async def delete_product(owner_id: int, product_id: int, db: Annotated[Connection, Depends(get_db)]):
     
@@ -351,33 +282,3 @@ async def add_product(owner_id: int, category_id: int, stall_id: int, product_da
     except Exception as error:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error: {str(error)}")        
-    
-@route.patch("complete_order/{order_id}")
-async def complete_order(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
-    
-    update_query = text("""
-           
-        UPDATE orders
-        SET order_status = 'Completed'
-        WHERE order_id = :o_id AND stall_id = :s_id
-        """)
-    
-    get_order_number = text("""
-               
-        SELECT order_number
-        FROM orders             
-        WHERE order_id = :o_id
-        """)
-    
-    try: 
-        results = db.execute(update_query, {"o_id": order_id, "s_id": stall_id})
-        db.commit()
-        
-        results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()        
-        order_number = results["order_number"]
-        
-        return {"message": "Successfully completed order, please come to the cashier to claim!\nYour order nunmber: {order_number}", "order_number": order_number}
-    
-    except Exception as error:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")

@@ -6,7 +6,6 @@ from backend.src.schema.product import ProductResponse, ProductInfo
 
 route = APIRouter()
 
-#Gets all the products from a category based off of the id
 @route.get("/category/{category_id}", response_model= List[ProductResponse])
 async def get_products_by_category(category_id : int, db : Annotated[Connection, Depends(get_db)]):
     
