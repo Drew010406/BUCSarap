@@ -14,12 +14,12 @@ async def get_stall_history(stall_id: int, db: Annotated[Connection, Depends(get
                  
         SELECT order_id, customer_name, order_number
         FROM orders
-        WHERE stall_id = 1 AND order_status = "Completed"
+        WHERE stall_id = :s_id AND order_status = "Completed"
         ORDER BY order_id
     """)
     
     try:
-        results = db.execute(query, {"stall_id": stall_id}).mappings().fetchall()
+        results = db.execute(query, {"s_id": stall_id}).mappings().fetchall()
         
         if not results:
             raise HTTPException(status_code=204, detail="No order history found for this stall")
