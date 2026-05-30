@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/models/revenue_model.dart';
 import 'package:frontend/providers/transaction_history_provider.dart';
-
+import 'dart:math';
 import '../../components/stall_holder/navigation_panel.dart';
 import '../../shared/back_button_container.dart';
 
@@ -500,8 +500,15 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                         error: (err, stack) => Text("Error: $err"),
                         data: (data) {
                           var x = 0.0;
+                          final double maxRevenue = data.isEmpty
+                              ? 50
+                              : data
+                              .map((e) => e.dailyRevenue?.toDouble() ?? 0.0)
+                              .reduce((a, b) => a > b ? a : b);
+
+                          final double chartMaxY = ((maxRevenue / 10).ceil() * 10 + 10).toDouble();
                           return Container(
-                            height: 250,
+                            height: 300,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color: Color(0xFFFFC570).withValues(alpha: 0.8),
@@ -511,17 +518,63 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                               vertical: 8,
                               horizontal: 10,
                             ),
-                            child: LineChart( // https://www.youtube.com/watch?v=LB7B3zudivI
+                            child: LineChart(
+                              // https://www.youtube.com/watch?v=LB7B3zudivI
+                              // https://blog.logrocket.com/build-beautiful-charts-flutter-fl-chart/
                               LineChartData(
                                 minX: 0,
                                 maxX: 9,
                                 minY: 0,
+                                maxY: chartMaxY,
+                                titlesData: FlTitlesData(
+                                  show: true,
+                                  topTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                  rightTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                  leftTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                      showTitles: true,
+                                      reservedSize: 35,
+                                      getTitlesWidget: (value, meta) {
+                                        return Text(
+                                          '₱${value.toStringAsFixed(0)}',
+                                          style: const TextStyle(
+                                            fontSize: 11,
+                                            fontFamily: 'Flame'
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  bottomTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                      showTitles: true,
+                                      reservedSize: 60,
+                                      getTitlesWidget: (value, meta) {
+                                        final int index = value.toInt();
+                                        if (index < 0 || index >= data.length) return const SizedBox();
+
+                                        final raw = data[index].orderDate ?? '';
+                                        final short = raw.replaceAll(RegExp(r',?\s*\d{4}'), '').trim();
+
+                                        return Transform.rotate(
+                                          angle: -pi / 4,
+                                          child: Text(short, style: const TextStyle(fontSize: 11, fontFamily: 'Flame')),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
                                 gridData: FlGridData(
                                   show: true,
+                                  drawHorizontalLine: false,
                                   getDrawingHorizontalLine: (value) {
                                     return FlLine(strokeWidth: 1);
                                   },
-                                  drawVerticalLine: true,
+                                  drawVerticalLine: false,
                                   getDrawingVerticalLine: (value) {
                                     return FlLine(strokeWidth: 1);
                                   },

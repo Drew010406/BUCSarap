@@ -56,6 +56,7 @@ class PreparingQueueProvider extends _$PreparingQueueProvider {
     ref.invalidate(monthlyComparisonProvider);
     ref.invalidate(weeklyComparisonProvider);
     ref.invalidate(dailyComparisonProvider);
+    ref.invalidate(tenDaysRevenueProvider);
     return response;
   }
 }
