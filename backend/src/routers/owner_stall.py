@@ -282,3 +282,120 @@ async def add_product(owner_id: int, category_id: int, stall_id: int, product_da
     except Exception as error:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error: {str(error)}")        
+    
+@route.post("/owner/{owner_id}/stall/{stall_id}/product_category/add_category")
+async def add_product_category(stall_id: int, owner_id: int, category_name: str, db: Annotated[Connection, Depends(get_db)]):
+    
+    verification_query = text("""
+                              
+           SELECT *
+           FROM stall 
+           WHERE owner_id = :o_id AND stall_id = :s_id                   
+        """)
+    
+    result = db.execute(verification_query, {"o_id": owner_id, "s_id": stall_id}).mappings().fetchone()
+    
+    if not result:
+        raise HTTPException(status_code=404, detail="Stall not found")
+    
+    duplicate_check_query = text("""
+                                 
+           SELECT * 
+           FROM product_category
+           WHERE stall_id = :s_id AND category_name = :c_name
+        """)
+
+    result = db.execute(duplicate_check_query, {"s_id": stall_id, "c_name": category_name}).mappings().fetchall()
+
+    if len(result) > 0:
+        
+        raise HTTPException(status_code=400, detail=f"Category name '{category_name}' already exists for stall {stall_id}.")
+    
+    insert_query = text("""
+            
+           INSERT INTO product_category(stall_id, category_name)
+           VALUES(:s_id, :c_name)           
+        """)
+    
+    try:
+        db.execute(insert_query, {"s_id": stall_id, "c_name": category_name})
+        db.commit()
+        
+        check_query = text("""
+               
+               SELECT *
+               FROM product_category
+               WHERE stall_id = :s_id AND category_name = :c_name             
+            """)
+        
+        result = db.execute(check_query, {"s_id": stall_id, "c_name": category_name}).mappings().fetchone()
+        category_id = result["category_id"]
+        
+        return {"message": f"Successfully created category '{category_name}' with category id: {category_id} for stall {stall_id}."}
+    
+    except Exception as error:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
+
+@route.patch("/owner/{owner_id}/stall/{stall_id}/product_category/{category_id}/rename_category")
+async def rename_category(stall_id: int, category_id: int, owner_id: int, new_category_name: str, db: Annotated[Connection, Depends(get_db)]):
+    
+    verification_query = text("""
+                              
+           SELECT *
+           FROM stall s
+           JOIN product_category pc ON pc.stall_id = s.stall_id
+           WHERE s.owner_id = :o_id AND s.stall_id = :s_id AND pc.category_id = :c_id
+        """)
+    
+    result = db.execute(verification_query, {"o_id": owner_id, "s_id": stall_id, "c_id": category_id}).mappings().fetchone()
+    
+    if not result:
+        raise HTTPException(status_code=404, detail="Could not find category with the stall and owner IDs provided")
+    
+    previous_category_name = result["category_name"]
+    
+    check_for_duplicate_query = text("""
+                              
+        SELECT *
+        FROM product_category 
+        WHERE stall_id = :s_id
+        """)
+    
+    result = db.execute(check_for_duplicate_query, {"s_id": stall_id}).mappings().fetchall()
+    
+    categories = []
+
+    for cat_name in result:
+        categories.append(cat_name["category_name"])
+
+    if new_category_name in categories:
+        raise HTTPException(status_code=400, detail=f"Category name '{new_category_name}' already exists in categories")
+    
+    update_query = text("""
+    
+            UPDATE product_category
+            SET category_name = :c_name  
+            WHERE category_id = :c_id          
+        """)
+    
+    try:
+        
+        db.execute(update_query, {"c_name": new_category_name, "c_id": category_id})
+        db.commit()
+        
+        check_query = text("""
+                           
+            SELECT *
+            FROM product_category
+            WHERE category_id = :c_id AND category_name = :c_name            
+            """)
+            
+        result = db.execute(check_query, {"c_name": new_category_name, "c_id": category_id}).mappings().fetchone()
+
+        return {"Message": f"Successfully renamed '{previous_category_name}' to '{new_category_name}'."}
+    
+    except Exception as error:
+        
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
