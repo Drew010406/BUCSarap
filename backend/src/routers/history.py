@@ -2,7 +2,7 @@ from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import text, Connection
 from backend.src.db.session import get_db
-from backend.src.schema.history import HistoryItem, RevenueResponse, RevenueComparison
+from backend.src.schema.history import HistoryItem, RevenueResponse, RevenueComparison, Daily_Revenue_Response
 
 route = APIRouter()
 
@@ -25,32 +25,39 @@ async def get_stall_history(stall_id: int, db: Annotated[Connection, Depends(get
             raise HTTPException(status_code=204, detail="No order history found for this stall")
         
         return results
-    except HTTPException:
-        raise
-
+    
     except Exception as error:
         raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
 
-@route.get("/revenue/{stall_id}/last_10_days", response_model=RevenueResponse)
-async def revenue_last_10_days(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
+@route.get("/revenue/{stall_id}/last_10_days", response_model=List[Daily_Revenue_Response])
+async def revenues_last_10_days(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
     
     query = text("""
 
-            SELECT s.stall_name, s.stall_id, SUM(ol.unit_price_at_order * ol.quantity_ordered) AS stall_revenue
-            
-
-            FROM order_line ol
-
-            JOIN orders o ON o.order_id = ol.order_id
-            JOIN product p ON ol.product_id = p.product_id
-            JOIN stall s ON s.stall_id = o.stall_id
-
-            WHERE s.stall_id = :s_id AND o.order_status = "Completed" AND (DATE(o.order_time) BETWEEN CURDATE() - INTERVAL 10 DAY AND CURDATE())
-            GROUP BY s.stall_id, s.stall_name
+        SELECT DATE_FORMAT(d.order_date, '%M %d, %Y') AS order_date, COALESCE(SUM(ol.quantity_ordered * ol.unit_price_at_order), 0) as daily_revenue
+        FROM (
+            SELECT CURRENT_DATE() - INTERVAL 0 DAY AS order_date
+            UNION ALL SELECT CURRENT_DATE() - INTERVAL 1 DAY
+            UNION ALL SELECT CURRENT_DATE() - INTERVAL 2 DAY
+            UNION ALL SELECT CURRENT_DATE() - INTERVAL 3 DAY
+            UNION ALL SELECT CURRENT_DATE() - INTERVAL 4 DAY
+            UNION ALL SELECT CURRENT_DATE() - INTERVAL 5 DAY
+            UNION ALL SELECT CURRENT_DATE() - INTERVAL 6 DAY
+            UNION ALL SELECT CURRENT_DATE() - INTERVAL 7 DAY
+            UNION ALL SELECT CURRENT_DATE() - INTERVAL 8 DAY
+            UNION ALL SELECT CURRENT_DATE() - INTERVAL 9 DAY
+        ) d
+        
+        LEFT JOIN orders o ON DATE(o.order_time) = d.order_date AND o.order_status = 'Completed'
+        LEFT JOIN order_line ol ON ol.order_id = o.order_id
+        LEFT JOIN stall s ON s.stall_id = o.stall_id AND s.stall_id = :s_id
+        
+        GROUP BY d.order_date
+        ORDER BY d.order_date ASC
     """)
     
     try:
-        result = db.execute(query, {"s_id": stall_id}).mappings().fetchone()
+        result = db.execute(query, {"s_id": stall_id}).mappings().fetchall()
         
         if not result:
             raise HTTPException(status_code=204, detail="No revenue data found for this stall")
@@ -189,7 +196,7 @@ async def get_stall_revenue_monthly(stall_id : int, db: Annotated[Connection, De
         except Exception as error:
             raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
 
-@route.delete("stall/{stall_id}/delete_order/{order_id}")
+@route.delete("/stall/{stall_id}/delete_order/{order_id}")
 async def delete_order(stall_id : int, order_id: int, db: Annotated[Connection, Depends(get_db)]):
     
     delete_order_line_query = text("""
