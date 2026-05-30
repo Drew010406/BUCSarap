@@ -1,4 +1,4 @@
-- TODO 1: Update the get_stall endpoint to also return the products of that stall
+- TODO 1: [DONE] Update the get_stall endpoint to also return the products of that stall
 - TODO 2: [DONE] Make a PUT/PATCH method for updating the products in a stall e.g. Remove product or mark product as Not Available
 - TODO 3: [DONE] Make a POST method for creating/adding new product/s(The product feature to)
 - TODO 4: [DONE] Calculate how much increase/decrease gained based on prev month(if filtered by month), week(if filtered by week), day(and so on)
@@ -11,8 +11,6 @@
                     -queue order response (order attributes + list ng queue orderline response),
 
                 also added the derived value ng order cost (total = unit price at order * quantity)            
-
-
 
 - TODO 6: [DONE] Add a get_owner_stall endpoint, should return the stall_id owned by that specific owner; why cuz in stalls.py route--the get_stall() and get_owner_stall_categories() accepts a stall_id and naisip ko sana ibase nlng sa owner_id pero ampangit ata kung ganun, para stall for stall, owner for owner approach tas nde magulo
 

@@ -36,7 +36,8 @@ async def revenue_last_10_days(stall_id: int, db: Annotated[Connection, Depends(
     
     query = text("""
 
-            SELECT s.stall_name, s.stall_id, SUM(ol.unit_price_at_order) AS stall_revenue
+            SELECT s.stall_name, s.stall_id, SUM(ol.unit_price_at_order * ol.quantity_ordered) AS stall_revenue
+            
 
             FROM order_line ol
 
@@ -61,9 +62,6 @@ async def revenue_last_10_days(stall_id: int, db: Annotated[Connection, Depends(
 
     except Exception as error:
         raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
-    
-    
-
 
 @route.get("/revenue/{stall_id}", response_model=RevenueResponse)
 #this returns the stall revenue. basically, it sums up all the unit_price_at_order
@@ -71,7 +69,7 @@ async def get_stall_revenue(stall_id: int, db: Annotated[Connection, Depends(get
 
     query = text("""
 
-        SELECT s.stall_name, s.stall_id, SUM(ol.unit_price_at_order) AS stall_revenue
+        SELECT s.stall_name, s.stall_id, SUM(ol.unit_price_at_order * ol.quantity_ordered) AS stall_revenue
 
         FROM order_line ol
 
@@ -102,7 +100,7 @@ async def get_stall_revenue_daily(stall_id : int, db: Annotated[Connection, Depe
     
         query = text("""
 
-            SELECT s.stall_name, s.stall_id, SUM(ol.unit_price_at_order) AS stall_revenue
+            SELECT s.stall_name, s.stall_id, SUM(ol.unit_price_at_order * ol.quantity_ordered) AS stall_revenue
 
             FROM order_line ol
 
@@ -133,8 +131,8 @@ async def get_stall_revenue_weekly(stall_id : int, db: Annotated[Connection, Dep
     
         query = text("""
 
-            SELECT s.stall_name, s.stall_id, SUM(ol.unit_price_at_order) AS stall_revenue
-
+            SELECT s.stall_name, s.stall_id, SUM(ol.unit_price_at_order * ol.quantity_ordered) AS stall_revenue
+            
             FROM order_line ol
 
             JOIN orders o ON o.order_id = ol.order_id
@@ -164,7 +162,8 @@ async def get_stall_revenue_monthly(stall_id : int, db: Annotated[Connection, De
     
         query = text("""
 
-            SELECT s.stall_name, s.stall_id, SUM(ol.unit_price_at_order) AS stall_revenue
+            SELECT s.stall_name, s.stall_id, SUM(ol.unit_price_at_order * ol.quantity_ordered) AS stall_revenue
+            
 
             FROM order_line ol
 
