@@ -34,7 +34,7 @@ async def revenues_last_10_days(stall_id: int, db: Annotated[Connection, Depends
     
     query = text("""
 
-        SELECT DATE_FORMAT(d.order_date, '%M %d, %Y') AS order_date, COALESCE(SUM(ol.quantity_ordered * ol.unit_price_at_order), 0) as daily_revenue
+        SELECT DATE_FORMAT(d.order_date, '%M %d, %Y') AS order_date, COALESCE(SUM(ol.quantity_ordered * ol.unit_price_at_order), 0) as revenue_for_the_day
         FROM (
             SELECT CURRENT_DATE() - INTERVAL 0 DAY AS order_date
             UNION ALL SELECT CURRENT_DATE() - INTERVAL 1 DAY

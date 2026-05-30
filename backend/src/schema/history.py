@@ -38,7 +38,7 @@ class RevenueResponse(BaseModel):
 class Daily_Revenue_Response(BaseModel):
     
     order_date : str
-    daily_revenue : float
+    revenue_for_the_day : float
     
 class RevenueComparison(BaseModel):
     
