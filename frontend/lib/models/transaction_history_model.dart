@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'freezed/transaction_history_model.freezed.dart';
+part 'transaction_history_model.freezed.dart';
 
-part '_g/transaction_history_model.g.dart';
+part 'transaction_history_model.g.dart';
 
 @freezed
 abstract class TransactionHistoryModel with _$TransactionHistoryModel {
@@ -15,3 +15,4 @@ abstract class TransactionHistoryModel with _$TransactionHistoryModel {
   factory TransactionHistoryModel.fromJson(Map<String, dynamic> json) =>
       _$TransactionHistoryModelFromJson(json);
 }
+

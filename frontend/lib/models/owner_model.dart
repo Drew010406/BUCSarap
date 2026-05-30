@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'freezed/owner_model.freezed.dart';
+part 'owner_model.freezed.dart';
 
-part '_g/owner_model.g.dart';
+part 'owner_model.g.dart';
 
 @freezed
 abstract class OwnerModel with _$OwnerModel {

@@ -30,6 +30,9 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
     final monthlyRevenue = ref.watch(monthlyRevenueProvider);
     final weeklyRevenue = ref.watch(weeklyRevenueProvider);
     final dailyRevenue = ref.watch(dailyRevenueProvider);
+    final dayComparison = ref.watch(dailyComparisonProvider);
+    final weekComparison = ref.watch(weeklyComparisonProvider);
+    final monthComparison = ref.watch(monthlyComparisonProvider);
 
     final currentRoute = ModalRoute.of(context)?.settings.name;
 
@@ -169,6 +172,17 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                     Center(child: CircularProgressIndicator()),
                                 error: (err, stack) => Text("Error: $err"),
                                 data: (data) {
+                                  if (data.stallRevenue == null ||
+                                      data.stallID == null) {
+                                    return Center(
+                                      child: Text(
+                                        "No Revenue data available",
+                                        style: kJetbrainsFontTitle.copyWith(
+                                          fontSize: 24,
+                                        ),
+                                      ),
+                                    );
+                                  }
                                   return IntrinsicHeight(
                                     child: Row(
                                       children: [
@@ -209,11 +223,8 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                 style: kJetbrainsFontTitle,
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                    text: '${data.stallRevenue}',
-                                                    style: kJetbrainsFontTitle,
-                                                  ),
-                                                  TextSpan(
-                                                    text: '',
+                                                    text:
+                                                        '${data.stallRevenue}',
                                                     style: kJetbrainsFontTitle,
                                                   ),
                                                 ],
@@ -228,13 +239,19 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                   size: 30,
                                                   color: Colors.green,
                                                 ),
-                                                Text(
-                                                  "+10% increase",
-                                                  style: kJetbrainsDescription
-                                                      .copyWith(
+                                                dayComparison.when(
+                                                  loading: () => Center(child: CircularProgressIndicator(),),
+                                                  error: (err, stack) => Text("Error: $err"),
+                                                  data: (data) {
+                                                    return Text(
+                                                      "+${data.percentageChange}% increase",
+                                                      style: kJetbrainsDescription
+                                                          .copyWith(
                                                         color: Colors.green,
                                                         fontSize: 18,
                                                       ),
+                                                    );
+                                                  }
                                                 ),
                                               ],
                                             ),
@@ -252,6 +269,17 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                     Center(child: CircularProgressIndicator()),
                                 error: (err, stack) => Text("Error: $err"),
                                 data: (data) {
+                                  if (data.stallRevenue == null ||
+                                      data.stallID == null) {
+                                    return Center(
+                                      child: Text(
+                                        "No Revenue data available",
+                                        style: kJetbrainsFontTitle.copyWith(
+                                          fontSize: 24,
+                                        ),
+                                      ),
+                                    );
+                                  }
                                   return IntrinsicHeight(
                                     child: Row(
                                       children: [
@@ -292,7 +320,8 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                 style: kJetbrainsFontTitle,
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                    text: '${data.stallRevenue}',
+                                                    text:
+                                                        '${data.stallRevenue}',
                                                     style: kJetbrainsFontTitle,
                                                   ),
                                                   TextSpan(
@@ -311,13 +340,19 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                   size: 30,
                                                   color: Colors.green,
                                                 ),
-                                                Text(
-                                                  "+10% increase",
-                                                  style: kJetbrainsDescription
-                                                      .copyWith(
-                                                        color: Colors.green,
-                                                        fontSize: 18,
-                                                      ),
+                                                weekComparison.when(
+                                                    loading: () => Center(child: CircularProgressIndicator(),),
+                                                    error: (err, stack) => Text("Error: $err"),
+                                                    data: (data) {
+                                                      return Text(
+                                                        "+${data.percentageChange}% increase",
+                                                        style: kJetbrainsDescription
+                                                            .copyWith(
+                                                          color: Colors.green,
+                                                          fontSize: 18,
+                                                        ),
+                                                      );
+                                                    }
                                                 ),
                                               ],
                                             ),
@@ -335,6 +370,17 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                     Center(child: CircularProgressIndicator()),
                                 error: (err, stack) => Text("Error: $err"),
                                 data: (data) {
+                                  if (data.stallRevenue == null ||
+                                      data.stallID == null) {
+                                    return Center(
+                                      child: Text(
+                                        "No Revenue data available",
+                                        style: kJetbrainsFontTitle.copyWith(
+                                          fontSize: 24,
+                                        ),
+                                      ),
+                                    );
+                                  }
                                   return IntrinsicHeight(
                                     child: Row(
                                       children: [
@@ -375,7 +421,8 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                 style: kJetbrainsFontTitle,
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                    text: '${data.stallRevenue}',
+                                                    text:
+                                                        '${data.stallRevenue}',
                                                     style: kJetbrainsFontTitle,
                                                   ),
                                                   TextSpan(
@@ -394,13 +441,19 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                   size: 30,
                                                   color: Colors.green,
                                                 ),
-                                                Text(
-                                                  "+10% increase",
-                                                  style: kJetbrainsDescription
-                                                      .copyWith(
-                                                        color: Colors.green,
-                                                        fontSize: 18,
-                                                      ),
+                                                monthComparison.when(
+                                                    loading: () => Center(child: CircularProgressIndicator(),),
+                                                    error: (err, stack) => Text("Error: $err"),
+                                                    data: (data) {
+                                                      return Text(
+                                                        "+${data.percentageChange}% increase",
+                                                        style: kJetbrainsDescription
+                                                            .copyWith(
+                                                          color: Colors.green,
+                                                          fontSize: 18,
+                                                        ),
+                                                      );
+                                                    }
                                                 ),
                                               ],
                                             ),

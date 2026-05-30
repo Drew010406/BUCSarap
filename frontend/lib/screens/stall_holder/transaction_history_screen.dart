@@ -67,6 +67,9 @@ class _TransactionHistoryScreenState
               loading: () => const Center(child: CircularProgressIndicator(),),
               error: (err, stack) => Text("Error: $err"),
               data: (data) {
+                if(data.isEmpty) {
+                  return Center(child: Text("No history available", style: kJetbrainsFontTitle.copyWith(fontSize: 24),),);
+                }
                 return GridView.builder(
                   itemCount: data.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
