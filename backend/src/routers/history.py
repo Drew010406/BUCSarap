@@ -30,7 +30,41 @@ async def get_stall_history(stall_id: int, db: Annotated[Connection, Depends(get
 
     except Exception as error:
         raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
+
+@route.get("/revenue/{stall_id}/last_10_days", response_model=RevenueResponse)
+async def revenue_last_10_days(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
     
+    query = text("""
+
+            SELECT s.stall_name, s.stall_id, SUM(ol.unit_price_at_order) AS stall_revenue
+
+            FROM order_line ol
+
+            JOIN orders o ON o.order_id = ol.order_id
+            JOIN product p ON ol.product_id = p.product_id
+            JOIN stall s ON s.stall_id = o.stall_id
+
+            WHERE s.stall_id = :s_id AND o.order_status = "Completed" AND (DATE(o.order_time) BETWEEN CURDATE() - INTERVAL 10 DAY AND CURDATE())
+            GROUP BY s.stall_id, s.stall_name
+    """)
+    
+    try:
+        result = db.execute(query, {"s_id": stall_id}).mappings().fetchone()
+        
+        if not result:
+            raise HTTPException(status_code=204, detail="No revenue data found for this stall")
+        
+        return result
+
+    except HTTPException:
+        raise
+
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
+    
+    
+
+
 @route.get("/revenue/{stall_id}", response_model=RevenueResponse)
 #this returns the stall revenue. basically, it sums up all the unit_price_at_order
 async def get_stall_revenue(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
