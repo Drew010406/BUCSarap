@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/models/revenue_model.dart';
 import 'package:frontend/models/transaction_history_model.dart';
 import 'package:frontend/providers/dio_provider.dart';
+import 'package:frontend/providers/owner_provider.dart';
 import 'package:frontend/providers/owner_stall_provider.dart';
 import 'package:frontend/services/history/history_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,7 +17,10 @@ class TransactionHistoryProvider extends _$TransactionHistoryProvider {
     final stallData = ref.read(ownerStallProvider).value;
     final stallID = stallData!.stallID!;
     final response = await historyService.getStallHistory(stallID);
-    return (response as List)
+    if(response is! List) {
+      return [];
+    }
+    return (response)
         .map((item) => TransactionHistoryModel.fromJson(item))
         .toList();
   }
@@ -49,7 +53,8 @@ class WeeklyRevenue extends _$WeeklyRevenue {
     final historyService = ref.read(historyServiceProvider);
     final stallData = ref.read(ownerStallProvider).value;
     final stallID = stallData!.stallID!;
-    return await historyService.getStallWeeklyRevenue(stallID);
+    final response =  await historyService.getStallWeeklyRevenue(stallID);
+    return response;
   }
 }
 
@@ -63,6 +68,43 @@ class DailyRevenue extends _$DailyRevenue {
     return await historyService.getStallDailyRevenue(stallID);
   }
 }
+
+@riverpod
+class DailyComparison extends _$DailyComparison {
+  @override
+  Future<RevenueComparison> build() async {
+    final historyService = ref.read(historyServiceProvider);
+    final stallData = ref.read(ownerStallProvider).value;
+    final stallID = stallData!.stallID!;
+    final ownerID = ref.read(ownerNotifierProvider);
+    return await historyService.getOneDayComparison(stallID, ownerID!);
+  }
+}
+
+@riverpod
+class WeeklyComparison extends _$WeeklyComparison {
+  @override
+  Future<RevenueComparison> build() async {
+    final historyService = ref.read(historyServiceProvider);
+    final stallData = ref.read(ownerStallProvider).value;
+    final stallID = stallData!.stallID!;
+    final ownerID = ref.read(ownerNotifierProvider);
+    return await historyService.getWeeklyComparison(stallID, ownerID!);
+  }
+}
+
+@riverpod
+class MonthlyComparison extends _$MonthlyComparison {
+  @override
+  Future<RevenueComparison> build() async {
+    final historyService = ref.read(historyServiceProvider);
+    final stallData = ref.read(ownerStallProvider).value;
+    final stallID = stallData!.stallID!;
+    final ownerID = ref.read(ownerNotifierProvider);
+    return await historyService.getMonthlyComparison(stallID, ownerID!);
+  }
+}
+
 
 final historyServiceProvider = Provider<HistoryService>((ref) {
   final dio = ref.watch(dioProvider);

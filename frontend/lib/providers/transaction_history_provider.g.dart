@@ -39,7 +39,7 @@ final class TransactionHistoryProviderProvider
 }
 
 String _$transactionHistoryProviderHash() =>
-    r'dfbfb1dc536f333fd4a0f3c310234df2ce43a4d4';
+    r'dce452dbb14b1586e76d5579fcf88188ae197716';
 
 abstract class _$TransactionHistoryProvider
     extends $AsyncNotifier<List<TransactionHistoryModel>> {
@@ -136,7 +136,7 @@ final class WeeklyRevenueProvider
   WeeklyRevenue create() => WeeklyRevenue();
 }
 
-String _$weeklyRevenueHash() => r'0fff192f0c8e43b068ebebbd789dd6f5b73b7d89';
+String _$weeklyRevenueHash() => r'f4d0c8fb8e726d54d7a751e2ec855065adf6a9ab';
 
 abstract class _$WeeklyRevenue extends $AsyncNotifier<RevenueModel> {
   FutureOr<RevenueModel> build();
@@ -193,6 +193,141 @@ abstract class _$DailyRevenue extends $AsyncNotifier<RevenueModel> {
             as $ClassProviderElement<
               AnyNotifier<AsyncValue<RevenueModel>, RevenueModel>,
               AsyncValue<RevenueModel>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
+
+@ProviderFor(DailyComparison)
+final dailyComparisonProvider = DailyComparisonProvider._();
+
+final class DailyComparisonProvider
+    extends $AsyncNotifierProvider<DailyComparison, RevenueComparison> {
+  DailyComparisonProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dailyComparisonProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$dailyComparisonHash();
+
+  @$internal
+  @override
+  DailyComparison create() => DailyComparison();
+}
+
+String _$dailyComparisonHash() => r'f0fe79a99183a234575e801412aea461c7731382';
+
+abstract class _$DailyComparison extends $AsyncNotifier<RevenueComparison> {
+  FutureOr<RevenueComparison> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref =
+        this.ref as $Ref<AsyncValue<RevenueComparison>, RevenueComparison>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<RevenueComparison>, RevenueComparison>,
+              AsyncValue<RevenueComparison>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
+
+@ProviderFor(WeeklyComparison)
+final weeklyComparisonProvider = WeeklyComparisonProvider._();
+
+final class WeeklyComparisonProvider
+    extends $AsyncNotifierProvider<WeeklyComparison, RevenueComparison> {
+  WeeklyComparisonProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'weeklyComparisonProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$weeklyComparisonHash();
+
+  @$internal
+  @override
+  WeeklyComparison create() => WeeklyComparison();
+}
+
+String _$weeklyComparisonHash() => r'cb3bb3b00f17a9e921c505bb7b72a0a1634d0f19';
+
+abstract class _$WeeklyComparison extends $AsyncNotifier<RevenueComparison> {
+  FutureOr<RevenueComparison> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref =
+        this.ref as $Ref<AsyncValue<RevenueComparison>, RevenueComparison>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<RevenueComparison>, RevenueComparison>,
+              AsyncValue<RevenueComparison>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
+
+@ProviderFor(MonthlyComparison)
+final monthlyComparisonProvider = MonthlyComparisonProvider._();
+
+final class MonthlyComparisonProvider
+    extends $AsyncNotifierProvider<MonthlyComparison, RevenueComparison> {
+  MonthlyComparisonProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'monthlyComparisonProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$monthlyComparisonHash();
+
+  @$internal
+  @override
+  MonthlyComparison create() => MonthlyComparison();
+}
+
+String _$monthlyComparisonHash() => r'9b326056f13f4166491eb449abfdd3194e6c9dde';
+
+abstract class _$MonthlyComparison extends $AsyncNotifier<RevenueComparison> {
+  FutureOr<RevenueComparison> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref =
+        this.ref as $Ref<AsyncValue<RevenueComparison>, RevenueComparison>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<RevenueComparison>, RevenueComparison>,
+              AsyncValue<RevenueComparison>,
               Object?,
               Object?
             >;

@@ -62,7 +62,7 @@ class QueueService {
   Future<dynamic> acceptOrder(int orderID, int stallID) async {
     try {
       Response response = await _dio!.patch(
-        "/owner_stallaccept_order/$orderID",
+        "/ordersaccept_order/$orderID",
         queryParameters: {"stall_id": stallID},
       );
       if (kDebugMode) {
@@ -91,7 +91,7 @@ class QueueService {
   Future<dynamic> completeOrder(int orderID, int stallID) async {
     try {
       Response response = await _dio!.patch(
-        "/owner_stallcomplete_order/$orderID",
+        "/orderscomplete_order/$orderID",
         queryParameters: {"stall_id": stallID},
       );
       if (kDebugMode) {
@@ -120,7 +120,7 @@ class QueueService {
   Future<dynamic> declineOrder(int orderID, int stallID) async {
     try {
       Response response = await _dio!.delete(
-        "/owner_stall/orders/$orderID",
+        "/orders/orders/$orderID",
         queryParameters: {"stall_id": stallID},
       );
       if (kDebugMode) {
