@@ -50,6 +50,12 @@ class PreparingQueueProvider extends _$PreparingQueueProvider {
     final response =  await queueService.completeOrder(orderID, stallID);
     ref.invalidateSelf();
     ref.invalidate(transactionHistoryProviderProvider);
+    ref.invalidate(monthlyRevenueProvider);
+    ref.invalidate(weeklyRevenueProvider);
+    ref.invalidate(dailyRevenueProvider);
+    ref.invalidate(monthlyComparisonProvider);
+    ref.invalidate(weeklyComparisonProvider);
+    ref.invalidate(dailyComparisonProvider);
     return response;
   }
 }

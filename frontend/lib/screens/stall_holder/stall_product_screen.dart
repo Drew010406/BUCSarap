@@ -43,8 +43,8 @@ class _StallProductScreenState extends ConsumerState<StallProductScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Text("Stall Products", style: kJetbrainsFontTitle,),
-          SizedBox(height: 10,),
+          Text("Stall Products", style: kJetbrainsFontTitle),
+          SizedBox(height: 10),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(
@@ -88,6 +88,16 @@ class _StallProductScreenState extends ConsumerState<StallProductScreen> {
                                 children: [
                                   Expanded(
                                     child: GestureDetector(
+                                      onTap: () async {
+                                        await ref
+                                            .read(
+                                              ownerStallProductsByCategoryProviderProvider
+                                                  .notifier,
+                                            )
+                                            .deleteProduct(
+                                              data[index].productID!,
+                                            );
+                                      },
                                       child: Container(
                                         height: 42,
                                         decoration: BoxDecoration(
@@ -114,6 +124,16 @@ class _StallProductScreenState extends ConsumerState<StallProductScreen> {
                                   SizedBox(height: 2),
                                   Expanded(
                                     child: GestureDetector(
+                                      onTap: () async {
+                                        await ref
+                                            .read(
+                                              ownerStallProductsByCategoryProviderProvider
+                                                  .notifier,
+                                            )
+                                            .toggleProductStatus(
+                                              data[index].productID!,
+                                            );
+                                      },
                                       child: Container(
                                         height: 38,
                                         decoration: BoxDecoration(
@@ -130,7 +150,9 @@ class _StallProductScreenState extends ConsumerState<StallProductScreen> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            'Not available',
+                                            data[index].productStatus
+                                                ? "Mark as Available"
+                                                : "Mark as Unavailable",
                                             style: TextStyle(
                                               color: Color(0xFF7A3D00),
                                               fontFamily: 'Flame',

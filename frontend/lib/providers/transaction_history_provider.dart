@@ -31,6 +31,12 @@ class TransactionHistoryProvider extends _$TransactionHistoryProvider {
     final stallID = stallData!.stallID!;
     final response =  await historyService.deleteItemHistory(stallID, orderID);
     ref.invalidateSelf();
+    ref.invalidate(monthlyRevenueProvider);
+    ref.invalidate(weeklyRevenueProvider);
+    ref.invalidate(dailyRevenueProvider);
+    ref.invalidate(monthlyComparisonProvider);
+    ref.invalidate(weeklyComparisonProvider);
+    ref.invalidate(dailyComparisonProvider);
     return response;
   }
 }

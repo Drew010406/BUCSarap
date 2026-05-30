@@ -96,7 +96,7 @@ final class PreparingQueueProviderProvider
 }
 
 String _$preparingQueueProviderHash() =>
-    r'144faf24139807136e5fa2a9421f3e076f5a85f8';
+    r'1a31520566ca7dcb32b79c4ed07ce3d40329bb62';
 
 abstract class _$PreparingQueueProvider
     extends $AsyncNotifier<List<TransactionHistoryModel>> {

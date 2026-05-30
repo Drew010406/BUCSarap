@@ -11,9 +11,9 @@ _OrderDetailsModel _$OrderDetailsModelFromJson(Map<String, dynamic> json) =>
       customerName: json['customer_name'] as String?,
       orderNumber: json['order_number'] as String?,
       orderStatus: json['order_status'] as String?,
-      orderTime: json['order_time'] == null
+      orderTime: json['order_date'] == null
           ? null
-          : DateTime.parse(json['order_time'] as String),
+          : DateTime.parse(json['order_date'] as String),
       totalCost: _parseDouble(json['total_cost']),
       items: (json['items'] as List<dynamic>?)
           ?.map(
@@ -28,7 +28,7 @@ Map<String, dynamic> _$OrderDetailsModelToJson(_OrderDetailsModel instance) =>
       'customer_name': instance.customerName,
       'order_number': instance.orderNumber,
       'order_status': instance.orderStatus,
-      'order_time': instance.orderTime?.toIso8601String(),
+      'order_date': instance.orderTime?.toIso8601String(),
       'total_cost': instance.totalCost,
       'items': instance.items,
     };

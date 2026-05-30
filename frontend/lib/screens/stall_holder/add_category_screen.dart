@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/providers/owner_stall_provider.dart';
 
 import '../../constants.dart';
 import '../../shared/back_button_container.dart';
 
-class AddCategoryScreen extends StatefulWidget {
+class AddCategoryScreen extends ConsumerStatefulWidget {
   const AddCategoryScreen({super.key});
 
   @override
-  State<AddCategoryScreen> createState() => _AddCategoryScreenState();
+  ConsumerState<AddCategoryScreen> createState() => _AddCategoryScreenState();
 }
 
-class _AddCategoryScreenState extends State<AddCategoryScreen> {
+class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
+  final nameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +36,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             Text('Category Name', style: kJetbrainsFontTitle.copyWith(fontSize: 24)),
             SizedBox(height: 20,),
             TextField(
+              controller: nameController,
               style: TextStyle(color: Colors.black, fontFamily: "Flame"),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -44,8 +49,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             ),
             SizedBox(height: 30,),
             GestureDetector(
-              onTap: () {
-                // Navigator.pushNamed(context, '/stall_holder_screen');
+              onTap: () async {
+                await ref.read(ownerStallCategoryProviderProvider.notifier).addNewCategory(nameController.text);
               },
               child: Container(
                 height: 45,

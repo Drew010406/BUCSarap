@@ -214,4 +214,71 @@ class OwnerStallService {
       }
     }
   }
+
+  Future<dynamic> addProductCategory(
+    int ownerID,
+    int stallID,
+    String categoryName,
+  ) async {
+    try {
+      Response response = await _dio.post(
+        "/owner_stall/owner/$ownerID/stall/$stallID/product_category/add_category",
+        queryParameters: {"category_name": categoryName},
+      );
+      if (kDebugMode) {
+        print(response.data.toString());
+      }
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        final statusCode = e.response?.statusCode;
+        final errorData = e.response?.data;
+
+        if (statusCode == 500) {
+          final errorMessage = errorData['detail'] ?? 'Database error';
+          throw Exception(errorMessage);
+        } else {
+          throw Exception(
+            'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
+          );
+        }
+      } else {
+        throw Exception('Network error: ${e.message}');
+      }
+    }
+  }
+
+  Future<dynamic> renameCategory(
+    int ownerID,
+    int stallID,
+    int categoryID,
+    String categoryName,
+  ) async {
+    try {
+      Response response = await _dio.patch(
+        "/owner_stall/owner/$ownerID/stall/$stallID/product_category/$categoryID/rename_category",
+        queryParameters: {"new_category_name": categoryName},
+      );
+      if (kDebugMode) {
+        print(response.data.toString());
+      }
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        final statusCode = e.response?.statusCode;
+        final errorData = e.response?.data;
+
+        if (statusCode == 500) {
+          final errorMessage = errorData['detail'] ?? 'Database error';
+          throw Exception(errorMessage);
+        } else {
+          throw Exception(
+            'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
+          );
+        }
+      } else {
+        throw Exception('Network error: ${e.message}');
+      }
+    }
+  }
 }

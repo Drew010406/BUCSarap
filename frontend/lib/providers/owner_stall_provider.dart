@@ -13,20 +13,33 @@ part 'owner_stall_provider.g.dart';
 class OwnerStallCategoryProvider extends _$OwnerStallCategoryProvider {
   @override
   Future<List<CategoryInfoModel>> build() async {
-    final ownerID = ref.watch(ownerNotifierProvider);
+    final ownerID = ref.read(ownerNotifierProvider);
     final stallData = ref.read(ownerStallProvider).value;
     final int stallID = stallData!.stallID!;
     if (ownerID == null) throw Exception("Not logged in");
-    final ownerStallService = ref.watch(ownerStallServiceProvider);
+    final ownerStallService = ref.read(ownerStallServiceProvider);
     return await ownerStallService.getOwnerStallCategories(ownerID, stallID);
   }
 
-  Future<dynamic> deleteCategory(int categoryID) async {
-
+  Future<dynamic> addNewCategory(String categoryName) async {
+    final ownerID = ref.read(ownerNotifierProvider);
+    final stallData = ref.read(ownerStallProvider).value;
+    final int stallID = stallData!.stallID!;
+    final ownerStallService = ref.read(ownerStallServiceProvider);
+    final response =  await ownerStallService.addProductCategory(ownerID!, stallID, categoryName);
+    ref.invalidateSelf();
+    return response;
   }
 
-  Future<dynamic> renameCategory(int categoryID) async {
-
+  Future<dynamic> renameCategory(String categoryName) async {
+    final ownerID = ref.read(ownerNotifierProvider);
+    final stallData = ref.read(ownerStallProvider).value;
+    final int stallID = stallData!.stallID!;
+    final categoryID = ref.read(currentCategoryProvider);
+    final ownerStallService = ref.watch(ownerStallServiceProvider);
+    final response =  await ownerStallService.renameCategory(ownerID!, stallID, categoryID!, categoryName);
+    ref.invalidateSelf();
+    return response;
   }
 }
 
@@ -35,27 +48,52 @@ class CurrentCategory extends Notifier<int?> {
   int? build() {
     return 0;
   }
+
   set categoryID(int catID) {
     state = catID;
   }
 }
 
-final currentCategoryProvider = NotifierProvider<CurrentCategory, int?>(() => CurrentCategory());
+final currentCategoryProvider = NotifierProvider<CurrentCategory, int?>(
+  () => CurrentCategory(),
+);
+
 @riverpod
-class OwnerStallProductsByCategoryProvider extends _$OwnerStallProductsByCategoryProvider {
+class OwnerStallProductsByCategoryProvider
+    extends _$OwnerStallProductsByCategoryProvider {
+
   @override
   Future<List<ProductResponseModel>> build() async {
-    final ownerStallService = ref.watch(ownerStallServiceProvider);
-    final categoryID = ref.watch(currentCategoryProvider);
+    final ownerStallService = ref.read(ownerStallServiceProvider);
+    final categoryID = ref.read(currentCategoryProvider);
     return await ownerStallService.getOwnerStallProductsByCategory(categoryID!);
   }
 
-  Future<dynamic> deleteProduct(int ownerID, int productID) async {
-
+  Future<dynamic> toggleProductStatus(int productID) async {
+    final ownerID = ref.read(ownerNotifierProvider);
+    final ownerStallService = ref.read(ownerStallServiceProvider);
+    final response = await ownerStallService.toggleProductStatus(ownerID!, productID);
+    ref.invalidateSelf();
+    return response;
   }
 
-  Future<dynamic> addProduct(int ownerID, int stallID, int categoryID) async {
+  Future<dynamic> deleteProduct(int productID) async {
+    final ownerID = ref.read(ownerNotifierProvider);
+    final ownerStallService = ref.read(ownerStallServiceProvider);
+    final response = await ownerStallService.deleteProduct(ownerID!, productID);
+    ref.invalidateSelf();
+    return response;
+  }
 
+  Future<dynamic> addProduct(ProductCreateModel data) async {
+    final ownerID = ref.read(ownerNotifierProvider);
+    final stallData = ref.read(ownerStallProvider).value;
+    final int stallID = stallData!.stallID!;
+    final categoryID = ref.read(currentCategoryProvider);
+    final ownerStallService = ref.read(ownerStallServiceProvider);
+    final response = await ownerStallService.addProduct(ownerID!, categoryID!, stallID, data);
+    ref.invalidateSelf();
+    return response;
   }
 }
 
@@ -80,4 +118,3 @@ final ownerStallServiceProvider = Provider<OwnerStallService>((ref) {
   final dio = ref.watch(dioProvider);
   return OwnerStallService(dio: dio);
 });
-

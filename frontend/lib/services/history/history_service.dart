@@ -177,7 +177,7 @@ class HistoryService {
   Future<dynamic> deleteItemHistory(int stallID, int orderID) async {
     try {
       Response response = await _dio!.delete(
-        "/historystall/$stallID/delete_order/$orderID",
+        "/history/stall/$stallID/delete_order/$orderID",
       );
       if (kDebugMode) {
         print(response.data.toString());

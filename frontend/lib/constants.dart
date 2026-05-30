@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 final String itemTag = "item-popup";
 final String queueTag = "queue-popup";
 final String transactTag = "transact-popup";
+final String editTag = "edit-popup";
+
 // Colors
 final Color kPrimaryColor = Color(0xFF5D371A);
-final Color kCardColor = Color(0xFF);
 // TextStyles
 final TextStyle kJetbrainsFontTitle = TextStyle(
   color: Color(0xFF5D371A),

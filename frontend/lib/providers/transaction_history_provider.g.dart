@@ -39,7 +39,7 @@ final class TransactionHistoryProviderProvider
 }
 
 String _$transactionHistoryProviderHash() =>
-    r'dce452dbb14b1586e76d5579fcf88188ae197716';
+    r'33c02286d77ddd07351bde3f1136dd0f147b9384';
 
 abstract class _$TransactionHistoryProvider
     extends $AsyncNotifier<List<TransactionHistoryModel>> {
@@ -224,7 +224,7 @@ final class DailyComparisonProvider
   DailyComparison create() => DailyComparison();
 }
 
-String _$dailyComparisonHash() => r'f0fe79a99183a234575e801412aea461c7731382';
+String _$dailyComparisonHash() => r'08599b2abebd0d583b08c4bfa1ffe02d83e29aec';
 
 abstract class _$DailyComparison extends $AsyncNotifier<RevenueComparison> {
   FutureOr<RevenueComparison> build();
@@ -269,7 +269,7 @@ final class WeeklyComparisonProvider
   WeeklyComparison create() => WeeklyComparison();
 }
 
-String _$weeklyComparisonHash() => r'cb3bb3b00f17a9e921c505bb7b72a0a1634d0f19';
+String _$weeklyComparisonHash() => r'7abe193ac6ba08f3a7151c70b2ea47e767a3f887';
 
 abstract class _$WeeklyComparison extends $AsyncNotifier<RevenueComparison> {
   FutureOr<RevenueComparison> build();
@@ -314,7 +314,7 @@ final class MonthlyComparisonProvider
   MonthlyComparison create() => MonthlyComparison();
 }
 
-String _$monthlyComparisonHash() => r'9b326056f13f4166491eb449abfdd3194e6c9dde';
+String _$monthlyComparisonHash() => r'668148c8870265c918f001d1656a8b248c1d9396';
 
 abstract class _$MonthlyComparison extends $AsyncNotifier<RevenueComparison> {
   FutureOr<RevenueComparison> build();
