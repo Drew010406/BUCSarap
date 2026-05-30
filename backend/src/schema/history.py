@@ -35,6 +35,11 @@ class RevenueResponse(BaseModel):
     
     model_config = ConfigDict(from_attributes=True)
     
+class Daily_Revenue_Response(BaseModel):
+    
+    order_date : str
+    daily_revenue : float
+    
 class RevenueComparison(BaseModel):
     
     stall_id: int
