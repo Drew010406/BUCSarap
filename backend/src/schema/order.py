@@ -70,7 +70,7 @@ class QueueOrderResponse(BaseModel):
     customer_name : str | None    
     order_number: str
     order_status : str
-    order_time : datetime
+    order_date : str
     total_cost : Decimal
     items : List[QueueOrderLineResponse]
     

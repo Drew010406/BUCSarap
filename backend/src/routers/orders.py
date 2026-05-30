@@ -390,7 +390,12 @@ async def get_order_details(order_id: int, stall_id: int, db: Annotated[Connecti
     
     query = text("""
                  
-        SELECT o.customer_name, o.order_number, o.order_status, o.order_time, o.stall_id, p.product_name, ol.quantity_ordered, ol.unit_price_at_order
+        SELECT o.customer_name, o.order_number, o.order_status, DATE_FORMAT(o.order_time, '%M %d, %Y : %h:%i:%s %p') AS order_date, 
+        o.stall_id,
+        p.product_name,
+        ol.quantity_ordered,
+        ol.unit_price_at_order
+
         FROM orders o
         JOIN order_line ol ON ol.order_id = o.order_id
         JOIN product p ON p.product_id = ol.product_id
@@ -412,7 +417,7 @@ async def get_order_details(order_id: int, stall_id: int, db: Annotated[Connecti
             customer_name=results[0]["customer_name"],
             order_number=results[0]["order_number"],
             order_status=results[0]["order_status"],
-            order_time=results[0]["order_time"],
+            order_date=results[0]["order_date"],
             total_cost=sum(row["unit_price_at_order"] * row["quantity_ordered"] for row in results),
             
             items=[
