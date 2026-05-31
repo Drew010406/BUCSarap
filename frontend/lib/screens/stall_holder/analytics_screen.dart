@@ -2,7 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/constants.dart';
-import 'package:frontend/models/revenue_model.dart';
 import 'package:frontend/providers/transaction_history_provider.dart';
 import 'dart:math';
 import '../../components/stall_holder/navigation_panel.dart';
@@ -38,7 +37,15 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
     final lastTenDaysRevenue = ref.watch(tenDaysRevenueProvider);
 
     final currentRoute = ModalRoute.of(context)?.settings.name;
+    final List<String> months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    DateTime now = DateTime.now();
 
+    int currentYear = now.year;
+    int currentMonth = now.month;
+    String currentMonthName = months[currentMonth - 1];
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 110,
@@ -196,7 +203,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                           children: [
                                             Text.rich(
                                               TextSpan(
-                                                text: 'April ',
+                                                text: '$currentMonthName ',
                                                 style: kJetbrainsDescription
                                                     .copyWith(
                                                       fontWeight:
@@ -206,7 +213,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                     ),
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                    text: '2026',
+                                                    text: '$currentYear',
                                                     style: kJetbrainsDescription
                                                         .copyWith(
                                                           color: Color(
