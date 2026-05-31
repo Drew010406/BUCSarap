@@ -585,7 +585,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                 ),
                                 lineBarsData: [
                                   LineChartBarData(
-                                    color: Colors.brown,
+                                    color: Color(0xFFDA782B),
                                     barWidth: 3,
                                     isCurved: true,
                                     curveSmoothness: 0.3,
