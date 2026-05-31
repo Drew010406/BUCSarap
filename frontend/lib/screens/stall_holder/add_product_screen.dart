@@ -7,11 +7,10 @@ import 'package:frontend/constants.dart';
 import 'package:frontend/providers/owner_stall_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../models/product_model.dart';
 import '../../shared/back_button_container.dart';
-
-File? _pickedImageFile;
 
 class AddProductScreen extends ConsumerStatefulWidget {
   const AddProductScreen({super.key});
@@ -29,30 +28,6 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
   double _alignmentY = 0.0;
   String imagePath = '';
 
-  // Na-cow
-  Future<void> _saveImage(File file, String fileName) async {
-    try {
-      final Directory appDocDir = await getApplicationDocumentsDirectory();
-      final String directoryPath = '${appDocDir.path}/images/foods';
-      final Directory targetDir = Directory(directoryPath);
-
-      if (!await targetDir.exists()) {
-        await targetDir.create(recursive: true);
-      }
-
-      final String filePath = '$directoryPath/$fileName';
-      await file.copy(filePath);
-
-      setState(() {
-        imagePath = filePath;
-      });
-      
-      print('Image saved to: $filePath');
-    } catch (e) {
-      print('Error saving image: $e');
-    }
-  }
-
   // https://www.geeksforgeeks.org/flutter/gallery-access-in-flutter/
   Future getImage(ImageSource img) async {
     // pick image from gallary
@@ -66,8 +41,8 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
         galleryFile = file;
         _alignmentX = 0.0;
         _alignmentY = 0.0;
+        imagePath = 'uploads/${pickedFile.name}';
       });
-      await _saveImage(file, pickedFile.name);
     } else {
       if (mounted) {
         ScaffoldMessenger.of(
@@ -75,6 +50,19 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
         ).showSnackBar(const SnackBar(content: Text('Nothing is selected')));
       }
     }
+  }
+
+  // https://www.youtube.com/watch?v=1Xhv0NS_u4U
+  Future uploadImage() async {
+    if (galleryFile == null) return;
+    await Supabase.instance.client.storage
+        .from("images")
+        .upload(imagePath, galleryFile!)
+        .then(
+          (value) => ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Image upload successful!")),
+          ),
+        );
   }
 
   void _showPicker({required BuildContext context}) {
@@ -106,13 +94,14 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       },
     );
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     productPriceController.dispose();
-    productPriceController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -217,12 +206,15 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
               onTap: () async {
                 await ref
                     .read(ownerStallProductsByCategoryProviderProvider.notifier)
-                    .addProduct(ProductCreateModel(
-                  productName: productNameController.text,
-                  productPrice: double.parse(productPriceController.text),
-                  photoPath: imagePath,
-                  productStatus: false
-                ));
+                    .addProduct(
+                      ProductCreateModel(
+                        productName: productNameController.text,
+                        productPrice: double.parse(productPriceController.text),
+                        photoPath: imagePath,
+                        productStatus: false,
+                      ),
+                    );
+                await uploadImage();
                 Navigator.pop(context);
               },
               child: Container(

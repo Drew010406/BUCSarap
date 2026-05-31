@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/screens/stall_holder/add_category_screen.dart';
 import 'package:frontend/screens/stall_holder/stall_category_screen.dart';
@@ -16,8 +17,16 @@ import 'package:frontend/screens/stall_holder/stall_holder_screen.dart';
 import 'package:frontend/screens/stall_holder/transaction_history_screen.dart';
 import 'package:frontend/screens/student/stall_selection_screen.dart';
 import 'package:frontend/screens/welcome_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+
+  String? url = dotenv.env['SUPABASE_URL'];
+  String? anonKey = dotenv.env['ANON_KEY'];
+  await Supabase.initialize(url: url!, anonKey: anonKey!);
+
   runApp(const ProviderScope(child: Main()));
 }
 
