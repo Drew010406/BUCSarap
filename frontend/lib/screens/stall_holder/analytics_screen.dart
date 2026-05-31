@@ -38,8 +38,18 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
 
     final currentRoute = ModalRoute.of(context)?.settings.name;
     final List<String> months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
     DateTime now = DateTime.now();
 
@@ -240,25 +250,31 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                 ],
                                               ),
                                             ),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Icon(
-                                                  Icons.arrow_drop_up,
-                                                  size: 30,
-                                                  color: Colors.green,
-                                                ),
-                                                dayComparison.when(
-                                                  loading: () => Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                                  error: (err, stack) =>
-                                                      Text("Error: $err"),
-                                                  data: (data) {
-                                                    return Text(
-                                                      "+${data.percentageChange}% increase",
+                                            monthComparison.when(
+                                              loading: () => Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                              error: (err, stack) =>
+                                                  Text("Error: $err"),
+                                              data: (data) {
+                                                return Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Icon(
+                                                      data.percentageChange! > 0
+                                                          ? Icons.arrow_drop_up
+                                                          : Icons
+                                                                .arrow_drop_down,
+                                                      size: 30,
+                                                      color: Colors.green,
+                                                    ),
+                                                    Text(
+                                                      data.percentageChange! >
+                                                              0.0
+                                                          ? "+${data.percentageChange}% increase"
+                                                          : "${data.percentageChange}% decrease",
                                                       style:
                                                           kJetbrainsDescription
                                                               .copyWith(
@@ -266,10 +282,10 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                                     .green,
                                                                 fontSize: 18,
                                                               ),
-                                                    );
-                                                  },
-                                                ),
-                                              ],
+                                                    ),
+                                                  ],
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
@@ -306,26 +322,26 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                           children: [
                                             Text.rich(
                                               TextSpan(
-                                                text: 'April ',
+                                                text: '$currentMonthName ',
                                                 style: kJetbrainsDescription
                                                     .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w900,
-                                                      color: Color(0xFF5D371A),
-                                                      fontSize: 20,
-                                                    ),
+                                                  fontWeight:
+                                                  FontWeight.w900,
+                                                  color: Color(0xFF5D371A),
+                                                  fontSize: 20,
+                                                ),
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                    text: '2026',
+                                                    text: '$currentYear',
                                                     style: kJetbrainsDescription
                                                         .copyWith(
-                                                          color: Color(
-                                                            0xFF5D371A,
-                                                          ),
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontSize: 20,
-                                                        ),
+                                                      color: Color(
+                                                        0xFF5D371A,
+                                                      ),
+                                                      fontWeight:
+                                                      FontWeight.w900,
+                                                      fontSize: 20,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -347,36 +363,42 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                 ],
                                               ),
                                             ),
-                                            Row(
-                                              crossAxisAlignment:
+                                            weekComparison.when(
+                                              loading: () => Center(
+                                                child:
+                                                CircularProgressIndicator(),
+                                              ),
+                                              error: (err, stack) =>
+                                                  Text("Error: $err"),
+                                              data: (data) {
+                                                return Row(
+                                                  crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              children: [
-                                                Icon(
-                                                  Icons.arrow_drop_up,
-                                                  size: 30,
-                                                  color: Colors.green,
-                                                ),
-                                                weekComparison.when(
-                                                  loading: () => Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                                  error: (err, stack) =>
-                                                      Text("Error: $err"),
-                                                  data: (data) {
-                                                    return Text(
-                                                      "+${data.percentageChange}% increase",
+                                                  children: [
+                                                    Icon(
+                                                      data.percentageChange! > 0
+                                                          ? Icons.arrow_drop_up
+                                                          : Icons
+                                                          .arrow_drop_down,
+                                                      size: 30,
+                                                      color: Colors.green,
+                                                    ),
+                                                    Text(
+                                                      data.percentageChange! >
+                                                          0.0
+                                                          ? "+${data.percentageChange}% increase"
+                                                          : "${data.percentageChange}% decrease",
                                                       style:
-                                                          kJetbrainsDescription
-                                                              .copyWith(
-                                                                color: Colors
-                                                                    .green,
-                                                                fontSize: 18,
-                                                              ),
-                                                    );
-                                                  },
-                                                ),
-                                              ],
+                                                      kJetbrainsDescription
+                                                          .copyWith(
+                                                        color: Colors
+                                                            .green,
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
@@ -413,26 +435,26 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                           children: [
                                             Text.rich(
                                               TextSpan(
-                                                text: 'April ',
+                                                text: '$currentMonthName ',
                                                 style: kJetbrainsDescription
                                                     .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w900,
-                                                      color: Color(0xFF5D371A),
-                                                      fontSize: 20,
-                                                    ),
+                                                  fontWeight:
+                                                  FontWeight.w900,
+                                                  color: Color(0xFF5D371A),
+                                                  fontSize: 20,
+                                                ),
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                    text: '2026',
+                                                    text: '$currentYear',
                                                     style: kJetbrainsDescription
                                                         .copyWith(
-                                                          color: Color(
-                                                            0xFF5D371A,
-                                                          ),
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontSize: 20,
-                                                        ),
+                                                      color: Color(
+                                                        0xFF5D371A,
+                                                      ),
+                                                      fontWeight:
+                                                      FontWeight.w900,
+                                                      fontSize: 20,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -454,36 +476,42 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                 ],
                                               ),
                                             ),
-                                            Row(
-                                              crossAxisAlignment:
+                                            dayComparison.when(
+                                              loading: () => Center(
+                                                child:
+                                                CircularProgressIndicator(),
+                                              ),
+                                              error: (err, stack) =>
+                                                  Text("Error: $err"),
+                                              data: (data) {
+                                                return Row(
+                                                  crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              children: [
-                                                Icon(
-                                                  Icons.arrow_drop_up,
-                                                  size: 30,
-                                                  color: Colors.green,
-                                                ),
-                                                monthComparison.when(
-                                                  loading: () => Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                                  error: (err, stack) =>
-                                                      Text("Error: $err"),
-                                                  data: (data) {
-                                                    return Text(
-                                                      "+${data.percentageChange}% increase",
+                                                  children: [
+                                                    Icon(
+                                                      data.percentageChange! > 0
+                                                          ? Icons.arrow_drop_up
+                                                          : Icons
+                                                          .arrow_drop_down,
+                                                      size: 30,
+                                                      color: Colors.green,
+                                                    ),
+                                                    Text(
+                                                      data.percentageChange! >
+                                                          0.0
+                                                          ? "+${data.percentageChange}% increase"
+                                                          : "${data.percentageChange}% decrease",
                                                       style:
-                                                          kJetbrainsDescription
-                                                              .copyWith(
-                                                                color: Colors
-                                                                    .green,
-                                                                fontSize: 18,
-                                                              ),
-                                                    );
-                                                  },
-                                                ),
-                                              ],
+                                                      kJetbrainsDescription
+                                                          .copyWith(
+                                                        color: Colors
+                                                            .green,
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
@@ -510,10 +538,13 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                           final double maxRevenue = data.isEmpty
                               ? 50
                               : data
-                              .map((e) => e.dailyRevenue?.toDouble() ?? 0.0)
-                              .reduce((a, b) => a > b ? a : b);
+                                    .map(
+                                      (e) => e.dailyRevenue?.toDouble() ?? 0.0,
+                                    )
+                                    .reduce((a, b) => a > b ? a : b);
 
-                          final double chartMaxY = ((maxRevenue / 10).ceil() * 10 + 10).toDouble();
+                          final double chartMaxY =
+                              ((maxRevenue / 10).ceil() * 10 + 10).toDouble();
                           return Container(
                             height: 300,
                             width: double.infinity,
@@ -550,7 +581,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                           '₱${value.toStringAsFixed(0)}',
                                           style: const TextStyle(
                                             fontSize: 11,
-                                            fontFamily: 'Flame'
+                                            fontFamily: 'Flame',
                                           ),
                                         );
                                       },
@@ -562,14 +593,26 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                       reservedSize: 60,
                                       getTitlesWidget: (value, meta) {
                                         final int index = value.toInt();
-                                        if (index < 0 || index >= data.length) return const SizedBox();
+                                        if (index < 0 || index >= data.length)
+                                          return const SizedBox();
 
                                         final raw = data[index].orderDate ?? '';
-                                        final short = raw.replaceAll(RegExp(r',?\s*\d{4}'), '').trim();
+                                        final short = raw
+                                            .replaceAll(
+                                              RegExp(r',?\s*\d{4}'),
+                                              '',
+                                            )
+                                            .trim();
 
                                         return Transform.rotate(
                                           angle: -pi / 4,
-                                          child: Text(short, style: const TextStyle(fontSize: 11, fontFamily: 'Flame')),
+                                          child: Text(
+                                            short,
+                                            style: const TextStyle(
+                                              fontSize: 11,
+                                              fontFamily: 'Flame',
+                                            ),
+                                          ),
                                         );
                                       },
                                     ),
