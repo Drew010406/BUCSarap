@@ -71,11 +71,11 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () {
-                              ref.read(selectedCategoryProvider.notifier).selectedCategory(stallCategories[index]);
+                              ref
+                                  .read(selectedCategoryProvider.notifier)
+                                  .selectedCategory(stallCategories[index]);
                               final products = ref.watch(productsProvider);
-                              if(products.value!.isNotEmpty) {
-                                Navigator.pushNamed(context, '/menu_screen');
-                              }
+                              Navigator.pushNamed(context, '/menu_screen');
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 10),
@@ -87,7 +87,8 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    stallCategories[index].categoryName ?? "No name",
+                                    stallCategories[index].categoryName ??
+                                        "No name",
                                     style: TextStyle(
                                       color: kPrimaryColor,
                                       fontFamily: "flame",
