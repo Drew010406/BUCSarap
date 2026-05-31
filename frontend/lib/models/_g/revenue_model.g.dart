@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'revenue_model.dart';
+part of '../revenue_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

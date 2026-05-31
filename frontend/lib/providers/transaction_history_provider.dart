@@ -13,7 +13,7 @@ part 'transaction_history_provider.g.dart';
 class TransactionHistoryProvider extends _$TransactionHistoryProvider {
   @override
   Future<List<TransactionHistoryModel>> build() async {
-    final historyService = ref.watch(historyServiceProvider);
+    final historyService = ref.read(historyServiceProvider);
     final stallData = ref.read(ownerStallProvider).value;
     final stallID = stallData!.stallID!;
     final response = await historyService.getStallHistory(stallID);

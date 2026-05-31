@@ -14,9 +14,6 @@ class CartNotifier extends Notifier<Set<OrderLineModel>> {
     if (!state.contains(product)) {
       for (var prod in state) {
         if (prod.productID == product.productID) {
-          // Walang internet pota diko alam pano baguhin obj from a set
-          // Kaya hanap nlng alternative
-          // Update: this shit works HAHAHAHAHAHAHAHA
           int prodQuantity = prod.quantityOrdered!;
           removeProduct(prod);
           state = {
@@ -54,7 +51,6 @@ class CartNotifier extends Notifier<Set<OrderLineModel>> {
     if (product.quantityOrdered! > 0) {
       for (var prod in state) {
         if (prod.productID == product.productID) {
-          // Putang talino kong hayup
           removeProduct(prod);
           state = {
             ...state,

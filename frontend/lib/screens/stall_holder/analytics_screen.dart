@@ -585,6 +585,11 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                 ),
                                 lineBarsData: [
                                   LineChartBarData(
+                                    color: Colors.brown,
+                                    barWidth: 3,
+                                    isCurved: true,
+                                    curveSmoothness: 0.3,
+                                    preventCurveOverShooting: true,
                                     spots: data
                                         .map(
                                           (item) => FlSpot(

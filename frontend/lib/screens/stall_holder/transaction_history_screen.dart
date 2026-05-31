@@ -7,6 +7,7 @@ import '../../constants.dart';
 import '../../providers/cart_provider.dart';
 import '../../providers/owner_stall_provider.dart';
 import '../../shared/back_button_container.dart';
+import '../custom_delegate/custom_delegate.dart';
 import '../page_route/hero_dialog_route.dart';
 import 'order_details_modal.dart';
 
@@ -43,14 +44,36 @@ class _TransactionHistoryScreenState
             );
           },
         ),
-        // actions: [
-        //   IconButton(
-        //     onPressed: () {
-        //       Navigator.pushNamed(context, '/add_product_screen');
-        //     },
-        //     icon: Icon(Icons.add, color: Color(0xFFDA782B)),
-        //   ),
-        // ],
+        actions: [
+          IconButton(
+            color: Color(0xFFDA782B),
+            icon: const Icon(Icons.search),
+            onPressed: () async {
+              showSearch(
+                context: context,
+                delegate: CustomSearchDelegate(
+                  data: transactionHistory.value,
+                  onItemTap: (ctx, item) async {
+                    final orderService = ref.read(orderServiceProvider);
+                    final orderDetails = await orderService.getOrderDetails(
+                      item.orderID!,
+                      stallData!.stallID!,
+                    );
+                    Navigator.of(ctx).push(
+                      HeroDialogRoute(
+                        builder: (_) => OrderDetailsModal(
+                          index: item.orderID,
+                          data: orderDetails,
+                          orderID: item.orderID,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -64,11 +87,16 @@ class _TransactionHistoryScreenState
           SizedBox(height: 10),
           Expanded(
             child: transactionHistory.when(
-              loading: () => const Center(child: CircularProgressIndicator(),),
+              loading: () => const Center(child: CircularProgressIndicator()),
               error: (err, stack) => Text("Error: $err"),
               data: (data) {
-                if(data.isEmpty) {
-                  return Center(child: Text("No history available", style: kJetbrainsFontTitle.copyWith(fontSize: 24),),);
+                if (data.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "No history available",
+                      style: kJetbrainsFontTitle.copyWith(fontSize: 24),
+                    ),
+                  );
                 }
                 return GridView.builder(
                   itemCount: data.length,
@@ -81,8 +109,7 @@ class _TransactionHistoryScreenState
                     return GestureDetector(
                       onTap: () async {
                         final orderService = ref.read(orderServiceProvider);
-                        final orderDetails = await orderService
-                            .getOrderDetails(
+                        final orderDetails = await orderService.getOrderDetails(
                           data[index].orderID!,
                           stallData!.stallID!,
                         );

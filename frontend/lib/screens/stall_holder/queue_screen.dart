@@ -11,6 +11,7 @@ import 'package:frontend/screens/stall_holder/queue_item_details_modal.dart';
 
 import '../../providers/owner_stall_provider.dart';
 import '../../shared/back_button_container.dart';
+import '../custom_delegate/custom_delegate.dart';
 import '../page_route/hero_dialog_route.dart';
 
 enum Status { PENDING, PROCESSING }
@@ -55,14 +56,38 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
             );
           },
         ),
-        // actions: [
-        //   IconButton(
-        //     onPressed: () {
-        //       Navigator.pushNamed(context, '/add_product_screen');
-        //     },
-        //     icon: Icon(Icons.add, color: Color(0xFFDA782B)),
-        //   ),
-        // ],
+        actions: [
+          IconButton(
+            color: Color(0xFFDA782B),
+            icon: const Icon(Icons.search),
+            onPressed: () async {
+              showSearch(
+                context: context,
+                delegate: CustomSearchDelegate(
+                  data: (_status == Status.PENDING)
+                      ? pendingQueue.value
+                      : preparingQueue.value,
+                  onItemTap: (ctx, item) async {
+                    final orderService = ref.read(orderServiceProvider);
+                    final orderDetails = await orderService.getOrderDetails(
+                      item.orderID!,
+                      stallData!.stallID!,
+                    );
+                    Navigator.of(ctx).push(
+                      HeroDialogRoute(
+                        builder: (_) => QueueItemDetailsModal(
+                          index: item.orderID,
+                          orderDetails: orderDetails,
+                          orderID: item.orderID,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -265,9 +290,9 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
                           final orderService = ref.read(orderServiceProvider);
                           final orderDetails = await orderService
                               .getOrderDetails(
-                            items[index].orderID!,
-                            stallData!.stallID!,
-                          );
+                                items[index].orderID!,
+                                stallData!.stallID!,
+                              );
                           setState(() {
                             Navigator.of(context).push(
                               HeroDialogRoute(

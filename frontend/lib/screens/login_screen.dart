@@ -19,7 +19,13 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
-
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final dio = ref.watch(dioProvider);

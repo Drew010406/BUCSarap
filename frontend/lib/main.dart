@@ -48,7 +48,7 @@ class Main extends StatelessWidget {
         '/order_successful': (context) => OrderSuccessfulScreen(),
         '/stall_category': (context) => StallCategoryScreen(),
         '/stall_product': (context) => StallProductScreen(),
-        '/add_category': (context) => AddCategoryScreen()
+        '/add_category': (context) => AddCategoryScreen(),
       },
     );
   }

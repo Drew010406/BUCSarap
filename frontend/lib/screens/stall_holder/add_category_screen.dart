@@ -14,7 +14,12 @@ class AddCategoryScreen extends ConsumerStatefulWidget {
 
 class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
   final nameController = TextEditingController();
-
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    nameController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

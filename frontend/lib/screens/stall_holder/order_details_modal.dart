@@ -24,7 +24,7 @@ class OrderDetailsModal extends ConsumerWidget {
 
     return Center(
       child: Hero(
-        tag: "$transactTag-$index}",
+        tag: "$transactTag-$index",
         child: Padding(
           padding: EdgeInsetsGeometry.symmetric(horizontal: 30, vertical: 240),
           child: Container(

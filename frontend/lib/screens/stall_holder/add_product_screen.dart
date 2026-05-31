@@ -106,7 +106,13 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       },
     );
   }
-
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    productPriceController.dispose();
+    productPriceController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
