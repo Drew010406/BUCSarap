@@ -51,3 +51,5 @@ venv
 __pycache__
 *.pyc
 
+frontend/lib/firebase_options.dart
+frontend/firebase.json
