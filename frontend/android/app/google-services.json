@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "430274790869",
+    "project_id": "bucsarap-firebase",
+    "storage_bucket": "bucsarap-firebase.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430274790869:android:0449ef0dd0c168dde4a95c",
+        "android_client_info": {
+          "package_name": "com.example.frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa5ZizijdXIZgzCxRn2K9KzMVWj8llO7Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
