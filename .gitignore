@@ -53,3 +53,4 @@ __pycache__
 
 frontend/lib/firebase_options.dart
 frontend/firebase.json
+frontend/.env
