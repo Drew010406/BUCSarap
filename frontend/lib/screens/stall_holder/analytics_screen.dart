@@ -266,22 +266,27 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                       data.percentageChange! > 0
                                                           ? Icons.arrow_drop_up
                                                           : Icons
-                                                                .arrow_drop_down,
+                                                          .arrow_drop_down,
                                                       size: 30,
-                                                      color: Colors.green,
+                                                      color: data.percentageChange! >
+                                                          0
+                                                          ? Colors.green
+                                                          : Colors.red,
                                                     ),
                                                     Text(
                                                       data.percentageChange! >
-                                                              0.0
+                                                          0.0
                                                           ? "+${data.percentageChange}% increase"
                                                           : "${data.percentageChange}% decrease",
-                                                      style:
-                                                          kJetbrainsDescription
-                                                              .copyWith(
-                                                                color: Colors
-                                                                    .green,
-                                                                fontSize: 18,
-                                                              ),
+                                                      style: kJetbrainsDescription
+                                                          .copyWith(
+                                                        color:
+                                                        data.percentageChange! >
+                                                            0
+                                                            ? Colors.green
+                                                            : Colors.red,
+                                                        fontSize: 18,
+                                                      ),
                                                     ),
                                                   ],
                                                 );
@@ -325,23 +330,23 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                 text: '$currentMonthName ',
                                                 style: kJetbrainsDescription
                                                     .copyWith(
-                                                  fontWeight:
-                                                  FontWeight.w900,
-                                                  color: Color(0xFF5D371A),
-                                                  fontSize: 20,
-                                                ),
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      color: Color(0xFF5D371A),
+                                                      fontSize: 20,
+                                                    ),
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                     text: '$currentYear',
                                                     style: kJetbrainsDescription
                                                         .copyWith(
-                                                      color: Color(
-                                                        0xFF5D371A,
-                                                      ),
-                                                      fontWeight:
-                                                      FontWeight.w900,
-                                                      fontSize: 20,
-                                                    ),
+                                                          color: Color(
+                                                            0xFF5D371A,
+                                                          ),
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 20,
+                                                        ),
                                                   ),
                                                 ],
                                               ),
@@ -366,14 +371,14 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                             weekComparison.when(
                                               loading: () => Center(
                                                 child:
-                                                CircularProgressIndicator(),
+                                                    CircularProgressIndicator(),
                                               ),
                                               error: (err, stack) =>
                                                   Text("Error: $err"),
                                               data: (data) {
                                                 return Row(
                                                   crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Icon(
                                                       data.percentageChange! > 0
@@ -381,18 +386,23 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                           : Icons
                                                           .arrow_drop_down,
                                                       size: 30,
-                                                      color: Colors.green,
+                                                      color: data.percentageChange! >
+                                                          0
+                                                          ? Colors.green
+                                                          : Colors.red,
                                                     ),
                                                     Text(
                                                       data.percentageChange! >
                                                           0.0
                                                           ? "+${data.percentageChange}% increase"
                                                           : "${data.percentageChange}% decrease",
-                                                      style:
-                                                      kJetbrainsDescription
+                                                      style: kJetbrainsDescription
                                                           .copyWith(
-                                                        color: Colors
-                                                            .green,
+                                                        color:
+                                                        data.percentageChange! >
+                                                            0
+                                                            ? Colors.green
+                                                            : Colors.red,
                                                         fontSize: 18,
                                                       ),
                                                     ),
@@ -438,23 +448,23 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                 text: '$currentMonthName ',
                                                 style: kJetbrainsDescription
                                                     .copyWith(
-                                                  fontWeight:
-                                                  FontWeight.w900,
-                                                  color: Color(0xFF5D371A),
-                                                  fontSize: 20,
-                                                ),
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      color: Color(0xFF5D371A),
+                                                      fontSize: 20,
+                                                    ),
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                     text: '$currentYear',
                                                     style: kJetbrainsDescription
                                                         .copyWith(
-                                                      color: Color(
-                                                        0xFF5D371A,
-                                                      ),
-                                                      fontWeight:
-                                                      FontWeight.w900,
-                                                      fontSize: 20,
-                                                    ),
+                                                          color: Color(
+                                                            0xFF5D371A,
+                                                          ),
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 20,
+                                                        ),
                                                   ),
                                                 ],
                                               ),
@@ -479,35 +489,40 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                             dayComparison.when(
                                               loading: () => Center(
                                                 child:
-                                                CircularProgressIndicator(),
+                                                    CircularProgressIndicator(),
                                               ),
                                               error: (err, stack) =>
                                                   Text("Error: $err"),
                                               data: (data) {
                                                 return Row(
                                                   crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Icon(
                                                       data.percentageChange! > 0
                                                           ? Icons.arrow_drop_up
                                                           : Icons
-                                                          .arrow_drop_down,
+                                                                .arrow_drop_down,
                                                       size: 30,
-                                                      color: Colors.green,
+                                                      color: data.percentageChange! >
+                                                          0
+                                                          ? Colors.green
+                                                          : Colors.red,
                                                     ),
                                                     Text(
                                                       data.percentageChange! >
-                                                          0.0
+                                                              0.0
                                                           ? "+${data.percentageChange}% increase"
                                                           : "${data.percentageChange}% decrease",
-                                                      style:
-                                                      kJetbrainsDescription
+                                                      style: kJetbrainsDescription
                                                           .copyWith(
-                                                        color: Colors
-                                                            .green,
-                                                        fontSize: 18,
-                                                      ),
+                                                            color:
+                                                                data.percentageChange! >
+                                                                    0
+                                                                ? Colors.green
+                                                                : Colors.red,
+                                                            fontSize: 18,
+                                                          ),
                                                     ),
                                                   ],
                                                 );
