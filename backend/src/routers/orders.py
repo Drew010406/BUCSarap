@@ -8,8 +8,6 @@ from backend.src.db.session import get_db
 from backend.src.schema.order import (
     CreateOrderRequest,
     CreateOrderResponse,
-    OrderStatusUpdate,
-    VALID_STATUSES,
     OrderLineRequest,
     QueueOrderResponse,
     QueueOrderLineResponse,
@@ -46,7 +44,7 @@ async def stream_generator(stall_id : int, request : Request):
                     
                     yield {"event": queue_data.get("event"), "data" : json.dumps(queue_data.get("data"))}
                     
-                except asyncio.TimeoutError():
+                except asyncio.TimeoutError:
                     
                     yield {"event": "heartbeat", "data" : "ping"}
 
@@ -166,15 +164,6 @@ async def Create_Order(payload: CreateOrderRequest, db: Annotated[Connection, De
 
         order_id = result.lastrowid
         db.commit()
-        
-        
-        updated_queue = await get_queue_helper(payload.stall_id, "Pending", db)
-        if payload.stall_id in stall_streams:
-            await stall_streams[payload.stall_id].put({
-                
-                "event" : "Order Added in Pending Queue",
-                "queue" : updated_queue
-            })
         
     except Exception as error:
         
@@ -340,7 +329,16 @@ async def submit_order(order_id: int, payload: dict, db: Annotated[Connection, D
             })
             
             db.commit()
-        
+            
+            updated_queue = await get_queue_helper(payload.stall_id, "Pending", db)
+            if payload.stall_id in stall_streams:
+                          
+                await stall_streams[payload.stall_id].put({
+                    
+                    "event": "Order added in Pending Queue",
+                    "data": [item.model_dump() for item in updated_queue]
+                })
+            
     except Exception as error:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Could not submit order: {str(error)}") from error
@@ -430,10 +428,11 @@ async def accept_orders(order_id: int, stall_id: int, db: Annotated[Connection, 
         updated_queue = await get_queue_helper(stall_id, "Preparing", db)
         
         if stall_id in stall_streams:
+            
             await stall_streams[stall_id].put({
                 
-                "event" : "Order added in Preparing Queue",
-                "queue" : updated_queue
+                "event": "Order added in Pending Queue",
+                "data": [item.model_dump() for item in updated_queue]
             })
         
         results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()        
@@ -480,10 +479,11 @@ async def decline_order(order_id: int, stall_id: int, db: Annotated[Connection, 
         updated_queue = await get_queue_helper(stall_id, "Pending", db)
 
         if stall_id in stall_streams:
+            
             await stall_streams[stall_id].put({
-                
-                "event" : "Order removed from Pending Queue",
-                "queue" : updated_queue
+
+                "event": "Order added in Pending Queue",
+                "data": [item.model_dump() for item in updated_queue]
             })
         
         return {"message": f"Successfully declined order number: {order_id}"}
@@ -519,10 +519,11 @@ async def complete_order(order_id: int, stall_id: int, db: Annotated[Connection,
         updated_queue = await get_queue_helper(stall_id, "Preparing", db)
 
         if stall_id in stall_streams:
+            
             await stall_streams[stall_id].put({
 
-                "event": "Order removed from Preparing Queue",
-                "queue" : updated_queue
+                "event": "Order added in Pending Queue",
+                "data": [item.model_dump() for item in updated_queue]
             })
 
         return {"message": "Successfully completed order, please come to the cashier to claim!\nYour order nunmber: {order_number}", "order_number": order_number}
