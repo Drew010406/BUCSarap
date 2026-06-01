@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Annotated, List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy import text, Connection
 from backend.src.schema.history import HistoryItem
 
@@ -14,11 +14,111 @@ from backend.src.schema.order import (
     QueueOrderResponse,
     QueueOrderLineResponse,
 )
+import asyncio
+import json
+from sse_starlette import EventSourceResponse
+
 
 route = APIRouter()
-# Key: order_id, Value: list of added items
+
 added_items = {}
 
+"""Queue shit----------------------------------------------------"""
+stall_streams: dict[int, asyncio.Queue] = {}
+
+@route.get("/queue/{stall_id}/stream")
+async def stream_generator(stall_id : int, request : Request):
+    
+    queue = asyncio.Queue()
+    stall_streams[stall_id] = queue
+    
+    async def event_generator():
+        
+        try:
+            while True:
+
+                if await request.is_disconnected():
+                    break
+                
+                try:
+                    
+                    queue_data = await asyncio.wait_for(queue.get(), timeout=30)
+                    
+                    yield {"event": queue_data.get("event"), "data" : json.dumps(queue_data.get("data"))}
+                    
+                except asyncio.TimeoutError():
+                    
+                    yield {"event": "heartbeat", "data" : "ping"}
+
+        finally:
+            
+            stall_streams.pop(stall_id, None)
+            
+    return EventSourceResponse(event_generator())
+         
+@route.get(
+	"/preparing_queue/{stall_id}",
+	response_model=List[HistoryItem],
+	responses={
+		404: {"description": "Stall not found"},
+	},
+)
+async def get_pending_queue(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
+    
+    return await get_queue_helper(stall_id, "Pending", db)
+
+@route.get(
+	"/queue/{stall_id}",
+	response_model=List[HistoryItem],
+	responses={
+		404: {"description": "Stall not found"},
+	},
+)
+async def get_preparing_queue(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
+
+    return await get_queue_helper(stall_id, "Preparing", db)
+
+async def get_queue_helper(stall_id: int, query_type: str,db: Connection):
+    
+    query = text("""
+        SELECT stall_id 
+        FROM stall 
+        WHERE stall_id = :s_id
+        """)
+    stall_exists = db.execute(query, {"s_id": stall_id}).mappings().fetchone()
+
+    if not stall_exists:
+        raise HTTPException(status_code=404, detail="Stall not found")
+    
+    get_rows_query = text("""
+                    
+        SELECT order_id, order_number, customer_name
+        FROM orders
+
+        WHERE stall_id = :s_id AND order_status = :o_status
+        ORDER BY order_time ASC
+        """)
+
+    try:
+        rows = db.execute(get_rows_query, {"s_id": stall_id, "o_status": query_type}).mappings().fetchall()
+
+        if not rows:
+            raise HTTPException(status_code=204, detail=f"Currently no orders.")
+
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}") 
+
+    return [
+        HistoryItem(
+            order_id=row["order_id"],
+            order_number=row["order_number"],
+            customer_name=row["customer_name"]
+        )
+        for row in rows
+    ]
+    
+"--------------------------------------------------------------"            
+            
 @route.post(
     "/create_order",
     response_model=CreateOrderResponse,
@@ -67,14 +167,14 @@ async def Create_Order(payload: CreateOrderRequest, db: Annotated[Connection, De
         order_id = result.lastrowid
         db.commit()
         
-        check_query = text("""
-                           
-            SELECT *
-            FROM orders             
-            WHERE order_number = :o_number                     
-            """)
         
-        results = db.execute(check_query, {"o_number": order_number})
+        updated_queue = await get_queue_helper(payload.stall_id, "Pending", db)
+        if payload.stall_id in stall_streams:
+            await stall_streams[payload.stall_id].put({
+                
+                "event" : "Order Added in Pending Queue",
+                "queue" : updated_queue
+            })
         
     except Exception as error:
         
@@ -180,84 +280,6 @@ async def add_items_to_order(
         "message": f"Successfully validated items. Total items for this order: {len(added_items[order_id])}."
     }
 
-@route.get(
-	"/preparing_queue/{stall_id}",
-	response_model=List[HistoryItem],
-	responses={
-		404: {"description": "Stall not found"},
-	},
-)
-async def get_pending_queue(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
-
-    query = text("""
-        SELECT stall_id 
-        FROM stall 
-        WHERE stall_id = :s_id
-        """)
-    stall_exists = db.execute(query, {"s_id": stall_id}).mappings().fetchone()
-
-    if not stall_exists:
-        raise HTTPException(status_code=404, detail="Stall not found")
-
-    get_rows_query = text("""
-                    
-        SELECT order_id, order_number, customer_name
-        FROM orders
-
-        WHERE stall_id = :s_id AND order_status = 'Pending'
-        ORDER BY order_time ASC
-        """)
-
-    rows = db.execute(get_rows_query, {"s_id": stall_id}).mappings().fetchall()
-
-    return [
-        HistoryItem(
-            order_id=row["order_id"],
-            order_number=row["order_number"],
-            customer_name=row["customer_name"]
-        )
-        for row in rows
-    ]
-
-@route.get(
-	"/queue/{stall_id}",
-	response_model=List[HistoryItem],
-	responses={
-		404: {"description": "Stall not found"},
-	},
-)
-async def get_preparing_queue(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
-
-    query = text("""
-        SELECT stall_id 
-        FROM stall 
-        WHERE stall_id = :s_id
-        """)
-    stall_exists = db.execute(query, {"s_id": stall_id}).mappings().fetchone()
-
-    if not stall_exists:
-        raise HTTPException(status_code=404, detail="Stall not found")
-
-    get_rows_query = text("""
-                    
-        SELECT order_id, order_number, customer_name
-        FROM orders
-
-        WHERE stall_id = :s_id AND order_status = 'Preparing'
-        ORDER BY order_time ASC
-        """)
-
-    rows = db.execute(get_rows_query, {"s_id": stall_id},).mappings().fetchall()
-
-    return [
-        HistoryItem(
-            order_id=row["order_id"],
-            order_number=row["order_number"],
-            customer_name=row["customer_name"]
-        )
-        for row in rows
-    ]
-
 @route.post(
     "/{order_id}/submit",
     responses={
@@ -268,7 +290,6 @@ async def get_preparing_queue(stall_id: int, db: Annotated[Connection, Depends(g
 )
 async def submit_order(order_id: int, payload: dict, db: Annotated[Connection, Depends(get_db)]):
 
-    # Verify order exists and is in pending state
     query = text("""
                  
         SELECT order_id, order_status, stall_id
@@ -292,7 +313,6 @@ async def submit_order(order_id: int, payload: dict, db: Annotated[Connection, D
             detail=f"Cannot submit order with status '{order_row['order_status']}'. Order must be in 'Pending' state.",
         )
 
-    # Verify items array exists and is not empty
     items = payload.get("items", [])
     
     if not items or len(items) == 0:
@@ -301,7 +321,6 @@ async def submit_order(order_id: int, payload: dict, db: Annotated[Connection, D
             detail="Please add at least one item.",
         )
 
-    # Insert all items into order_line table
     try:
         
         for item in items:
@@ -319,14 +338,13 @@ async def submit_order(order_id: int, payload: dict, db: Annotated[Connection, D
                 "qty": item["quantity_ordered"],
                 "price": item["unit_price_at_order"],
             })
-
-        db.commit()
+            
+            db.commit()
         
     except Exception as error:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Could not submit order: {str(error)}") from error
 
-    # Clear the global items array for this order after successful submit
     if order_id in added_items:
         del added_items[order_id]
 
@@ -337,54 +355,6 @@ async def submit_order(order_id: int, payload: dict, db: Annotated[Connection, D
         "message": f"Order {order_id} submitted successfully!"
     }
 
-@route.patch(
-	"/{order_id}/status",
-	responses={
-		400: {"description": "Invalid status value"},
-		404: {"description": "Order not found"},
-		500: {"description": "Could not update order"}
-	},
-)
-async def update_order_status(order_id: int, payload: OrderStatusUpdate,db: Annotated[Connection, Depends(get_db)]):
-
-    if payload.order_status not in VALID_STATUSES:
-
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid status. Must be one of: {', '.join(sorted(VALID_STATUSES))}",
-        )
-
-    verification_query = text("""
-
-        SELECT order_id, order_status 
-        FROM orders 
-        WHERE order_id = :o_id
-        """)
-    order_row = db.execute(verification_query, {"o_id": order_id}).mappings().fetchone()
-
-    if not order_row:
-        raise HTTPException(status_code=404, detail="Order not found")
-
-    update_query = text("""
-        
-        UPDATE orders 
-        SET order_status = :status 
-        WHERE order_id = :o_id
-        """)
-    try:
-        db.execute(update_query, {"status": payload.order_status, "o_id": order_id})
-        db.commit()
-
-    except Exception as error:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=f"Could not update order: {str(error)}") from error
-
-    return {
-        "order_id": order_id,
-        "order_status": payload.order_status,
-        "message": f"Order {order_id} updated to '{payload.order_status}'",
-    }
-    
 @route.get("/orders/{order_id}", response_model=QueueOrderResponse)
 async def get_order_details(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
     
@@ -457,6 +427,15 @@ async def accept_orders(order_id: int, stall_id: int, db: Annotated[Connection, 
         results = db.execute(update_query, {"o_id": order_id, "s_id": stall_id})
         db.commit()
         
+        updated_queue = await get_queue_helper(stall_id, "Preparing", db)
+        
+        if stall_id in stall_streams:
+            await stall_streams[stall_id].put({
+                
+                "event" : "Order added in Preparing Queue",
+                "queue" : updated_queue
+            })
+        
         results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()        
         order_number = results["order_number"]
         
@@ -498,6 +477,15 @@ async def decline_order(order_id: int, stall_id: int, db: Annotated[Connection, 
         db.execute(delete_order_query, {"o_id": order_id})
         db.commit()
         
+        updated_queue = await get_queue_helper(stall_id, "Pending", db)
+
+        if stall_id in stall_streams:
+            await stall_streams[stall_id].put({
+                
+                "event" : "Order removed from Pending Queue",
+                "queue" : updated_queue
+            })
+        
         return {"message": f"Successfully declined order number: {order_id}"}
         
     except Exception as error:
@@ -528,8 +516,18 @@ async def complete_order(order_id: int, stall_id: int, db: Annotated[Connection,
         results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()        
         order_number = results["order_number"]
         
+        updated_queue = await get_queue_helper(stall_id, "Preparing", db)
+
+        if stall_id in stall_streams:
+            await stall_streams[stall_id].put({
+
+                "event": "Order removed from Preparing Queue",
+                "queue" : updated_queue
+            })
+
         return {"message": "Successfully completed order, please come to the cashier to claim!\nYour order nunmber: {order_number}", "order_number": order_number}
     
     except Exception as error:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
+    
