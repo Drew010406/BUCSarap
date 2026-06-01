@@ -194,12 +194,81 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                 data: (data) {
                                   if (data.stallRevenue == null ||
                                       data.stallID == null) {
-                                    return Center(
-                                      child: Text(
-                                        "No Revenue data available",
-                                        style: kJetbrainsFontTitle.copyWith(
-                                          fontSize: 24,
-                                        ),
+                                    return IntrinsicHeight(
+                                      child: Row(
+                                        children: [
+                                          SizedBox(width: 20),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text.rich(
+                                                TextSpan(
+                                                  text: '$currentMonthName ',
+                                                  style: kJetbrainsDescription
+                                                      .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        color: Color(
+                                                          0xFF5D371A,
+                                                        ),
+                                                        fontSize: 20,
+                                                      ),
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                      text: '$currentYear',
+                                                      style:
+                                                          kJetbrainsDescription
+                                                              .copyWith(
+                                                                color: Color(
+                                                                  0xFF5D371A,
+                                                                ),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w900,
+                                                                fontSize: 20,
+                                                              ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Text.rich(
+                                                TextSpan(
+                                                  text: '₱ ',
+                                                  style: kJetbrainsFontTitle,
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                      text:
+                                                          '0.0',
+                                                      style:
+                                                          kJetbrainsFontTitle,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Icon(
+                                                    Icons.arrow_drop_up,
+                                                    size: 30,
+                                                    color: Colors.green,
+                                                  ),
+                                                  Text(
+                                                    "+0.0% increase",
+                                                    style: kJetbrainsDescription
+                                                        .copyWith(
+                                                          color: Colors.green,
+                                                          fontSize: 18,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Expanded(child: SizedBox()),
+                                        ],
                                       ),
                                     );
                                   }
@@ -266,27 +335,28 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                       data.percentageChange! > 0
                                                           ? Icons.arrow_drop_up
                                                           : Icons
-                                                          .arrow_drop_down,
+                                                                .arrow_drop_down,
                                                       size: 30,
-                                                      color: data.percentageChange! >
-                                                          0
+                                                      color:
+                                                          data.percentageChange! >
+                                                              0
                                                           ? Colors.green
                                                           : Colors.red,
                                                     ),
                                                     Text(
                                                       data.percentageChange! >
-                                                          0.0
+                                                              0.0
                                                           ? "+${data.percentageChange}% increase"
                                                           : "${data.percentageChange}% decrease",
                                                       style: kJetbrainsDescription
                                                           .copyWith(
-                                                        color:
-                                                        data.percentageChange! >
-                                                            0
-                                                            ? Colors.green
-                                                            : Colors.red,
-                                                        fontSize: 18,
-                                                      ),
+                                                            color:
+                                                                data.percentageChange! >
+                                                                    0
+                                                                ? Colors.green
+                                                                : Colors.red,
+                                                            fontSize: 18,
+                                                          ),
                                                     ),
                                                   ],
                                                 );
@@ -308,12 +378,81 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                 data: (data) {
                                   if (data.stallRevenue == null ||
                                       data.stallID == null) {
-                                    return Center(
-                                      child: Text(
-                                        "No Revenue data available",
-                                        style: kJetbrainsFontTitle.copyWith(
-                                          fontSize: 24,
-                                        ),
+                                    return IntrinsicHeight(
+                                      child: Row(
+                                        children: [
+                                          SizedBox(width: 20),
+                                          Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Text.rich(
+                                                TextSpan(
+                                                  text: '$currentMonthName ',
+                                                  style: kJetbrainsDescription
+                                                      .copyWith(
+                                                    fontWeight:
+                                                    FontWeight.w900,
+                                                    color: Color(
+                                                      0xFF5D371A,
+                                                    ),
+                                                    fontSize: 20,
+                                                  ),
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                      text: '$currentYear',
+                                                      style:
+                                                      kJetbrainsDescription
+                                                          .copyWith(
+                                                        color: Color(
+                                                          0xFF5D371A,
+                                                        ),
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w900,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Text.rich(
+                                                TextSpan(
+                                                  text: '₱ ',
+                                                  style: kJetbrainsFontTitle,
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                      text:
+                                                      '0.0',
+                                                      style:
+                                                      kJetbrainsFontTitle,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Icon(
+                                                    Icons.arrow_drop_up,
+                                                    size: 30,
+                                                    color: Colors.green,
+                                                  ),
+                                                  Text(
+                                                    "+0.0% increase",
+                                                    style: kJetbrainsDescription
+                                                        .copyWith(
+                                                      color: Colors.green,
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Expanded(child: SizedBox()),
+                                        ],
                                       ),
                                     );
                                   }
@@ -384,27 +523,28 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                       data.percentageChange! > 0
                                                           ? Icons.arrow_drop_up
                                                           : Icons
-                                                          .arrow_drop_down,
+                                                                .arrow_drop_down,
                                                       size: 30,
-                                                      color: data.percentageChange! >
-                                                          0
+                                                      color:
+                                                          data.percentageChange! >
+                                                              0
                                                           ? Colors.green
                                                           : Colors.red,
                                                     ),
                                                     Text(
                                                       data.percentageChange! >
-                                                          0.0
+                                                              0.0
                                                           ? "+${data.percentageChange}% increase"
                                                           : "${data.percentageChange}% decrease",
                                                       style: kJetbrainsDescription
                                                           .copyWith(
-                                                        color:
-                                                        data.percentageChange! >
-                                                            0
-                                                            ? Colors.green
-                                                            : Colors.red,
-                                                        fontSize: 18,
-                                                      ),
+                                                            color:
+                                                                data.percentageChange! >
+                                                                    0
+                                                                ? Colors.green
+                                                                : Colors.red,
+                                                            fontSize: 18,
+                                                          ),
                                                     ),
                                                   ],
                                                 );
@@ -426,12 +566,81 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                 data: (data) {
                                   if (data.stallRevenue == null ||
                                       data.stallID == null) {
-                                    return Center(
-                                      child: Text(
-                                        "No Revenue data available",
-                                        style: kJetbrainsFontTitle.copyWith(
-                                          fontSize: 24,
-                                        ),
+                                    return IntrinsicHeight(
+                                      child: Row(
+                                        children: [
+                                          SizedBox(width: 20),
+                                          Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Text.rich(
+                                                TextSpan(
+                                                  text: '$currentMonthName ',
+                                                  style: kJetbrainsDescription
+                                                      .copyWith(
+                                                    fontWeight:
+                                                    FontWeight.w900,
+                                                    color: Color(
+                                                      0xFF5D371A,
+                                                    ),
+                                                    fontSize: 20,
+                                                  ),
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                      text: '$currentYear',
+                                                      style:
+                                                      kJetbrainsDescription
+                                                          .copyWith(
+                                                        color: Color(
+                                                          0xFF5D371A,
+                                                        ),
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w900,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Text.rich(
+                                                TextSpan(
+                                                  text: '₱ ',
+                                                  style: kJetbrainsFontTitle,
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                      text:
+                                                      '0.0',
+                                                      style:
+                                                      kJetbrainsFontTitle,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Icon(
+                                                    Icons.arrow_drop_up,
+                                                    size: 30,
+                                                    color: Colors.green,
+                                                  ),
+                                                  Text(
+                                                    "+0.0% increase",
+                                                    style: kJetbrainsDescription
+                                                        .copyWith(
+                                                      color: Colors.green,
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Expanded(child: SizedBox()),
+                                        ],
                                       ),
                                     );
                                   }
@@ -504,8 +713,9 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                           : Icons
                                                                 .arrow_drop_down,
                                                       size: 30,
-                                                      color: data.percentageChange! >
-                                                          0
+                                                      color:
+                                                          data.percentageChange! >
+                                                              0
                                                           ? Colors.green
                                                           : Colors.red,
                                                     ),

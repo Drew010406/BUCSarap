@@ -4,6 +4,7 @@ import 'package:frontend/providers/product_provider.dart';
 import 'package:frontend/screens/student/item_window.dart';
 import 'package:frontend/screens/page_route/hero_dialog_route.dart';
 import 'package:frontend/shared/cart_button.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../constants.dart';
 import '../../providers/cart_provider.dart';
@@ -23,12 +24,8 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     final products = ref.watch(productsProvider);
     final cartProducts = ref.watch(cartNotifierProvider);
 
-    final double _ = MediaQuery
-        .sizeOf(context)
-        .width;
-    final double _ = MediaQuery
-        .sizeOf(context)
-        .height;
+    final double _ = MediaQuery.sizeOf(context).width;
+    final double _ = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +41,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
       ),
       body: Stack(
         children: [
-          if(products.value!.isNotEmpty)
+          if (products.value!.isNotEmpty)
             Column(
               children: [
                 Center(
@@ -63,18 +60,27 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                     ),
                     child: products.when(
                       loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                          const Center(child: CircularProgressIndicator()),
                       error: (err, stack) => Text('Error: $err'),
                       data: (product) {
                         return GridView.builder(
                           itemCount: product.length,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 20,
-                            childAspectRatio: 0.78,
-                          ),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 20,
+                                crossAxisSpacing: 20,
+                                childAspectRatio: 0.78,
+                              ),
                           itemBuilder: (BuildContext context, int index) {
+                            final String publicUrl = Supabase
+                                .instance
+                                .client
+                                .storage
+                                .from("images")
+                                .getPublicUrl(
+                                  "${product[index].photoPath}",
+                                );
                             return GestureDetector(
                               onTap: () {
                                 if (product[index].productStatus) {
@@ -83,9 +89,10 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                       builder: (context) {
                                         return ItemWindow(
                                           productID: product[index].productID,
-                                          unitPrice: product[index]
-                                              .productPrice,
+                                          unitPrice:
+                                              product[index].productPrice,
                                           index: index,
+                                          publicUrl: publicUrl,
                                         );
                                       },
                                     ),
@@ -103,10 +110,13 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      if(!product[index].productStatus)
-                                        Text("Unavailable",
+                                      if (!product[index].productStatus)
+                                        Text(
+                                          "Unavailable",
                                           style: kJetbrainsFontTitle.copyWith(
-                                              fontSize: 24),),
+                                            fontSize: 24,
+                                          ),
+                                        ),
                                       Expanded(
                                         child: Container(
                                           decoration: BoxDecoration(
@@ -124,8 +134,9 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                           width: double.infinity,
                                           child: FittedBox(
                                             fit: BoxFit.fill,
-                                            child: Image.asset(
-                                              "images/foods/beef_steak.jpg",
+                                            child: Image.network(
+                                              publicUrl,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
                                         ),
@@ -162,10 +173,16 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               ],
             )
           else
-            Column(children: [
-              Center(child: Text(
-                "No products to show", style: kJetbrainsFontTitle,),)
-            ],),
+            Column(
+              children: [
+                Center(
+                  child: Text(
+                    "No products to show",
+                    style: kJetbrainsFontTitle,
+                  ),
+                ),
+              ],
+            ),
           Positioned(bottom: 0, child: CartContainer()),
         ],
       ),

@@ -12,11 +12,13 @@ class ItemWindow extends ConsumerStatefulWidget {
   final int? productID;
   final double? unitPrice;
   final int? index;
+  final String? publicUrl;
 
   const ItemWindow({
     super.key,
     required this.productID,
     required this.unitPrice,
+    required this.publicUrl,
     this.index,
   });
 
@@ -82,7 +84,7 @@ class _ItemWindowState extends ConsumerState<ItemWindow> {
                             style: TextStyle(),
                             child: FittedBox(
                               fit: BoxFit.fill,
-                              child: Image.asset("images/foods/beef_steak.jpg"),
+                              child: Image.network(widget.publicUrl!),
                             ),
                           ),
                         ),
