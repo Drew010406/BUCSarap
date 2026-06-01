@@ -30,10 +30,10 @@ class TokenRefreshInterceptor {
       // Gets called if 401 response was received
       try {
         final response = await client.post(
-          '/auth/refresh_token',
+          '/users/refresh_token',
           data: {
-            'refreshToken': token!.refreshToken,
-            'accessToken': token.accessToken,
+            'refresh_token': token!.refreshToken,
+            'access_token': token.accessToken,
           },
         );
 

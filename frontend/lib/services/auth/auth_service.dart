@@ -10,37 +10,15 @@ class AuthService {
 
   AuthService({dio}) : _dio = dio;
 
-  // Future<dynamic> registerUser(Map<String, dynamic> userData) async {
-  //   try {
-  //     Response response = await _dio!.post(
-  //       '/auth/register',
-  //       data: userData,
-  //     );
-  //     if(response.statusCode == 201) {
-  //       return OwnerModel.fromJson(response.data);
-  //     }
-  //   } on DioException catch (e) {
-  //     if(e.response != null) {
-  //       final statusCode = e.response?.statusCode;
-  //       final errorData = e.response?.data;
-  //
-  //       if(statusCode == 400) { // Then that means the user already exists
-  //         final errorMessage = errorData?['detail'] ?? 'Username already exists';
-  //         throw Exception(errorMessage);
-  //       } else {
-  //         throw Exception('Server error: $statusCode - ${errorData?['detail'] ?? 'Unknown Error'}');
-  //       }
-  //     } else {
-  //       throw Exception('Network error: ${e.message}'); // No response was received
-  //     }
-  //   }
-  // }
 
   Future<dynamic> loginUser(OwnerModel userData) async {
     try {
       Response response = await _dio!.post(
         '/users/login',
-        data: userData.toJson(),
+        data: FormData.fromMap({
+          'username': userData.username,
+          'password': userData.password,
+        }),
       );
 
       if(response.statusCode == 200) {
@@ -64,6 +42,18 @@ class AuthService {
       } else {
         throw Exception('Network error: ${e.message}'); // No response was received
       }
+    }
+  }
+
+  Future<Response?> checkAuth() async {
+    final token = await _tokenStorageImpl.read();
+    if (token == null) return null;
+
+    try {
+      final response = await _dio!.get('/users/me');
+      return response;
+    } on DioException {
+      return null;
     }
   }
 }
