@@ -157,7 +157,12 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
             Expanded(
               child: pendingQueue.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, stack) => Text("Error: $err"),
+                error: (err, stack) => Center(
+                  child: Text(
+                    "No pending items to show",
+                    style: kJetbrainsFontTitle.copyWith(fontSize: 24),
+                  ),
+                ),
                 data: (items) {
                   return GridView.builder(
                     itemCount: items.length,
@@ -273,7 +278,12 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
             Expanded(
               child: preparingQueue.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, stack) => Text("Error: $err"),
+                error: (err, stack) => Center(
+                  child: Text(
+                    "No preparing items to show",
+                    style: kJetbrainsFontTitle.copyWith(fontSize: 24),
+                  ),
+                ),
                 data: (items) {
                   return GridView.builder(
                     itemCount: items.length,

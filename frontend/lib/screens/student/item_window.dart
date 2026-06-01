@@ -1,9 +1,7 @@
 // https://github.com/funwithflutter/flutter_ui_tips/blob/master/tip_003_popup_card/lib/add_todo_button.dart
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/constants.dart';
-import 'package:frontend/models/product_model.dart';
 import 'package:frontend/models/order_line_model.dart';
 import 'package:frontend/providers/cart_provider.dart';
 import 'package:frontend/providers/product_provider.dart';

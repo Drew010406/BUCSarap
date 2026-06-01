@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/providers/owner_provider.dart';
 import 'package:frontend/providers/owner_stall_provider.dart';
 import 'package:frontend/screens/stall_holder/edit_category_modal.dart';
 
