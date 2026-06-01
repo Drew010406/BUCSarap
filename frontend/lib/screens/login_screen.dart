@@ -19,6 +19,26 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _tryAutoLogin());
+  }
+
+  Future<void> _tryAutoLogin() async {
+    final dio = ref.read(dioProvider);
+    final authService = AuthService(dio: dio);
+
+    final response = await authService.checkAuth();
+    if (response != null && response.statusCode == 200) {
+      final ownerId = response.data['owner_id'];
+      ref.read(ownerNotifierProvider.notifier).addOwner(ownerId);
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/stall_holder_screen');
+      }
+    }
+  }
   @override
   void dispose() {
     // TODO: implement dispose

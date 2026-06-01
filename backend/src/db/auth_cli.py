@@ -2,7 +2,7 @@
 
 from sqlalchemy import text
 from backend.src.db.session import engine
-from backend.src.core.security import hash_password, verify_hash
+from backend.src.core.auth_utils import get_password_hash, verify_password
 
 def add_account():
     print("\nAdd new acc")
@@ -33,7 +33,7 @@ def add_account():
         print("Passwords do not match\n")
         return False
     
-    hashed_password = hash_password(password)
+    hashed_password = get_password_hash(password)
     
     try:
         with engine.begin() as conn:
@@ -75,7 +75,7 @@ def sign_in():
             
             owner_id, hashed_password = owner
             
-            if verify_hash(password, hashed_password):
+            if verify_password(password, hashed_password):
                 print("Logged in successfully\n")
                 return owner_id
             else:

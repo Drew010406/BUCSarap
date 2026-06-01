@@ -22,7 +22,7 @@ dependencies:
   dio: ^5.9.2
   image_picker: ^1.2.2
   fresh_dio: ^0.6.0
-  flutter_secure_storage: ^10.0.0
+  flutter_secure_storage: ^10.3.1
   flutter_svg: ^2.2.4
   freezed_annotation: ^3.1.0
   json_annotation: ^4.11.0
