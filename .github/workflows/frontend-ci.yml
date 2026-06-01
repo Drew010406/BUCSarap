@@ -1,6 +1,5 @@
 # Reference: https://medium.com/@developerjamiu/setting-up-ci-cd-for-flutter-apps-a841b651e70a
-name: Fronted CI
-
+name: Frontend CI
 on:
   push:
     branches:
@@ -14,7 +13,6 @@ on:
     paths:
       - 'frontend/**'
       - '.github/workflows/frontend-ci.yml'
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -24,25 +22,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Flutter
-        uses: subosito/flutter-action@v2 # Repo: https://github.com/subosito/flutter-action
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version: 3.32.8
+          cache: true
       - run: flutter --version
       - name: Get Flutter packages
-        run: |
-          flutter pub get
-
+        run: flutter pub get
       - name: Check for lints
-        run: |
-          flutter analyze
-        continue-on-error: true
+        run: flutter analyze
       - name: run_build_runner
-        run: |
-          dart run build_runner build --delete-conflicting-outputs
-
-#      In the future if hindi ako tamarin imma write my tests
-#      Pero for now comment this out just like on the backend ci
+        run: dart run build_runner build --delete-conflicting-outputs
 #      - name: Run all tests
-#        run: |
-#          flutter test
+#        run: flutter test
