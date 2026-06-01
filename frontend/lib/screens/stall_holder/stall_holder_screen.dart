@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/components/stall_holder/navigation_panel.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/models/stall_model.dart';
 import 'package:frontend/providers/owner_stall_provider.dart';
 
+import '../../components/login_screen/logout_button.dart';
+import '../../services/auth/token_storage_impl.dart';
 import '../../shared/back_button_container.dart';
 
 class StallHolderScreen extends ConsumerStatefulWidget {
@@ -15,6 +18,8 @@ class StallHolderScreen extends ConsumerStatefulWidget {
 }
 
 class _StallHolderScreenState extends ConsumerState<StallHolderScreen> {
+  final TokenStorageImpl _tokenStorageImpl = TokenStorageImpl(const FlutterSecureStorage());
+
   @override
   Widget build(BuildContext context) {
     final currentRoute = ModalRoute.of(context)?.settings.name;
@@ -23,9 +28,10 @@ class _StallHolderScreenState extends ConsumerState<StallHolderScreen> {
       appBar: AppBar(
         toolbarHeight: 110,
         backgroundColor: Color(0xFFEFE2D3),
-        leadingWidth: 140,
-        leading: BackButtonContainer(
-          onTap: () {
+        leadingWidth: 160,
+        leading: LogoutButton(
+          onTap: () async {
+            await _tokenStorageImpl.delete();
             Navigator.popUntil(context, ModalRoute.withName('/'));
           },
         ),
