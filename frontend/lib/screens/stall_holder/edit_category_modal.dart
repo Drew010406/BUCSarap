@@ -19,7 +19,10 @@ class EditCategoryModal extends ConsumerWidget {
         child: Padding(
           padding: EdgeInsetsGeometry.symmetric(horizontal: 30, vertical: 240),
           child: Material(
+            borderRadius: BorderRadius.circular(10),
+            color: Color(0xFFFFE591),
             child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 children: [
                   SizedBox(height: 30,),
@@ -52,7 +55,7 @@ class EditCategoryModal extends ConsumerWidget {
                       ),
                       child: Center(
                         child: Text(
-                          'Add Category',
+                          'Save Category',
                           textAlign: TextAlign.center,
                           style: TextStyle(fontFamily: "Flame", color: Colors.black),
                         ),

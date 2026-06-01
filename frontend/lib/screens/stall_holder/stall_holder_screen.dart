@@ -28,7 +28,7 @@ class _StallHolderScreenState extends ConsumerState<StallHolderScreen> {
       appBar: AppBar(
         toolbarHeight: 110,
         backgroundColor: Color(0xFFEFE2D3),
-        leadingWidth: 160,
+        leadingWidth: 165,
         leading: LogoutButton(
           onTap: () async {
             await _tokenStorageImpl.delete();
