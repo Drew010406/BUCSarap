@@ -22,7 +22,8 @@ import firebase_admin
 from firebase_admin import credentials, messaging 
 
 
-cred = credentials.Certificate("firebase-service-account.json")
+"""paste mo nalang path ng key galing firebase dito"""
+cred = credentials.Certificate("bucsarap-firebase-adminsdk-fbsvc-6fb9de78cc.json")
 firebase_admin.initialize_app(cred)
 
 route = APIRouter()
@@ -39,6 +40,7 @@ fcm_tokens: dict[int, str] = {}
 async def save_fcm(order_id: int, fcm_token: str):
     
     fcm_tokens[order_id] = fcm_token
+    print(f"Order ID: {order_id} FCM TOKEN : {fcm_token}")
     return {"message": f"FCM token saved for Order ID: {order_id}"}
 
 "Same approach sa SSE, bale after mag push ng event sa queue, notif naman isesend. tigcall ko to dun sa mga order status changing endpoints"
@@ -50,7 +52,7 @@ async def send_push_notifs(order_id: int, title: str, body: str):
     if not token:
         return {"Message" : f"Token of order: {order_id} doesn't exist."}
 
-    message = messaging.Message(notification= messaging.Notification(title=title, body= body), token= token)
+    message = messaging.Message(notification= messaging.Notification(title=title, body= body), token= token, android=messaging.AndroidConfig(priority="high"))
     
     try:
 
