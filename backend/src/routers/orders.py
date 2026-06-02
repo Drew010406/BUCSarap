@@ -4,6 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy import text, Connection
 from backend.src.schema.history import HistoryItem
 
+
+
 from backend.src.db.session import get_db
 from backend.src.schema.order import (
     CreateOrderRequest,
@@ -16,10 +18,51 @@ import asyncio
 import json
 from sse_starlette import EventSourceResponse
 
+import firebase_admin
+from firebase_admin import credentials, messaging 
+
+
+cred = credentials.Certificate("firebase-service-account.json")
+firebase_admin.initialize_app(cred)
 
 route = APIRouter()
 
 added_items = {}
+
+"""Push notif shit----------------------------------------------"""
+
+"Dito ko isave yung tokens bale {order id:token} siya, same approach sa SSE."
+fcm_tokens: dict[int, str] = {}
+
+"Eto call mo isabay mo sa pag checkout. Eto magstore ng tokens sa dict sa taas"
+@route.post("/{order_id}/notif/save_fcm")
+async def save_fcm(order_id: int, fcm_token: str):
+    
+    fcm_tokens[order_id] = fcm_token
+    return {"message": f"FCM token saved for Order ID: {order_id}"}
+
+"Same approach sa SSE, bale after mag push ng event sa queue, notif naman isesend. tigcall ko to dun sa mga order status changing endpoints"
+async def send_push_notifs(order_id: int, title: str, body: str):
+
+    "kuha token using id -> construct message -> send"
+    token = fcm_tokens.get(order_id)
+    
+    if not token:
+        return {"Message" : f"Token of order: {order_id} doesn't exist."}
+
+    message = messaging.Message(notification= messaging.Notification(title=title, body= body), token= token)
+    
+    try:
+
+        "blocking daw yung messaging kaya pinapagamitan ng threading"
+        await asyncio.to_thread(messaging.send, message)
+        return {"message": f"Push notification sent successfully"}
+        
+    except Exception as error:
+        return {"Message": f"Failed to send message: {error}"}
+    
+"""---------------------------------------------------------------"""
+
 
 """Queue shit----------------------------------------------------"""
 stall_streams: dict[int, asyncio.Queue] = {}
@@ -337,7 +380,7 @@ async def submit_order(order_id: int, payload: dict, db: Annotated[Connection, D
                     "event": "Order added in Pending Queue",
                     "data": [item.model_dump() for item in updated_queue]
                 })
-            
+                
     except Exception as error:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Could not submit order: {str(error)}") from error
@@ -431,9 +474,12 @@ async def accept_orders(order_id: int, stall_id: int, db: Annotated[Connection, 
                 "event": "Order added in Pending Queue",
                 "data": [item.model_dump() for item in updated_queue]
             })
+            
         
         results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()
         order_number = results["order_number"]
+        
+        await send_push_notifs(order_id, "ORDER ACCEPTED", f"Your order has been accepted ({order_number}). Please wait while your meal is being prepared!")
         
         return {"message": "Successfully accepted order, please wait while your order is being prepared!\nYour order nunmber: {order_number}", "order_number": order_number}
     
@@ -483,6 +529,8 @@ async def decline_order(order_id: int, stall_id: int, db: Annotated[Connection, 
                 "data": [item.model_dump() for item in updated_queue]
             })
         
+        await send_push_notifs(order_id, "ORDER DECLINED", "Your order has been declined. We are sorry for the inconvenience, please try ordering again!")
+        
         return {"message": f"Successfully declined order number: {order_id}"}
         
     except Exception as error:
@@ -523,6 +571,7 @@ async def complete_order(order_id: int, stall_id: int, db: Annotated[Connection,
                 "data": [item.model_dump() for item in updated_queue]
             })
 
+        await send_push_notifs(order_id, "ORDER REAEDY", "Your order is ready. Please claim it at the counter and present the receipt or the order number: {order_number}!")
         return {"message": "Successfully completed order, please come to the cashier to claim!\nYour order nunmber: {order_number}", "order_number": order_number}
     
     except Exception as error:
