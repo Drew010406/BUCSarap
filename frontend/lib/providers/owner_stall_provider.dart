@@ -17,6 +17,8 @@ class OwnerStallCategoryProvider extends _$OwnerStallCategoryProvider {
     if (ownerID == null) throw Exception("Not logged in");
 
     // Wait for the owner stall data to be available before fetching categories
+    // Could make this directly retrieve the value tho
+    // But for null safety meh
     final stallData = await ref.watch(ownerStallProvider.future);
     final int stallID = stallData.stallID!;
 

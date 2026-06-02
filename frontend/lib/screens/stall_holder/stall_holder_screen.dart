@@ -9,6 +9,7 @@ import 'package:frontend/components/stall_holder/navigation_panel.dart';
 import 'package:frontend/constants.dart';
 import 'package:frontend/models/stall_model.dart';
 import 'package:frontend/providers/owner_stall_provider.dart';
+import 'package:frontend/providers/queue_provider.dart';
 
 import '../../components/login_screen/logout_button.dart';
 import '../../services/auth/token_storage_impl.dart';
@@ -38,7 +39,8 @@ class _StallHolderScreenState extends ConsumerState<StallHolderScreen> {
       },
       onSuccessCallback: (EventFluxResponse? response) async {
         response?.stream?.listen((data) {
-          print("SSE DATA: ${data.event.toString()}");
+          ref.invalidate(pendingQueueProviderProvider);
+          print("SSE DATA: ${data.data}");
         });
       },
       onError: (EventFluxException error) {
