@@ -26,7 +26,7 @@ class EditCategoryModal extends ConsumerWidget {
               child: Column(
                 children: [
                   SizedBox(height: 30,),
-                  Text('Edit Category Name', style: kJetbrainsFontTitle.copyWith(fontSize: 24)),
+                  Text('Edit Category Name', style: kFlameFontTitle.copyWith(fontSize: 24)),
                   SizedBox(height: 20,),
                   TextField(
                     controller: nameController,

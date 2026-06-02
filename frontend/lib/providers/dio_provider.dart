@@ -8,11 +8,12 @@ import 'package:frontend/services/auth/token_storage_impl.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   final Dio dio = Dio(BaseOptions(
-      baseUrl: "http://10.0.2.2:8080",
+      baseUrl: "https://sufferer-cuddly-commerce.ngrok-free.dev/",
       connectTimeout: Duration(seconds: 30),
       receiveTimeout: Duration(seconds: 30),
       sendTimeout: Duration(seconds: 30),
-      contentType: 'application/json'
+      contentType: 'application/json',
+      headers: {'ngrok-skip-browser-warning': 'true',}
   ));
   // Set up token storage
   final secureStorage = const FlutterSecureStorage();

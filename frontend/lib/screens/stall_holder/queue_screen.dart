@@ -1,3 +1,6 @@
+import 'package:eventflux/client.dart';
+import 'package:eventflux/enum.dart';
+import 'package:eventflux/models/response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/components/stall_holder/navigation_panel.dart';
@@ -160,7 +163,7 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
                 error: (err, stack) => Center(
                   child: Text(
                     "No pending items to show",
-                    style: kJetbrainsFontTitle.copyWith(fontSize: 24),
+                    style: kFlameFontTitle.copyWith(fontSize: 24),
                   ),
                 ),
                 data: (items) {
@@ -216,13 +219,13 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
                                   children: [
                                     Text(
                                       "${currentItem.customerName}",
-                                      style: kJetbrainsFontTitle.copyWith(
+                                      style: kFlameFontTitle.copyWith(
                                         fontSize: 17,
                                       ),
                                     ),
                                     Text(
                                       "${currentItem.orderNumber}",
-                                      style: kJetbrainsDescription.copyWith(
+                                      style: kFlameDescription.copyWith(
                                         color: Colors.black45,
                                       ),
                                     ),
@@ -281,7 +284,7 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
                 error: (err, stack) => Center(
                   child: Text(
                     "No preparing items to show",
-                    style: kJetbrainsFontTitle.copyWith(fontSize: 24),
+                    style: kFlameFontTitle.copyWith(fontSize: 24),
                   ),
                 ),
                 data: (items) {
@@ -337,13 +340,13 @@ class _QueueScreenState extends ConsumerState<QueueScreen> {
                                   children: [
                                     Text(
                                       "${currentItem.customerName}",
-                                      style: kJetbrainsFontTitle.copyWith(
+                                      style: kFlameFontTitle.copyWith(
                                         fontSize: 17,
                                       ),
                                     ),
                                     Text(
                                       "${currentItem.orderNumber}",
-                                      style: kJetbrainsDescription.copyWith(
+                                      style: kFlameDescription.copyWith(
                                         color: Colors.black45,
                                       ),
                                     ),

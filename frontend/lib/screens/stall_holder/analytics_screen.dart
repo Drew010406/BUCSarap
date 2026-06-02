@@ -88,7 +88,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Earnings,", style: kJetbrainsFontTitle),
+                      Text("Earnings,", style: kFlameFontTitle),
                       SizedBox(height: 10),
                       Container(
                         height: 250,
@@ -205,7 +205,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                               Text.rich(
                                                 TextSpan(
                                                   text: '$currentMonthName ',
-                                                  style: kJetbrainsDescription
+                                                  style: kFlameDescription
                                                       .copyWith(
                                                         fontWeight:
                                                             FontWeight.w900,
@@ -218,7 +218,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                     TextSpan(
                                                       text: '$currentYear',
                                                       style:
-                                                          kJetbrainsDescription
+                                                          kFlameDescription
                                                               .copyWith(
                                                                 color: Color(
                                                                   0xFF5D371A,
@@ -235,13 +235,13 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                               Text.rich(
                                                 TextSpan(
                                                   text: '₱ ',
-                                                  style: kJetbrainsFontTitle,
+                                                  style: kFlameFontTitle,
                                                   children: <TextSpan>[
                                                     TextSpan(
                                                       text:
                                                           '0.0',
                                                       style:
-                                                          kJetbrainsFontTitle,
+                                                          kFlameFontTitle,
                                                     ),
                                                   ],
                                                 ),
@@ -257,7 +257,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                   ),
                                                   Text(
                                                     "+0.0% increase",
-                                                    style: kJetbrainsDescription
+                                                    style: kFlameDescription
                                                         .copyWith(
                                                           color: Colors.green,
                                                           fontSize: 18,
@@ -283,7 +283,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                             Text.rich(
                                               TextSpan(
                                                 text: '$currentMonthName ',
-                                                style: kJetbrainsDescription
+                                                style: kFlameDescription
                                                     .copyWith(
                                                       fontWeight:
                                                           FontWeight.w900,
@@ -293,7 +293,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                     text: '$currentYear',
-                                                    style: kJetbrainsDescription
+                                                    style: kFlameDescription
                                                         .copyWith(
                                                           color: Color(
                                                             0xFF5D371A,
@@ -309,12 +309,12 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                             Text.rich(
                                               TextSpan(
                                                 text: '₱ ',
-                                                style: kJetbrainsFontTitle,
+                                                style: kFlameFontTitle,
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                     text:
                                                         '${data.stallRevenue}',
-                                                    style: kJetbrainsFontTitle,
+                                                    style: kFlameFontTitle,
                                                   ),
                                                 ],
                                               ),
@@ -348,7 +348,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                               0.0
                                                           ? "+${data.percentageChange}% increase"
                                                           : "${data.percentageChange}% decrease",
-                                                      style: kJetbrainsDescription
+                                                      style: kFlameDescription
                                                           .copyWith(
                                                             color:
                                                                 data.percentageChange! >
@@ -389,7 +389,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                               Text.rich(
                                                 TextSpan(
                                                   text: '$currentMonthName ',
-                                                  style: kJetbrainsDescription
+                                                  style: kFlameDescription
                                                       .copyWith(
                                                     fontWeight:
                                                     FontWeight.w900,
@@ -402,7 +402,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                     TextSpan(
                                                       text: '$currentYear',
                                                       style:
-                                                      kJetbrainsDescription
+                                                      kFlameDescription
                                                           .copyWith(
                                                         color: Color(
                                                           0xFF5D371A,
@@ -419,13 +419,13 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                               Text.rich(
                                                 TextSpan(
                                                   text: '₱ ',
-                                                  style: kJetbrainsFontTitle,
+                                                  style: kFlameFontTitle,
                                                   children: <TextSpan>[
                                                     TextSpan(
                                                       text:
                                                       '0.0',
                                                       style:
-                                                      kJetbrainsFontTitle,
+                                                      kFlameFontTitle,
                                                     ),
                                                   ],
                                                 ),
@@ -441,7 +441,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                   ),
                                                   Text(
                                                     "+0.0% increase",
-                                                    style: kJetbrainsDescription
+                                                    style: kFlameDescription
                                                         .copyWith(
                                                       color: Colors.green,
                                                       fontSize: 18,
@@ -467,7 +467,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                             Text.rich(
                                               TextSpan(
                                                 text: '$currentMonthName ',
-                                                style: kJetbrainsDescription
+                                                style: kFlameDescription
                                                     .copyWith(
                                                       fontWeight:
                                                           FontWeight.w900,
@@ -477,7 +477,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                     text: '$currentYear',
-                                                    style: kJetbrainsDescription
+                                                    style: kFlameDescription
                                                         .copyWith(
                                                           color: Color(
                                                             0xFF5D371A,
@@ -493,16 +493,16 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                             Text.rich(
                                               TextSpan(
                                                 text: '₱ ',
-                                                style: kJetbrainsFontTitle,
+                                                style: kFlameFontTitle,
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                     text:
                                                         '${data.stallRevenue}',
-                                                    style: kJetbrainsFontTitle,
+                                                    style: kFlameFontTitle,
                                                   ),
                                                   TextSpan(
                                                     text: '',
-                                                    style: kJetbrainsFontTitle,
+                                                    style: kFlameFontTitle,
                                                   ),
                                                 ],
                                               ),
@@ -536,7 +536,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                               0.0
                                                           ? "+${data.percentageChange}% increase"
                                                           : "${data.percentageChange}% decrease",
-                                                      style: kJetbrainsDescription
+                                                      style: kFlameDescription
                                                           .copyWith(
                                                             color:
                                                                 data.percentageChange! >
@@ -577,7 +577,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                               Text.rich(
                                                 TextSpan(
                                                   text: '$currentMonthName ',
-                                                  style: kJetbrainsDescription
+                                                  style: kFlameDescription
                                                       .copyWith(
                                                     fontWeight:
                                                     FontWeight.w900,
@@ -590,7 +590,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                     TextSpan(
                                                       text: '$currentYear',
                                                       style:
-                                                      kJetbrainsDescription
+                                                      kFlameDescription
                                                           .copyWith(
                                                         color: Color(
                                                           0xFF5D371A,
@@ -607,13 +607,13 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                               Text.rich(
                                                 TextSpan(
                                                   text: '₱ ',
-                                                  style: kJetbrainsFontTitle,
+                                                  style: kFlameFontTitle,
                                                   children: <TextSpan>[
                                                     TextSpan(
                                                       text:
                                                       '0.0',
                                                       style:
-                                                      kJetbrainsFontTitle,
+                                                      kFlameFontTitle,
                                                     ),
                                                   ],
                                                 ),
@@ -629,7 +629,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                   ),
                                                   Text(
                                                     "+0.0% increase",
-                                                    style: kJetbrainsDescription
+                                                    style: kFlameDescription
                                                         .copyWith(
                                                       color: Colors.green,
                                                       fontSize: 18,
@@ -655,7 +655,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                             Text.rich(
                                               TextSpan(
                                                 text: '$currentMonthName ',
-                                                style: kJetbrainsDescription
+                                                style: kFlameDescription
                                                     .copyWith(
                                                       fontWeight:
                                                           FontWeight.w900,
@@ -665,7 +665,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                     text: '$currentYear',
-                                                    style: kJetbrainsDescription
+                                                    style: kFlameDescription
                                                         .copyWith(
                                                           color: Color(
                                                             0xFF5D371A,
@@ -681,16 +681,16 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                             Text.rich(
                                               TextSpan(
                                                 text: '₱ ',
-                                                style: kJetbrainsFontTitle,
+                                                style: kFlameFontTitle,
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                     text:
                                                         '${data.stallRevenue}',
-                                                    style: kJetbrainsFontTitle,
+                                                    style: kFlameFontTitle,
                                                   ),
                                                   TextSpan(
                                                     text: '',
-                                                    style: kJetbrainsFontTitle,
+                                                    style: kFlameFontTitle,
                                                   ),
                                                 ],
                                               ),
@@ -724,7 +724,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                                               0.0
                                                           ? "+${data.percentageChange}% increase"
                                                           : "${data.percentageChange}% decrease",
-                                                      style: kJetbrainsDescription
+                                                      style: kFlameDescription
                                                           .copyWith(
                                                             color:
                                                                 data.percentageChange! >
@@ -752,7 +752,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                         ),
                       ),
                       SizedBox(height: 15),
-                      Text("Income History", style: kJetbrainsFontTitle),
+                      Text("Income History", style: kFlameFontTitle),
                       SizedBox(height: 10),
                       lastTenDaysRevenue.when(
                         loading: () =>

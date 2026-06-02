@@ -53,24 +53,24 @@ async def stream_generator(stall_id : int, request : Request):
             stall_streams.pop(stall_id, None)
             
     return EventSourceResponse(event_generator())
-         
+    
 @route.get(
-	"/preparing_queue/{stall_id}",
-	response_model=List[HistoryItem],
-	responses={
-		404: {"description": "Stall not found"},
-	},
+  "/preparing_queue/{stall_id}",
+  response_model=List[HistoryItem],
+  responses={
+    404: {"description": "Stall not found"},
+  },
 )
 async def get_pending_queue(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
     
     return await get_queue_helper(stall_id, "Pending", db)
 
 @route.get(
-	"/queue/{stall_id}",
-	response_model=List[HistoryItem],
-	responses={
-		404: {"description": "Stall not found"},
-	},
+  "/queue/{stall_id}",
+  response_model=List[HistoryItem],
+  responses={
+    404: {"description": "Stall not found"},
+  },
 )
 async def get_preparing_queue(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
 
@@ -79,8 +79,8 @@ async def get_preparing_queue(stall_id: int, db: Annotated[Connection, Depends(g
 async def get_queue_helper(stall_id: int, query_type: str,db: Connection):
     
     query = text("""
-        SELECT stall_id 
-        FROM stall 
+        SELECT stall_id
+        FROM stall
         WHERE stall_id = :s_id
         """)
     stall_exists = db.execute(query, {"s_id": stall_id}).mappings().fetchone()
@@ -89,7 +89,7 @@ async def get_queue_helper(stall_id: int, query_type: str,db: Connection):
         raise HTTPException(status_code=404, detail="Stall not found")
     
     get_rows_query = text("""
-                    
+        
         SELECT order_id, order_number, customer_name
         FROM orders
 
@@ -100,11 +100,8 @@ async def get_queue_helper(stall_id: int, query_type: str,db: Connection):
     try:
         rows = db.execute(get_rows_query, {"s_id": stall_id, "o_status": query_type}).mappings().fetchall()
 
-        if not rows:
-            raise HTTPException(status_code=204, detail=f"Currently no orders.")
-
     except Exception as error:
-        raise HTTPException(status_code=500, detail=f"Error: {str(error)}") 
+        raise HTTPException(status_code=500, detail=f"Error: {str(error)}")
 
     return [
         HistoryItem(
@@ -115,8 +112,8 @@ async def get_queue_helper(stall_id: int, query_type: str,db: Connection):
         for row in rows
     ]
     
-"--------------------------------------------------------------"            
-            
+"--------------------------------------------------------------"
+
 @route.post(
     "/create_order",
     response_model=CreateOrderResponse,
@@ -135,7 +132,7 @@ async def Create_Order(payload: CreateOrderRequest, db: Annotated[Connection, De
         FROM stall WHERE stall_id = :s_id
         """)
     
-    try: 
+    try:
         stall_row = db.execute(verification_query ,{"s_id": payload.stall_id}).mappings().fetchone()
 
     except Exception as error:
@@ -155,7 +152,7 @@ async def Create_Order(payload: CreateOrderRequest, db: Annotated[Connection, De
         """)
     
     try:
-        result = db.execute(insert_query,    
+        result = db.execute(insert_query,
                 {
                 "stall_id": payload.stall_id,
                 "o_number": order_number,
@@ -200,7 +197,7 @@ async def add_items_to_order(
         FROM orders WHERE order_id = :o_id
         """)
     
-    try: 
+    try:
         order_row = db.execute(query, {"o_id": order_id}).mappings().fetchone()
 
     except Exception:
@@ -278,7 +275,9 @@ async def add_items_to_order(
     },
 )
 async def submit_order(order_id: int, payload: dict, db: Annotated[Connection, Depends(get_db)]):
-
+    """
+    Laman ng payload: {order_id: 348, items_added: 1, items: [{product_id: 3, product_name: French Fries (S1), quantity_ordered: 2, unit_price_at_order: 21.97}], message: Successfully validated items. Total items for this order: 1.}
+    """
     query = text("""
                  
         SELECT order_id, order_status, stall_id
@@ -320,7 +319,7 @@ async def submit_order(order_id: int, payload: dict, db: Annotated[Connection, D
                 VALUES (:order_id, :product_id, :qty, :price)
             """)
             
-            db.execute(insert_query, 
+            db.execute(insert_query,
                 {
                 "order_id": order_id,
                 "product_id": item["product_id"],
@@ -329,11 +328,11 @@ async def submit_order(order_id: int, payload: dict, db: Annotated[Connection, D
             })
             
             db.commit()
-            
-            updated_queue = await get_queue_helper(payload.stall_id, "Pending", db)
-            if payload.stall_id in stall_streams:
-                          
-                await stall_streams[payload.stall_id].put({
+            stall_id = order_row["stall_id"] # updated: ala kasing stall_id sa payload
+            updated_queue = await get_queue_helper(stall_id, "Pending", db)
+            if stall_id in stall_streams:
+                
+                await stall_streams[stall_id].put({
                     
                     "event": "Order added in Pending Queue",
                     "data": [item.model_dump() for item in updated_queue]
@@ -356,54 +355,52 @@ async def submit_order(order_id: int, payload: dict, db: Annotated[Connection, D
 @route.get("/orders/{order_id}", response_model=QueueOrderResponse)
 async def get_order_details(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
     
-    query = text("""
-                 
-        SELECT o.customer_name, o.order_number, o.order_status, DATE_FORMAT(o.order_time, '%M %d, %Y : %h:%i:%s %p') AS order_date, 
-        o.stall_id,
-        p.product_name,
-        ol.quantity_ordered,
-        ol.unit_price_at_order
-
+    order_query = text("""
+        SELECT o.customer_name, o.order_number, o.order_status,
+               DATE_FORMAT(o.order_time, '%M %d, %Y : %h:%i:%s %p') AS order_date,
+               o.stall_id
         FROM orders o
-        JOIN order_line ol ON ol.order_id = o.order_id
-        JOIN product p ON p.product_id = ol.product_id
         WHERE o.order_id = :o_id
-        """)
+    """)
+    
+    items_query = text("""
+        SELECT p.product_name, ol.quantity_ordered, ol.unit_price_at_order
+        FROM order_line ol
+        JOIN product p ON p.product_id = ol.product_id
+        WHERE ol.order_id = :o_id
+    """)
     
     try:
-        results = db.execute(query, {"o_id": order_id}).mappings().fetchall()
+        results = db.execute(order_query, {"o_id": order_id}).mappings().fetchone()
         
         if not results:
             raise HTTPException(status_code=404, detail="Order not found.")
         
-        # Optional stall verification
-        if stall_id and results[0]["stall_id"] != stall_id:
+        if stall_id and results["stall_id"] != stall_id:
             raise HTTPException(status_code=403, detail="Order does not belong to this stall")
         
-        order_details = QueueOrderResponse(
-            
-            customer_name=results[0]["customer_name"],
-            order_number=results[0]["order_number"],
-            order_status=results[0]["order_status"],
-            order_date=results[0]["order_date"],
-            total_cost=sum(row["unit_price_at_order"] * row["quantity_ordered"] for row in results),
-            
+        order_details = db.execute(items_query, {"o_id": order_id}).mappings().fetchall()
+        
+        return QueueOrderResponse(
+            customer_name=results["customer_name"],
+            order_number=results["order_number"],
+            order_status=results["order_status"],
+            order_date=results["order_date"],
+            total_cost=sum(r["unit_price_at_order"] * r["quantity_ordered"] for r in order_details),
             items=[
                 QueueOrderLineResponse(
-                    product_name=row["product_name"],
-                    quantity_ordered=row["quantity_ordered"]
+                    product_name=r["product_name"],
+                    quantity_ordered=r["quantity_ordered"]
                 )
-                for row in results
+                for r in order_details
             ]
         )
-        
-        return order_details
     
     except HTTPException:
         raise
     except Exception as error:
         raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
-
+    
 @route.patch("accept_order/{order_id}")
 async def accept_orders(order_id: int, stall_id: int, db: Annotated[Connection, Depends(get_db)]):
     
@@ -421,7 +418,7 @@ async def accept_orders(order_id: int, stall_id: int, db: Annotated[Connection, 
         WHERE order_id = :o_id
         """)
     
-    try: 
+    try:
         results = db.execute(update_query, {"o_id": order_id, "s_id": stall_id})
         db.commit()
         
@@ -435,7 +432,7 @@ async def accept_orders(order_id: int, stall_id: int, db: Annotated[Connection, 
                 "data": [item.model_dump() for item in updated_queue]
             })
         
-        results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()        
+        results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()
         order_number = results["order_number"]
         
         return {"message": "Successfully accepted order, please wait while your order is being prepared!\nYour order nunmber: {order_number}", "order_number": order_number}
@@ -509,11 +506,11 @@ async def complete_order(order_id: int, stall_id: int, db: Annotated[Connection,
         WHERE order_id = :o_id
         """)
     
-    try: 
+    try:
         results = db.execute(update_query, {"o_id": order_id, "s_id": stall_id})
         db.commit()
         
-        results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()        
+        results = db.execute(get_order_number, {"o_id":order_id}).mappings().fetchone()
         order_number = results["order_number"]
         
         updated_queue = await get_queue_helper(stall_id, "Preparing", db)

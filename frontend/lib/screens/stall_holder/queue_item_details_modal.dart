@@ -40,7 +40,7 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                 Center(
                   child: Text(
                     "Order Details",
-                    style: kJetbrainsFontTitle.copyWith(
+                    style: kFlameFontTitle.copyWith(
                       fontSize: 20,
                       decoration: TextDecoration.none,
                     ),
@@ -50,7 +50,7 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                 Text.rich(
                   TextSpan(
                     text: 'Customer Name: ',
-                    style: kJetbrainsDescription.copyWith(
+                    style: kFlameDescription.copyWith(
                       decoration: TextDecoration.none,
                       color: kPrimaryColor,
                     ),
@@ -65,7 +65,7 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                 Text.rich(
                   TextSpan(
                     text: 'Order No.: ',
-                    style: kJetbrainsDescription.copyWith(
+                    style: kFlameDescription.copyWith(
                       decoration: TextDecoration.none,
                       color: kPrimaryColor,
                     ),
@@ -80,7 +80,7 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                 Text.rich(
                   TextSpan(
                     text: 'Order Status: ',
-                    style: kJetbrainsDescription.copyWith(
+                    style: kFlameDescription.copyWith(
                       decoration: TextDecoration.none,
                       color: kPrimaryColor,
                     ),
@@ -95,7 +95,7 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                 Text.rich(
                   TextSpan(
                     text: 'Order Time: ',
-                    style: kJetbrainsDescription.copyWith(
+                    style: kFlameDescription.copyWith(
                       decoration: TextDecoration.none,
                       color: kPrimaryColor,
                     ),
@@ -110,7 +110,7 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                 Text.rich(
                   TextSpan(
                     text: 'Total Cost: ',
-                    style: kJetbrainsDescription.copyWith(
+                    style: kFlameDescription.copyWith(
                       decoration: TextDecoration.none,
                       color: kPrimaryColor,
                     ),
@@ -125,7 +125,7 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                 SizedBox(height: 9),
                 Text(
                   "Items:",
-                  style: kJetbrainsDescription.copyWith(
+                  style: kFlameDescription.copyWith(
                     decoration: TextDecoration.none,
                     color: kPrimaryColor,
                     fontSize: 19,
@@ -136,7 +136,7 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                   children: [
                     Text(
                       "Product Name",
-                      style: kJetbrainsDescription.copyWith(
+                      style: kFlameDescription.copyWith(
                         decoration: TextDecoration.none,
                         color: kPrimaryColor,
                         fontSize: 15,
@@ -144,7 +144,7 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                     ),
                     Text(
                       "Quantity",
-                      style: kJetbrainsDescription.copyWith(
+                      style: kFlameDescription.copyWith(
                         decoration: TextDecoration.none,
                         color: kPrimaryColor,
                         fontSize: 15,
@@ -164,7 +164,7 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                             flex: 2,
                             child: Text(
                               "${items[index].productName}",
-                              style: kJetbrainsDescription.copyWith(
+                              style: kFlameDescription.copyWith(
                                 decoration: TextDecoration.none,
                                 color: kPrimaryColor,
                               ),
@@ -174,7 +174,7 @@ class _QueueItemDetailsModalState extends ConsumerState<QueueItemDetailsModal> {
                           Expanded(
                             child: Text(
                               "x ${items[index].quantityOrdered}",
-                              style: kJetbrainsDescription.copyWith(
+                              style: kFlameDescription.copyWith(
                                 decoration: TextDecoration.none,
                                 color: kPrimaryColor,
                               ),

@@ -103,7 +103,7 @@ class CustomSearchDelegate extends SearchDelegate<TransactionHistoryModel?> {
                     ),
                     Text(
                       item.orderNumber ?? '',
-                      style: kJetbrainsDescription.copyWith(
+                      style: kFlameDescription.copyWith(
                         color: Colors.black45,
                       ),
                     ),

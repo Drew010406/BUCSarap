@@ -9,14 +9,14 @@ final String editTag = "edit-popup";
 // Colors
 final Color kPrimaryColor = Color(0xFF5D371A);
 // TextStyles
-final TextStyle kJetbrainsFontTitle = TextStyle(
+final TextStyle kFlameFontTitle = TextStyle(
   color: Color(0xFF5D371A),
   fontFamily: "Flame",
   fontWeight: FontWeight.w900,
   fontSize: 35,
 );
 
-final TextStyle kJetbrainsDescription = TextStyle(
+final TextStyle kFlameDescription = TextStyle(
   color: Color(0xFFCFCFCF),
   fontFamily: "Flame",
   fontWeight: FontWeight.bold,

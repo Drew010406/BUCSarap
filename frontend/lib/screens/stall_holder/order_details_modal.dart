@@ -39,7 +39,7 @@ class OrderDetailsModal extends ConsumerWidget {
                 Center(
                   child: Text(
                     "Order Details",
-                    style: kJetbrainsFontTitle.copyWith(
+                    style: kFlameFontTitle.copyWith(
                       fontSize: 20,
                       decoration: TextDecoration.none,
                     ),
@@ -49,7 +49,7 @@ class OrderDetailsModal extends ConsumerWidget {
                 Text.rich(
                   TextSpan(
                     text: 'Customer Name: ',
-                    style: kJetbrainsDescription.copyWith(
+                    style: kFlameDescription.copyWith(
                       decoration: TextDecoration.none,
                       color: kPrimaryColor,
                     ),
@@ -64,7 +64,7 @@ class OrderDetailsModal extends ConsumerWidget {
                 Text.rich(
                   TextSpan(
                     text: 'Order No.: ',
-                    style: kJetbrainsDescription.copyWith(
+                    style: kFlameDescription.copyWith(
                       decoration: TextDecoration.none,
                       color: kPrimaryColor,
                     ),
@@ -79,7 +79,7 @@ class OrderDetailsModal extends ConsumerWidget {
                 Text.rich(
                   TextSpan(
                     text: 'Order Status: ',
-                    style: kJetbrainsDescription.copyWith(
+                    style: kFlameDescription.copyWith(
                       decoration: TextDecoration.none,
                       color: kPrimaryColor,
                     ),
@@ -94,7 +94,7 @@ class OrderDetailsModal extends ConsumerWidget {
                 Text.rich(
                   TextSpan(
                     text: 'Order Time: ',
-                    style: kJetbrainsDescription.copyWith(
+                    style: kFlameDescription.copyWith(
                       decoration: TextDecoration.none,
                       color: kPrimaryColor,
                     ),
@@ -109,7 +109,7 @@ class OrderDetailsModal extends ConsumerWidget {
                 Text.rich(
                   TextSpan(
                     text: 'Total Cost: ',
-                    style: kJetbrainsDescription.copyWith(
+                    style: kFlameDescription.copyWith(
                       decoration: TextDecoration.none,
                       color: kPrimaryColor,
                     ),
@@ -124,7 +124,7 @@ class OrderDetailsModal extends ConsumerWidget {
                 SizedBox(height: 9),
                 Text(
                   "Items:",
-                  style: kJetbrainsDescription.copyWith(
+                  style: kFlameDescription.copyWith(
                     decoration: TextDecoration.none,
                     color: kPrimaryColor,
                     fontSize: 19,
@@ -135,7 +135,7 @@ class OrderDetailsModal extends ConsumerWidget {
                   children: [
                     Text(
                       "Product Name",
-                      style: kJetbrainsDescription.copyWith(
+                      style: kFlameDescription.copyWith(
                         decoration: TextDecoration.none,
                         color: kPrimaryColor,
                         fontSize: 15,
@@ -143,7 +143,7 @@ class OrderDetailsModal extends ConsumerWidget {
                     ),
                     Text(
                       "Quantity",
-                      style: kJetbrainsDescription.copyWith(
+                      style: kFlameDescription.copyWith(
                         decoration: TextDecoration.none,
                         color: kPrimaryColor,
                         fontSize: 15,
@@ -163,7 +163,7 @@ class OrderDetailsModal extends ConsumerWidget {
                             flex: 2,
                             child: Text(
                               "${items[index].productName}",
-                              style: kJetbrainsDescription.copyWith(
+                              style: kFlameDescription.copyWith(
                                 decoration: TextDecoration.none,
                                 color: kPrimaryColor,
                               ),
@@ -173,7 +173,7 @@ class OrderDetailsModal extends ConsumerWidget {
                           Expanded(
                             child: Text(
                               "x ${items[index].quantityOrdered}",
-                              style: kJetbrainsDescription.copyWith(
+                              style: kFlameDescription.copyWith(
                                 decoration: TextDecoration.none,
                                 color: kPrimaryColor,
                               ),

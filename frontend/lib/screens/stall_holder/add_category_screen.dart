@@ -38,7 +38,7 @@ class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
         child: Column(
           children: [
             SizedBox(height: 30,),
-            Text('Category Name', style: kJetbrainsFontTitle.copyWith(fontSize: 24)),
+            Text('Category Name', style: kFlameFontTitle.copyWith(fontSize: 24)),
             SizedBox(height: 20,),
             TextField(
               controller: nameController,

@@ -46,7 +46,7 @@ class _StallCategoryScreenState extends ConsumerState<StallCategoryScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Text("Stall Category", style: kJetbrainsFontTitle),
+          Text("Stall Category", style: kFlameFontTitle),
           SizedBox(height: 10),
           Expanded(
             child: Padding(

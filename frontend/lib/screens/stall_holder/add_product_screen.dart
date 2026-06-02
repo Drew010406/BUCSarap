@@ -121,7 +121,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
           children: [
             Text(
               'Product Image',
-              style: kJetbrainsFontTitle.copyWith(fontSize: 24),
+              style: kFlameFontTitle.copyWith(fontSize: 24),
             ),
             SizedBox(height: 20),
             GestureDetector(
@@ -162,7 +162,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
             SizedBox(height: 30),
             Text(
               'Product Name',
-              style: kJetbrainsFontTitle.copyWith(fontSize: 24),
+              style: kFlameFontTitle.copyWith(fontSize: 24),
             ),
             SizedBox(height: 20),
             TextField(
@@ -180,7 +180,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
             SizedBox(height: 30),
             Text(
               'Product Price',
-              style: kJetbrainsFontTitle.copyWith(fontSize: 24),
+              style: kFlameFontTitle.copyWith(fontSize: 24),
             ),
             SizedBox(height: 20),
             TextField(

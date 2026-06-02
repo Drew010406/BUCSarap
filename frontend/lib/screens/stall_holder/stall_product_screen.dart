@@ -43,7 +43,7 @@ class _StallProductScreenState extends ConsumerState<StallProductScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Text("Stall Products", style: kJetbrainsFontTitle),
+          Text("Stall Products", style: kFlameFontTitle),
           SizedBox(height: 10),
           Expanded(
             child: Padding(
@@ -76,7 +76,7 @@ class _StallProductScreenState extends ConsumerState<StallProductScreen> {
                           children: [
                             Text(
                               "${data[index].productName}",
-                              style: kJetbrainsFontTitle.copyWith(fontSize: 24),
+                              style: kFlameFontTitle.copyWith(fontSize: 24),
                             ),
                             Expanded(
                               flex: 2,

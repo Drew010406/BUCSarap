@@ -46,7 +46,7 @@ class _AddNameModalState extends ConsumerState<AddNameModal> {
                 children: [
                   Text(
                     "Add Name (Optional)",
-                    style: kJetbrainsFontTitle.copyWith(fontSize: 24),
+                    style: kFlameFontTitle.copyWith(fontSize: 24),
                   ),
                   TextField(
                     controller: nameController,

@@ -90,7 +90,7 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
                                   ),
                                 ),
                                 if(!stalls[index].stallStatus)
-                                  Text("Unavailable", style: kJetbrainsFontTitle.copyWith(fontSize: 24),),
+                                  Text("Unavailable", style: kFlameFontTitle.copyWith(fontSize: 24),),
                               ],
                             ),
                           ),

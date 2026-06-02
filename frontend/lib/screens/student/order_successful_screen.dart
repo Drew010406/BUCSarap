@@ -25,13 +25,13 @@ class OrderSuccessfulScreen extends StatelessWidget {
 
                   Text(
                     "Order is now placed!",
-                    style: kJetbrainsFontTitle.copyWith(fontSize: 30),
+                    style: kFlameFontTitle.copyWith(fontSize: 30),
                   ),
                   SizedBox(height: 4),
                   Text(
                     "Please confirm your order on-site for it to be processed, thank you!",
                     textAlign: TextAlign.center,
-                    style: kJetbrainsDescription.copyWith(color: Colors.brown),
+                    style: kFlameDescription.copyWith(color: Colors.brown),
                   ),
 
                   Expanded(child: SizedBox()),

@@ -14,9 +14,12 @@ class OwnerStallCategoryProvider extends _$OwnerStallCategoryProvider {
   @override
   Future<List<CategoryInfoModel>> build() async {
     final ownerID = ref.read(ownerNotifierProvider);
-    final stallData = ref.read(ownerStallProvider).value;
-    final int stallID = stallData!.stallID!;
     if (ownerID == null) throw Exception("Not logged in");
+
+    // Wait for the owner stall data to be available before fetching categories
+    final stallData = await ref.watch(ownerStallProvider.future);
+    final int stallID = stallData.stallID!;
+
     final ownerStallService = ref.read(ownerStallServiceProvider);
     return await ownerStallService.getOwnerStallCategories(ownerID, stallID);
   }
@@ -24,9 +27,15 @@ class OwnerStallCategoryProvider extends _$OwnerStallCategoryProvider {
   Future<dynamic> addNewCategory(String categoryName) async {
     final ownerID = ref.read(ownerNotifierProvider);
     final stallData = ref.read(ownerStallProvider).value;
-    final int stallID = stallData!.stallID!;
+    if (ownerID == null || stallData == null) return null;
+
+    final int stallID = stallData.stallID!;
     final ownerStallService = ref.read(ownerStallServiceProvider);
-    final response =  await ownerStallService.addProductCategory(ownerID!, stallID, categoryName);
+    final response = await ownerStallService.addProductCategory(
+      ownerID,
+      stallID,
+      categoryName,
+    );
     ref.invalidateSelf();
     return response;
   }
@@ -34,10 +43,18 @@ class OwnerStallCategoryProvider extends _$OwnerStallCategoryProvider {
   Future<dynamic> renameCategory(String categoryName) async {
     final ownerID = ref.read(ownerNotifierProvider);
     final stallData = ref.read(ownerStallProvider).value;
-    final int stallID = stallData!.stallID!;
     final categoryID = ref.read(currentCategoryProvider);
+
+    if (ownerID == null || stallData == null || categoryID == null) return null;
+
+    final int stallID = stallData.stallID!;
     final ownerStallService = ref.watch(ownerStallServiceProvider);
-    final response =  await ownerStallService.renameCategory(ownerID!, stallID, categoryID!, categoryName);
+    final response = await ownerStallService.renameCategory(
+      ownerID,
+      stallID,
+      categoryID,
+      categoryName,
+    );
     ref.invalidateSelf();
     return response;
   }
@@ -61,26 +78,34 @@ final currentCategoryProvider = NotifierProvider<CurrentCategory, int?>(
 @riverpod
 class OwnerStallProductsByCategoryProvider
     extends _$OwnerStallProductsByCategoryProvider {
-
   @override
   Future<List<ProductResponseModel>> build() async {
     final ownerStallService = ref.read(ownerStallServiceProvider);
     final categoryID = ref.read(currentCategoryProvider);
-    return await ownerStallService.getOwnerStallProductsByCategory(categoryID!);
+    if (categoryID == null) return [];
+
+    return await ownerStallService.getOwnerStallProductsByCategory(categoryID);
   }
 
   Future<dynamic> toggleProductStatus(int productID) async {
     final ownerID = ref.read(ownerNotifierProvider);
+    if (ownerID == null) return null;
+
     final ownerStallService = ref.read(ownerStallServiceProvider);
-    final response = await ownerStallService.toggleProductStatus(ownerID!, productID);
+    final response = await ownerStallService.toggleProductStatus(
+      ownerID,
+      productID,
+    );
     ref.invalidateSelf();
     return response;
   }
 
   Future<dynamic> deleteProduct(int productID) async {
     final ownerID = ref.read(ownerNotifierProvider);
+    if (ownerID == null) return null;
+
     final ownerStallService = ref.read(ownerStallServiceProvider);
-    final response = await ownerStallService.deleteProduct(ownerID!, productID);
+    final response = await ownerStallService.deleteProduct(ownerID, productID);
     ref.invalidateSelf();
     return response;
   }
@@ -88,10 +113,18 @@ class OwnerStallProductsByCategoryProvider
   Future<dynamic> addProduct(ProductCreateModel data) async {
     final ownerID = ref.read(ownerNotifierProvider);
     final stallData = ref.read(ownerStallProvider).value;
-    final int stallID = stallData!.stallID!;
     final categoryID = ref.read(currentCategoryProvider);
+
+    if (ownerID == null || stallData == null || categoryID == null) return null;
+
+    final int stallID = stallData.stallID!;
     final ownerStallService = ref.read(ownerStallServiceProvider);
-    final response = await ownerStallService.addProduct(ownerID!, categoryID!, stallID, data);
+    final response = await ownerStallService.addProduct(
+      ownerID,
+      categoryID,
+      stallID,
+      data,
+    );
     ref.invalidateSelf();
     return response;
   }

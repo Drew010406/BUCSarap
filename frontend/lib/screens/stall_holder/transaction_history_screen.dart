@@ -81,7 +81,7 @@ class _TransactionHistoryScreenState
           Center(
             child: Text(
               "Transaction History",
-              style: kJetbrainsFontTitle.copyWith(fontSize: 30),
+              style: kFlameFontTitle.copyWith(fontSize: 30),
             ),
           ),
           SizedBox(height: 10),
@@ -94,7 +94,7 @@ class _TransactionHistoryScreenState
                   return Center(
                     child: Text(
                       "No history available",
-                      style: kJetbrainsFontTitle.copyWith(fontSize: 24),
+                      style: kFlameFontTitle.copyWith(fontSize: 24),
                     ),
                   );
                 }
@@ -147,13 +147,13 @@ class _TransactionHistoryScreenState
                                 children: [
                                   Text(
                                     "${data[index].customerName}",
-                                    style: kJetbrainsFontTitle.copyWith(
+                                    style: kFlameFontTitle.copyWith(
                                       fontSize: 17,
                                     ),
                                   ),
                                   Text(
                                     "${data[index].orderNumber}",
-                                    style: kJetbrainsDescription.copyWith(
+                                    style: kFlameDescription.copyWith(
                                       color: Colors.black45,
                                     ),
                                   ),

@@ -26,6 +26,10 @@ app.include_router(orders.route, prefix="/orders", tags=["Orders"])
 
 app.include_router(owner_stall.route, prefix="/owner_stall", tags=["Owner functionalities"])
 
+@app.get("/")
+async def main():
+    print("DEBUG: / endpoint reached")
+    return {"message": "Hello World"}
 
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=8080)
