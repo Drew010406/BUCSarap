@@ -15,6 +15,7 @@ import 'package:frontend/screens/stall_holder/analytics_screen.dart';
 import 'package:frontend/screens/stall_holder/queue_screen.dart';
 import 'package:frontend/screens/stall_holder/stall_holder_screen.dart';
 import 'package:frontend/screens/stall_holder/transaction_history_screen.dart';
+import 'package:frontend/screens/student/receipt_screen.dart';
 import 'package:frontend/screens/student/stall_selection_screen.dart';
 import 'package:frontend/screens/welcome_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -48,6 +49,7 @@ class Main extends StatelessWidget {
         '/menu_screen': (context) => MenuScreen(),
         '/cart_screen': (context) => CartScreen(),
         '/add_name': (context) => AddNameModal(),
+        '/receipt_screen': (context) => ReceiptScreen(),
         // Stall Holders Screens
         '/stall_holder_screen': (context) =>StallHolderScreen(),
         '/add_product_screen': (context) => AddProductScreen(),

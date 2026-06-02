@@ -16,8 +16,6 @@ class StallSelectionScreen extends ConsumerStatefulWidget {
 }
 
 class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     final cartProducts = ref.watch(cartNotifierProvider);
@@ -33,7 +31,17 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
             Navigator.pop(context);
           },
         ),
-        actions: [CartButton(productQuantity: cartProducts.length)],
+        actions: [
+          CartButton(productQuantity: cartProducts.length),
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/receipt_screen');
+            },
+            icon: Icon(Icons.receipt),
+            color: Color(0xFFDA782B),
+            padding: EdgeInsets.only(right: 20),
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -48,9 +56,15 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
               //   TODO: Implement SingleChildScroll
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 100),
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 20,
+                    bottom: 100,
+                  ),
                   child: stallsAsyncProvider.when(
-                    loading: () => const Center(child: CircularProgressIndicator(),),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
                     error: (err, stack) => Text('Error: $err'),
                     data: (stalls) => GridView.builder(
                       itemCount: stalls.length,
@@ -64,7 +78,7 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
                         return GestureDetector(
                           onTap: () {
                             final stall = stalls[index];
-                            if(stall.stallStatus) {
+                            if (stall.stallStatus) {
                               debugPrint('Selected stallID: ${stall.stallID}');
                               ref
                                   .read(selectedStallProvider.notifier)
@@ -89,8 +103,13 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
                                     fontSize: 18,
                                   ),
                                 ),
-                                if(!stalls[index].stallStatus)
-                                  Text("Unavailable", style: kFlameFontTitle.copyWith(fontSize: 24),),
+                                if (!stalls[index].stallStatus)
+                                  Text(
+                                    "Unavailable",
+                                    style: kFlameFontTitle.copyWith(
+                                      fontSize: 24,
+                                    ),
+                                  ),
                               ],
                             ),
                           ),

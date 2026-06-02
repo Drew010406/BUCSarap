@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/models/order_line_model.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../services/order/order_service.dart';
 import 'dio_provider.dart';
@@ -117,6 +120,35 @@ class CartNotifier extends Notifier<Set<OrderLineModel>> {
 
   void resetCart() {
     state = const {};
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    String timestamp = DateTime.now().toString().replaceAll(':', '-').replaceAll(' ', '_');
+    return File('$path/receipt_$timestamp.txt');
+  }
+
+  Future<void> writeReceipt(int stallID, int orderID, Set<OrderLineModel> items) async {
+    final file = await _localFile;
+    final sink = file.openWrite();
+    sink.write("Stall ID: $stallID\n");
+    sink.write("Order ID: $orderID\n");
+    sink.write("Date: ${DateTime.now()}\n");
+    sink.write("--------------------------------\n");
+    sink.write("${'Product'.padRight(16)} ${'Qty'.padRight(6)} Price\n");
+    
+    for(var item in items) {
+      String name = (item.productName ?? "Item").padRight(16);
+      String qty = (item.quantityOrdered ?? 0).toString().padRight(6);
+      sink.write("$name $qty ${item.unitPriceAtOrder}\n");
+    }
+    await sink.close();
   }
 }
 

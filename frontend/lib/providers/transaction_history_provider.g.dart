@@ -39,7 +39,7 @@ final class TransactionHistoryProviderProvider
 }
 
 String _$transactionHistoryProviderHash() =>
-    r'33c02286d77ddd07351bde3f1136dd0f147b9384';
+    r'e40d5a929818c40ed5eb7040d8edee8ee757db84';
 
 abstract class _$TransactionHistoryProvider
     extends $AsyncNotifier<List<TransactionHistoryModel>> {

@@ -19,7 +19,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   @override
   void initState() {
     super.initState();
-    if(ref.read(nameProvider) == null) {
+    if (ref.read(nameProvider) == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showAddNameModal(context);
       });
@@ -138,14 +138,27 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      if(cartProducts.isNotEmpty) {
+                      if (cartProducts.isNotEmpty) {
                         var checkoutResponse = await orderService.checkout(
-                            selectedStall!.stallID!, currentUser);
+                          selectedStall!.stallID!,
+                          currentUser,
+                        );
                         var addOrderLineToDB = await orderService.insertItems(
-                            checkoutResponse['order_id'], cartProducts);
+                          checkoutResponse['order_id'],
+                          cartProducts,
+                        );
                         var submitOrder = await orderService.submitOrder(
-                            checkoutResponse['order_id'], addOrderLineToDB);
+                          checkoutResponse['order_id'],
+                          addOrderLineToDB,
+                        );
                         ref.read(cartNotifierProvider.notifier).resetCart();
+                        ref
+                            .read(cartNotifierProvider.notifier)
+                            .writeReceipt(
+                              selectedStall.stallID!,
+                              checkoutResponse['order_id'],
+                              cartProducts,
+                            );
                         Navigator.of(context).pushNamed("/order_successful");
                       }
                     },

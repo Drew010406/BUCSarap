@@ -39,7 +39,7 @@ final class OwnerStallCategoryProviderProvider
 }
 
 String _$ownerStallCategoryProviderHash() =>
-    r'c9dfa896e2758a314ca8caf60e3a882988a39f6e';
+    r'ba61050005a662576ee87b56509897f31ea8111c';
 
 abstract class _$OwnerStallCategoryProvider
     extends $AsyncNotifier<List<CategoryInfoModel>> {
@@ -100,7 +100,7 @@ final class OwnerStallProductsByCategoryProviderProvider
 }
 
 String _$ownerStallProductsByCategoryProviderHash() =>
-    r'5420879b81ac5ef2960fc18c7d96ebad9fb7d463';
+    r'0f523cec8f6e5e10aa1b0ecef67c15c80755a366';
 
 abstract class _$OwnerStallProductsByCategoryProvider
     extends $AsyncNotifier<List<ProductResponseModel>> {
