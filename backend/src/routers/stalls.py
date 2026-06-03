@@ -1,10 +1,43 @@
 from typing import Annotated, List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy import text, Connection
 from backend.src.db.session import get_db
 from backend.src.schema.stalls import StallUpdate, StallResponse, StallCategories
+from decimal import Decimal
+from datetime import datetime, date, time
+
+import asyncio
+import json
+from sse_starlette import EventSourceResponse
 
 route = APIRouter()
+
+available_stall_streams: dict[int, asyncio.Queue] = {}
+
+@route.get("/{stall_id}/stream")
+async def stall_stram_generator(stall_id: int, request: Request):
+    
+    queue = asyncio.Queue()
+    available_stall_streams[stall_id] = queue
+
+    async def stall_event_generator():
+        
+        try:
+            while True:
+                
+                if await request.is_disconnected():
+                    break
+                try:
+                    stall_data = await asyncio.wait_for(queue.get(), timeout=30)
+                    yield {"event": stall_data.get("event"), "data": json.dumps(stall_data.get("data"))}
+                    
+                except asyncio.TimeoutError:
+                    yield {"event": "heartbeat", "data": "ping"}
+
+        finally:
+            available_stall_streams.pop(stall_id, None)
+            
+    return EventSourceResponse(stall_event_generator())
 
 @route.get("/", response_model=List[StallResponse])
 #gets all stalls 
@@ -17,7 +50,8 @@ async def get_all_stalls(db: Annotated[Connection, Depends(get_db)]):
     
     try:
         results = db.execute(query).mappings().fetchall()
-        return results
+        return [StallResponse(**dict(row)) for row in results]
+
     
     except Exception as error:
         raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
@@ -97,7 +131,7 @@ async def update_stall(stall_id: int, stall_update: StallUpdate, db: Annotated[C
 
     # Check if stall exists
     check_query = text("""
-        SELECT stall_id 
+        SELECT stall_id
         FROM stall 
         WHERE stall_id = :id
     """)
@@ -119,7 +153,7 @@ async def update_stall(stall_id: int, stall_update: StallUpdate, db: Annotated[C
     for field, value in update_data.items():
         update_fields.append(f"{field} = :{field}")
         params[field] = value
-    
+        
     update_query = text(f"""
         UPDATE stall
         SET {', '.join(update_fields)}
@@ -131,6 +165,18 @@ async def update_stall(stall_id: int, stall_update: StallUpdate, db: Annotated[C
         db.execute(update_query, params)
         db.commit()
         
+        if any("stall_status" in update for update in update_fields):          
+            print("BINAGO ANG STATUS NG STALL")
+            
+            updated_data_of_stalls = await get_all_stalls(db)
+            
+            if stall_id in available_stall_streams:
+                
+                await available_stall_streams[stall_id].put({
+                    "event": "Stall Status Update",
+                    "data": [stall.model_dump() for stall in updated_data_of_stalls]
+                })
+                
         select_query = text("""
             SELECT stall_id, owner_id, stall_name, opening_time, closing_time, operating_days, stall_status, photo_path
             FROM stall

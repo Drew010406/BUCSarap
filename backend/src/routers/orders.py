@@ -22,20 +22,16 @@ import firebase_admin
 from firebase_admin import credentials, messaging 
 
 
-"""paste mo nalang path ng key galing firebase dito"""
-cred = credentials.Certificate("firebase-service-account.json")
-firebase_admin.initialize_app(cred)
-
 route = APIRouter()
 
 added_items = {}
 
-"""Push notif shit----------------------------------------------"""
+"""Push notif shit (Firebase)--------------------------------"""
+cred = credentials.Certificate("bucsarap-firebase-adminsdk-fbsvc-6fb9de78cc.json")
+firebase_admin.initialize_app(cred)
 
-"Dito ko isave yung tokens bale {order id:token} siya, same approach sa SSE."
 fcm_tokens: dict[int, str] = {}
 
-"Eto call mo isabay mo sa pag checkout. Eto magstore ng tokens sa dict sa taas"
 @route.post("/{order_id}/notif/save_fcm")
 async def save_fcm(order_id: int, fcm_token: str):
     
@@ -66,9 +62,9 @@ async def send_push_notifs(order_id: int, title: str, body: str):
         await asyncio.to_thread(messaging.send, message)
         print(f"DEBUG: Notification sent to order {order_id}")
     except Exception as error:
-        print(f"DEBUG: FCM Error: {error}")
-    
-"""---------------------------------------------------------------"""
+        return {"Message": f"Failed to send message: {error}"}
+
+"""-----------------------------------------------------"""
 
 
 """Queue shit----------------------------------------------------"""
@@ -535,7 +531,6 @@ async def decline_order(order_id: int, stall_id: int, db: Annotated[Connection, 
                 "event": "Order added in Pending Queue",
                 "data": [item.model_dump() for item in updated_queue]
             })
-        
         await send_push_notifs(order_id, "ORDER DECLINED", "Your order has been declined. We are sorry for the inconvenience, please try ordering again!")
         
         return {"message": f"Successfully declined order number: {order_id}"}
@@ -577,8 +572,8 @@ async def complete_order(order_id: int, stall_id: int, db: Annotated[Connection,
                 "event": "Order added in Pending Queue",
                 "data": [item.model_dump() for item in updated_queue]
             })
-
-        await send_push_notifs(order_id, "ORDER REAEDY", "Your order is ready. Please claim it at the counter and present the receipt or the order number: {order_number}!")
+        
+        await send_push_notifs(order_id, "ORDER READY", "Your order is ready. Please claim it at the counter and present the receipt or the order number: {order_number}!")
         return {"message": "Successfully completed order, please come to the cashier to claim!\nYour order nunmber: {order_number}", "order_number": order_number}
     
     except Exception as error:
