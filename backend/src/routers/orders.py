@@ -52,7 +52,11 @@ async def send_push_notifs(order_id: int, title: str, body: str):
     if not token:
         return {"Message" : f"Token of order: {order_id} doesn't exist."}
 
-    message = messaging.Message(notification= messaging.Notification(title=title, body= body), token= token, android=messaging.AndroidConfig(priority="high"))
+    message = messaging.Message(
+        
+        data = {"title" :title, "body" : body, "order_id" :order_id}, 
+        token= token, 
+        android=messaging.AndroidConfig(priority="high"))
     
     try:
 
