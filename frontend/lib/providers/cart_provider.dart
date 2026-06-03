@@ -134,20 +134,23 @@ class CartNotifier extends Notifier<Set<OrderLineModel>> {
     return File('$path/receipt_$timestamp.txt');
   }
 
-  Future<void> writeReceipt(int stallID, int orderID, Set<OrderLineModel> items) async {
+  Future<void> writeReceipt(int stallID, String orderNumber, Set<OrderLineModel> items) async {
     final file = await _localFile;
     final sink = file.openWrite();
     sink.write("Stall ID: $stallID\n");
-    sink.write("Order ID: $orderID\n");
+    sink.write("Order Number: $orderNumber\n");
     sink.write("Date: ${DateTime.now()}\n");
     sink.write("--------------------------------\n");
     sink.write("${'Product'.padRight(16)} ${'Qty'.padRight(6)} Price\n");
-    
+    double totalCost = 0;
     for(var item in items) {
       String name = (item.productName ?? "Item").padRight(16);
       String qty = (item.quantityOrdered ?? 0).toString().padRight(6);
       sink.write("$name $qty ${item.unitPriceAtOrder}\n");
+      totalCost += item.unitPriceAtOrder!;
     }
+    sink.write("\n\n--------------------------------\n");
+    sink.write("Total Cost: $totalCost\n");
     await sink.close();
   }
 }

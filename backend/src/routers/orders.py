@@ -23,7 +23,7 @@ from firebase_admin import credentials, messaging
 
 
 """paste mo nalang path ng key galing firebase dito"""
-cred = credentials.Certificate("bucsarap-firebase-adminsdk-fbsvc-6fb9de78cc.json")
+cred = credentials.Certificate("firebase-service-account.json")
 firebase_admin.initialize_app(cred)
 
 route = APIRouter()
@@ -45,27 +45,28 @@ async def save_fcm(order_id: int, fcm_token: str):
 
 "Same approach sa SSE, bale after mag push ng event sa queue, notif naman isesend. tigcall ko to dun sa mga order status changing endpoints"
 async def send_push_notifs(order_id: int, title: str, body: str):
-
-    "kuha token using id -> construct message -> send"
     token = fcm_tokens.get(order_id)
-    
     if not token:
+        print(f"DEBUG: No token found for order {order_id}")
         return {"Message" : f"Token of order: {order_id} doesn't exist."}
-
+    
     message = messaging.Message(
-        
-        data = {"title" :title, "body" : body, "order_id" :order_id}, 
-        token= token, 
-        android=messaging.AndroidConfig(priority="high"))
+        # This makes the OS show the notification popup
+        notification=messaging.Notification(title=title, body=body),
+        data={
+            "title": title,
+            "body": body,
+            "order_id": str(order_id)
+        },
+        token=token,
+        android=messaging.AndroidConfig(priority="high")
+    )
     
     try:
-
-        "blocking daw yung messaging kaya pinapagamitan ng threading"
         await asyncio.to_thread(messaging.send, message)
-        return {"message": f"Push notification sent successfully"}
-        
+        print(f"DEBUG: Notification sent to order {order_id}")
     except Exception as error:
-        return {"Message": f"Failed to send message: {error}"}
+        print(f"DEBUG: FCM Error: {error}")
     
 """---------------------------------------------------------------"""
 
@@ -487,7 +488,7 @@ async def accept_orders(order_id: int, stall_id: int, db: Annotated[Connection, 
         
         await send_push_notifs(order_id, "ORDER ACCEPTED", f"Your order has been accepted ({order_number}). Please wait while your meal is being prepared!")
         
-        return {"message": "Successfully accepted order, please wait while your order is being prepared!\nYour order nunmber: {order_number}", "order_number": order_number}
+        return {"message": f"Successfully accepted order, please wait while your order is being prepared!\nYour order nunmber: {order_number}", "order_number": order_number}
     
     except Exception as error:
         db.rollback()

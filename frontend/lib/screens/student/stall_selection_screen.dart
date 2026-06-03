@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/providers/cart_provider.dart';
@@ -5,7 +6,11 @@ import 'package:frontend/shared/back_button_container.dart';
 import 'package:frontend/shared/cart_button.dart';
 import 'package:frontend/shared/cart_container.dart';
 import '../../constants.dart';
+import '../../firebase_options.dart';
+import '../../providers/fcm_token_provider.dart';
 import '../../providers/stall_provider.dart';
+import '../../services/firebase/firebase_api.dart';
+import '../../services/firebase/firebase_service.dart';
 
 class StallSelectionScreen extends ConsumerStatefulWidget {
   const StallSelectionScreen({super.key});
@@ -16,6 +21,19 @@ class StallSelectionScreen extends ConsumerStatefulWidget {
 }
 
 class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _initFCM();
+  }
+
+  Future<void> _initFCM() async {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    final token = await FirebaseApi().initNotifications();
+    if (mounted) {
+      ref.read(fcmTokenNotifierProvider.notifier).addToken(token);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final cartProducts = ref.watch(cartNotifierProvider);

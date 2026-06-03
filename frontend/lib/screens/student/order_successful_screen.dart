@@ -35,27 +35,6 @@ class OrderSuccessfulScreen extends StatelessWidget {
                   ),
 
                   Expanded(child: SizedBox()),
-                  GestureDetector(
-                    child: Container(
-                      height: 42,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFEC1C24).withValues(alpha: 0.8),
-                        borderRadius: BorderRadius.circular(
-                          22,
-                        ), // rect feels more native than pill
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Save receipt to gallery",
-                          style: TextStyle(
-                            fontFamily: 'Flame',
-                            color: Colors.white70,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                   SizedBox(height: 4),
                   GestureDetector(
                     onTap: () {

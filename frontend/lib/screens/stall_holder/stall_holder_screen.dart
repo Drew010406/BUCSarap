@@ -50,6 +50,11 @@ class _StallHolderScreenState extends ConsumerState<StallHolderScreen> {
       },
     );
   }
+  @override
+  void dispose() {
+    EventFlux.instance.disconnect();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

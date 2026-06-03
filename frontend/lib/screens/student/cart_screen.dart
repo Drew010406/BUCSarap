@@ -1,10 +1,13 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:frontend/providers/cart_provider.dart';
+import 'package:frontend/providers/fcm_token_provider.dart';
 import 'package:frontend/providers/stall_provider.dart';
 import 'package:frontend/screens/student/add_name_modal.dart';
 
+import '../../services/firebase/firebase_service.dart';
 import '../../shared/back_button_container.dart';
 import '../../shared/item_cart.dart';
 
@@ -151,12 +154,14 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                           checkoutResponse['order_id'],
                           addOrderLineToDB,
                         );
+                        final token = ref.read(fcmTokenNotifierProvider);
+                        await orderService.saveFCM(checkoutResponse['order_id'], token!);
                         ref.read(cartNotifierProvider.notifier).resetCart();
                         ref
                             .read(cartNotifierProvider.notifier)
                             .writeReceipt(
                               selectedStall.stallID!,
-                              checkoutResponse['order_id'],
+                              checkoutResponse['order_number'],
                               cartProducts,
                             );
                         Navigator.of(context).pushNamed("/order_successful");

@@ -1,6 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/firebase_options.dart';
 import 'package:frontend/screens/stall_holder/add_category_screen.dart';
 import 'package:frontend/screens/stall_holder/stall_category_screen.dart';
 import 'package:frontend/screens/stall_holder/stall_product_screen.dart';
@@ -18,10 +21,20 @@ import 'package:frontend/screens/stall_holder/transaction_history_screen.dart';
 import 'package:frontend/screens/student/receipt_screen.dart';
 import 'package:frontend/screens/student/stall_selection_screen.dart';
 import 'package:frontend/screens/welcome_screen.dart';
+import 'package:frontend/services/firebase/firebase_api.dart';
+import 'package:frontend/services/firebase/firebase_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+@pragma('vm:entry-point') // required annotation
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Background message: ${message.notification?.title}");
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   await dotenv.load(fileName: ".env");
 
   String? url = dotenv.env['SUPABASE_URL'];
