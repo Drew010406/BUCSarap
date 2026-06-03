@@ -10,6 +10,7 @@ import 'package:frontend/constants.dart';
 import 'package:frontend/models/stall_model.dart';
 import 'package:frontend/providers/owner_stall_provider.dart';
 import 'package:frontend/providers/queue_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../components/login_screen/logout_button.dart';
 import '../../services/auth/token_storage_impl.dart';
@@ -93,6 +94,11 @@ class _StallHolderScreenState extends ConsumerState<StallHolderScreen> {
               loading: () => const Center(child: CircularProgressIndicator(),),
               error: (err, stack) => Center(child: Text("Error: $err")),
               data: (data) {
+                final String publicUrl = Supabase.instance.client.storage
+                    .from("images")
+                    .getPublicUrl(
+                  "${data.photoPath}",
+                );
                 return Column(
                   children: [
                     Container(
@@ -100,7 +106,11 @@ class _StallHolderScreenState extends ConsumerState<StallHolderScreen> {
                       width: 150,
                       decoration: BoxDecoration(
                         color: Colors.white70,
-                        borderRadius: BorderRadius.circular(75),
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(publicUrl),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     Text.rich(

@@ -5,6 +5,7 @@ import 'package:frontend/providers/cart_provider.dart';
 import 'package:frontend/shared/back_button_container.dart';
 import 'package:frontend/shared/cart_button.dart';
 import 'package:frontend/shared/cart_container.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../constants.dart';
 import '../../firebase_options.dart';
 import '../../providers/fcm_token_provider.dart';
@@ -93,6 +94,11 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
                         childAspectRatio: 1,
                       ),
                       itemBuilder: (BuildContext context, int index) {
+                        final String publicUrl = Supabase.instance.client.storage
+                            .from("images")
+                            .getPublicUrl(
+                          "${stalls[index].photoPath}",
+                        );
                         return GestureDetector(
                           onTap: () {
                             final stall = stalls[index];
@@ -113,6 +119,29 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                Expanded(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: const Color(
+                                        0xFFFF9644,
+                                      ).withValues(alpha: 0.50),
+                                      borderRadius: BorderRadius.circular(
+                                        10,
+                                      ),
+                                    ),
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    width: double.infinity,
+                                    child: FittedBox(
+                                      fit: BoxFit.fill,
+                                      child: Image.network(
+                                        publicUrl,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                                 Text(
                                   stalls[index].stallName!,
                                   style: TextStyle(

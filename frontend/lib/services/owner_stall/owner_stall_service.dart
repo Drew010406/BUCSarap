@@ -40,7 +40,7 @@ class OwnerStallService {
   ) async {
     try {
       Response response = await _dio.get(
-        "/owner_stall/owners/1/stalls/1/categories",
+        "/owner_stall/owners/$ownerID/stalls/$stallID/categories",
       );
       if (kDebugMode) {
         print(response.data.toString());

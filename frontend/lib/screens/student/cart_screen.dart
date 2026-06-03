@@ -19,6 +19,8 @@ class CartScreen extends ConsumerStatefulWidget {
 }
 
 class _CartScreenState extends ConsumerState<CartScreen> {
+  bool _isButtonEnabled = true;
+
   @override
   void initState() {
     super.initState();
@@ -140,7 +142,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                     endIndent: 23,
                   ),
                   GestureDetector(
-                    onTap: () async {
+                    onTap: _isButtonEnabled ? () async {
+                      if (!_isButtonEnabled) return;
+                      setState(() {
+                        _isButtonEnabled = false;
+                      });
+
                       if (cartProducts.isNotEmpty) {
                         var checkoutResponse = await orderService.checkout(
                           selectedStall!.stallID!,
@@ -165,8 +172,15 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                               cartProducts,
                             );
                         Navigator.of(context).pushNamed("/order_successful");
+
+                        await Future.delayed(const Duration(seconds: 3));
+                        if (mounted) {
+                          setState(() {
+                            _isButtonEnabled = true;
+                          });
+                        }
                       }
-                    },
+                    } : null,
                     child: Container(
                       height: 52,
                       width: 153,

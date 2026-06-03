@@ -20,6 +20,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool _isButtonEnabled = true;
+
   @override
   void initState() {
     super.initState();
@@ -113,8 +115,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
               SizedBox(height: 40),
               GestureDetector(
-                onTap: () async {
+                onTap: _isButtonEnabled ? () async {
                   try {
+                    if (!_isButtonEnabled) return;
+                    setState(() {
+                      _isButtonEnabled = false;
+                    });
+
                     final response = await authService.loginUser(
                       OwnerModel(
                         username: usernameController.text,
@@ -131,6 +138,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       }
                       ref.watch(ownerNotifierProvider.notifier).addOwner(response.data["owner_id"]);
                       Navigator.pushNamed(context, '/stall_holder_screen');
+
+                      await Future.delayed(const Duration(seconds: 2));
+                      if (mounted) {
+                        setState(() {
+                          _isButtonEnabled = true;
+                        });
+                      }
                     }
                   } catch (e) {
                     if (context.mounted) {
@@ -139,7 +153,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       );
                     }
                   }
-                },
+
+
+                } : null,
                 child: Container(
                   height: 45,
                   width: double.infinity,
