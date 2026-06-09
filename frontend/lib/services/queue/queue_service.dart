@@ -9,7 +9,7 @@ class QueueService {
 
   Future<dynamic> getPendingOrder(int stallID) async {
     try {
-      Response response = await _dio!.get("/orders/preparing_queue/$stallID");
+      Response response = await _dio!.get("/queue/pending/$stallID");
       if (kDebugMode) {
         print(response.data.toString());
       }
@@ -35,7 +35,7 @@ class QueueService {
 
   Future<dynamic> getPreparingOrder(int stallID) async {
     try {
-      Response response = await _dio!.get("/orders/queue/$stallID");
+      Response response = await _dio!.get("/queue/$stallID");
       if (kDebugMode) {
         print(response.data.toString());
       }
@@ -62,7 +62,7 @@ class QueueService {
   Future<dynamic> acceptOrder(int orderID, int stallID) async {
     try {
       Response response = await _dio!.patch(
-        "/ordersaccept_order/$orderID",
+        "/orders/accept_order/$orderID",
         queryParameters: {"stall_id": stallID},
       );
       if (kDebugMode) {
@@ -91,7 +91,7 @@ class QueueService {
   Future<dynamic> completeOrder(int orderID, int stallID) async {
     try {
       Response response = await _dio!.patch(
-        "/orderscomplete_order/$orderID",
+        "/orders/complete_order/$orderID",
         queryParameters: {"stall_id": stallID},
       );
       if (kDebugMode) {

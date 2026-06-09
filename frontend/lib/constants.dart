@@ -8,6 +8,13 @@ final String editTag = "edit-popup";
 
 // Colors
 final Color kPrimaryColor = Color(0xFF5D371A);
+final  Color bg = Color(0xFFEFE2D3);
+final Color card = Color(0xFFFAF5EE);
+final Color accentDark = Color(0xFFDA782B);
+final Color accentLight = Color(0xFFFF9644);
+final Color textDark = Color(0xFF2E1A0E);
+final Color textMuted = Color(0xFF9E8776);
+final Color divider = Color(0xFFE5D8CB);
 // TextStyles
 final TextStyle kFlameFontTitle = TextStyle(
   color: Color(0xFF5D371A),

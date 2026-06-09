@@ -781,101 +781,152 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                               vertical: 8,
                               horizontal: 10,
                             ),
-                            child: LineChart(
-                              // https://www.youtube.com/watch?v=LB7B3zudivI
-                              // https://blog.logrocket.com/build-beautiful-charts-flutter-fl-chart/
-                              LineChartData(
-                                minX: 0,
-                                maxX: 9,
-                                minY: 0,
-                                maxY: chartMaxY,
-                                titlesData: FlTitlesData(
-                                  show: true,
-                                  topTitles: AxisTitles(
-                                    sideTitles: SideTitles(showTitles: false),
-                                  ),
-                                  rightTitles: AxisTitles(
-                                    sideTitles: SideTitles(showTitles: false),
-                                  ),
-                                  leftTitles: AxisTitles(
-                                    sideTitles: SideTitles(
-                                      showTitles: true,
-                                      reservedSize: 35,
-                                      getTitlesWidget: (value, meta) {
-                                        return Text(
-                                          '₱${value.toStringAsFixed(0)}',
-                                          style: const TextStyle(
-                                            fontSize: 11,
-                                            fontFamily: 'Flame',
-                                          ),
-                                        );
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 15.0, top: 15.0, bottom: 5.0),
+                              child: LineChart(
+                                LineChartData(
+                                  minX: 0,
+                                  maxX: 9,
+                                  minY: 0,
+                                  maxY: chartMaxY,
+                                  lineTouchData: LineTouchData(
+                                    touchTooltipData: LineTouchTooltipData(
+                                      getTooltipColor: (LineBarSpot touchedSpot) => Colors.brown.withValues(alpha: 0.8),
+                                      getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                                        return touchedSpots.map((LineBarSpot touchedSpot) {
+                                          return LineTooltipItem(
+                                            '₱${touchedSpot.y.toStringAsFixed(0)}',
+                                            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                          );
+                                        }).toList();
                                       },
                                     ),
+                                    handleBuiltInTouches: true,
                                   ),
-                                  bottomTitles: AxisTitles(
-                                    sideTitles: SideTitles(
-                                      showTitles: true,
-                                      reservedSize: 60,
-                                      getTitlesWidget: (value, meta) {
-                                        final int index = value.toInt();
-                                        if (index < 0 || index >= data.length)
-                                          return const SizedBox();
-
-                                        final raw = data[index].orderDate ?? '';
-                                        final short = raw
-                                            .replaceAll(
-                                              RegExp(r',?\s*\d{4}'),
-                                              '',
-                                            )
-                                            .trim();
-
-                                        return Transform.rotate(
-                                          angle: -pi / 4,
-                                          child: Text(
-                                            short,
+                                  titlesData: FlTitlesData(
+                                    show: true,
+                                    topTitles: const AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                    rightTitles: const AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                    leftTitles: AxisTitles(
+                                      sideTitles: SideTitles(
+                                        showTitles: true,
+                                        reservedSize: 45,
+                                        getTitlesWidget: (value, meta) {
+                                          return Text(
+                                            '₱${value.toStringAsFixed(0)}',
                                             style: const TextStyle(
-                                              fontSize: 11,
+                                              fontSize: 10,
                                               fontFamily: 'Flame',
+                                              color: Color(0xFF5D371A),
                                             ),
-                                          ),
-                                        );
-                                      },
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    bottomTitles: AxisTitles(
+                                      sideTitles: SideTitles(
+                                        showTitles: true,
+                                        reservedSize: 45,
+                                        interval: 1,
+                                        getTitlesWidget: (value, meta) {
+                                          final int index = value.toInt();
+                                          if (index < 0 || index >= data.length) {
+                                            return const SizedBox();
+                                          }
+
+                                          final raw = data[index].orderDate ?? '';
+                                          final short = raw
+                                              .replaceAll(
+                                                RegExp(r',?\s*\d{4}'),
+                                                '',
+                                              )
+                                              .trim();
+
+                                          return SideTitleWidget(
+                                            meta: meta,
+                                            space: 10,
+                                            child: Transform.rotate(
+                                              angle: -pi / 4,
+                                              child: Text(
+                                                short,
+                                                style: const TextStyle(
+                                                  fontSize: 10,
+                                                  fontFamily: 'Flame',
+                                                  color: Color(0xFF5D371A),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
-                                ),
-                                gridData: FlGridData(
-                                  show: true,
-                                  drawHorizontalLine: false,
-                                  getDrawingHorizontalLine: (value) {
-                                    return FlLine(strokeWidth: 1);
-                                  },
-                                  drawVerticalLine: false,
-                                  getDrawingVerticalLine: (value) {
-                                    return FlLine(strokeWidth: 1);
-                                  },
-                                ),
-                                borderData: FlBorderData(
-                                  show: true,
-                                  border: Border.all(width: 1),
-                                ),
-                                lineBarsData: [
-                                  LineChartBarData(
-                                    color: Color(0xFFDA782B),
-                                    barWidth: 3,
-                                    isCurved: true,
-                                    curveSmoothness: 0.3,
-                                    preventCurveOverShooting: true,
-                                    spots: data
-                                        .map(
-                                          (item) => FlSpot(
-                                            x++,
-                                            item.dailyRevenue?.toDouble() ??
-                                                0.0,
-                                          ),
-                                        )
-                                        .toList(),
+                                  gridData: FlGridData(
+                                    show: true,
+                                    drawHorizontalLine: true,
+                                    drawVerticalLine: false,
+                                    getDrawingHorizontalLine: (value) {
+                                      return FlLine(
+                                        color: const Color(0xFFDA782B).withValues(alpha: 0.2),
+                                        strokeWidth: 1,
+                                        dashArray: [5, 5],
+                                      );
+                                    },
                                   ),
-                                ],
+                                  borderData: FlBorderData(
+                                    show: true,
+                                    border: const Border(
+                                      bottom: BorderSide(color: Color(0xFFDA782B), width: 2),
+                                      left: BorderSide(color: Color(0xFFDA782B), width: 2),
+                                      right: BorderSide(color: Colors.transparent),
+                                      top: BorderSide(color: Colors.transparent),
+                                    ),
+                                  ),
+                                  lineBarsData: [
+                                    LineChartBarData(
+                                      color: const Color(0xFFDA782B),
+                                      barWidth: 3,
+                                      isCurved: true,
+                                      curveSmoothness: 0.3,
+                                      preventCurveOverShooting: true,
+                                      dotData: FlDotData(
+                                        show: true,
+                                        getDotPainter: (spot, percent, barData, index) {
+                                          return FlDotCirclePainter(
+                                            radius: 3,
+                                            color: const Color(0xFFDA782B),
+                                            strokeWidth: 1.5,
+                                            strokeColor: Colors.white,
+                                          );
+                                        },
+                                      ),
+                                      belowBarData: BarAreaData(
+                                        show: true,
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            const Color(0xFFDA782B).withValues(alpha: 0.4),
+                                            const Color(0xFFDA782B).withValues(alpha: 0.0),
+                                          ],
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                        ),
+                                      ),
+                                      spots: data
+                                          .map(
+                                            (item) => FlSpot(
+                                              x++,
+                                              item.dailyRevenue?.toDouble() ??
+                                                  0.0,
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );

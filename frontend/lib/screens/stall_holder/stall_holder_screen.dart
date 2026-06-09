@@ -14,7 +14,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../components/login_screen/logout_button.dart';
 import '../../services/auth/token_storage_impl.dart';
-import '../../shared/back_button_container.dart';
 
 class StallHolderScreen extends ConsumerStatefulWidget {
   const StallHolderScreen({super.key});
@@ -24,15 +23,14 @@ class StallHolderScreen extends ConsumerStatefulWidget {
 }
 
 class _StallHolderScreenState extends ConsumerState<StallHolderScreen> {
-  final TokenStorageImpl _tokenStorageImpl = TokenStorageImpl(const FlutterSecureStorage());
+  final TokenStorageImpl _tokenStorageImpl =
+  TokenStorageImpl(const FlutterSecureStorage());
+
 
   Future<void> _connect(int stallID) async {
-    // https://pub.dev/packages/flutter_client_sse
-    // https://www.reddit.com/r/FlutterDev/comments/194emt9/new_way_to_handle_server_sent_events_in_flutter/
-    // https://pub.dev/packages/eventflux
     EventFlux.instance.connect(
       EventFluxConnectionType.get,
-      "https://sufferer-cuddly-commerce.ngrok-free.dev/orders/queue/$stallID/stream",
+      "https://sufferer-cuddly-commerce.ngrok-free.dev/queue/$stallID/stream",
       header: {
         "Accept": "text/event-stream",
         "Cache-Control": "no-cache",
@@ -45,29 +43,64 @@ class _StallHolderScreenState extends ConsumerState<StallHolderScreen> {
         });
       },
       onError: (EventFluxException error) {
-        Future.delayed(const Duration(seconds: 5), () {
-          _connect(stallID);
-        });
+        Future.delayed(const Duration(seconds: 5), () => _connect(stallID));
       },
     );
   }
+
   @override
   void dispose() {
     EventFlux.instance.disconnect();
     super.dispose();
   }
 
+  Widget _infoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: kFlameDescription.copyWith(
+              color: textMuted,
+              fontSize: 13,
+              decoration: TextDecoration.none,
+            ),
+          ),
+          Text(
+            value,
+            style: kFlameDescription.copyWith(
+              color: textDark,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              decoration: TextDecoration.none,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _rowDivider() => Divider(
+    height: 1,
+    thickness: 1,
+    color: divider,
+    indent: 20,
+    endIndent: 20,
+  );
+
   @override
   Widget build(BuildContext context) {
     final currentRoute = ModalRoute.of(context)?.settings.name;
     final ownerStall = ref.watch(ownerStallProvider);
 
-    // Safely listen for stall data and connect once it's available
     ref.listen<AsyncValue<StallResponseModel>>(
       ownerStallProvider,
-      (previous, next) {
+          (previous, next) {
         next.whenData((data) {
-          if (data.stallID != null && previous?.value?.stallID != data.stallID) {
+          if (data.stallID != null &&
+              previous?.value?.stallID != data.stallID) {
             _connect(data.stallID!);
           }
         });
@@ -75,9 +108,11 @@ class _StallHolderScreenState extends ConsumerState<StallHolderScreen> {
     );
 
     return Scaffold(
+      backgroundColor: bg,
       appBar: AppBar(
         toolbarHeight: 110,
-        backgroundColor: const Color(0xFFEFE2D3),
+        backgroundColor: bg,
+        elevation: 0,
         leadingWidth: 165,
         leading: LogoutButton(
           onTap: () async {
@@ -87,141 +122,156 @@ class _StallHolderScreenState extends ConsumerState<StallHolderScreen> {
         ),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
             child: ownerStall.when(
-              loading: () => const Center(child: CircularProgressIndicator(),),
-              error: (err, stack) => Center(child: Text("Error: $err")),
+              loading: () =>
+              const Center(child: CircularProgressIndicator()),
+              error: (err, stack) =>
+                  Center(child: Text("Error: $err")),
               data: (data) {
                 final String publicUrl = Supabase.instance.client.storage
                     .from("images")
-                    .getPublicUrl(
-                  "${data.photoPath}",
-                );
-                return Column(
-                  children: [
-                    Container(
-                      height: 150,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.white70,
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: NetworkImage(publicUrl),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        text: '${data.stallName}',
-                        style: kFlameFontTitle.copyWith(fontSize: 24),
-                        children: <TextSpan>[
-                          const TextSpan(
-                            text: ' # ',
-                            style: TextStyle(color: Colors.black45),
-                          ),
-                          TextSpan(
-                            text: '${data.stallID}',
-                            style: const TextStyle(color: Colors.black45),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      "# ${data.ownerID}",
-                      style: kFlameDescription.copyWith(
-                        color: Colors.black45,
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        text: 'Opening time: ',
-                        style: kFlameDescription.copyWith(
-                          decoration: TextDecoration.none,
-                          color: kPrimaryColor,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: '${data.openingTime}',
-                            style: const TextStyle(color: Colors.black45),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        text: 'Closing time: ',
-                        style: kFlameDescription.copyWith(
-                          decoration: TextDecoration.none,
-                          color: kPrimaryColor,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: '${data.closingTime}',
-                            style: const TextStyle(color: Colors.black45),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        text: 'Operating Days: ',
-                        style: kFlameDescription.copyWith(
-                          decoration: TextDecoration.none,
-                          color: kPrimaryColor,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: '${data.operatingDays}',
-                            style: const TextStyle(color: Colors.black45),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          final stallData = ref.read(ownerStallProvider).value;
-                          if(stallData == null) return;
-                          late StallResponseModel updated;
-                          if(data.stallStatus) {
-                            updated = stallData.copyWith(stallStatus: false);
-                          } else {
-                            updated = stallData.copyWith(stallStatus: true);
-                          }
-                          final json = updated.toJson();
+                    .getPublicUrl("${data.photoPath}");
 
-                          ref.read(ownerStallProvider.notifier).updateStallStatus(stallData.stallID!, StallUpdateModel.fromJson(json));
-                        });
-                      },
-                      child: Container(
-                        height: 50,
-                        width: 150,
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 112,
+                        height: 112,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFF9644).withValues(alpha: 0.50),
-                          borderRadius: BorderRadius.circular(22),
+                          shape: BoxShape.circle,
                           border: Border.all(
-                            width: 2,
-                            color: const Color(0xFFDA782B),
+                            color: accentDark.withValues(alpha: 0.25),
+                            width: 2.5,
                           ),
                         ),
-                        child: Center(
-                          child: Text(
-                            data.stallStatus ? "Active" : "Inactive",
-                            style: kFlameFontTitle.copyWith(fontSize: 18),
+                        child: Padding(
+                          padding: const EdgeInsets.all(3),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: NetworkImage(publicUrl),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+
+                      const SizedBox(height: 16),
+
+
+                      Text(
+                        '${data.stallName}',
+                        style: kFlameFontTitle.copyWith(
+                          fontSize: 26,
+                          color: textDark,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Stall #${data.stallID}  ·  Owner #${data.ownerID}',
+                        style: kFlameDescription.copyWith(
+                          color: textMuted,
+                          fontSize: 13,
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+
+                      const SizedBox(height: 28),
+
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: card,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: divider, width: 1),
+                        ),
+                        child: Column(
+                          children: [
+                            _infoRow('Opening Time', '${data.openingTime}'),
+                            _rowDivider(),
+                            _infoRow('Closing Time', '${data.closingTime}'),
+                            _rowDivider(),
+                            _infoRow('Operating Days', '${data.operatingDays}'),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            final stallData =
+                                ref.read(ownerStallProvider).value;
+                            if (stallData == null) return;
+                            final updated = stallData.copyWith(
+                              stallStatus: !data.stallStatus,
+                            );
+                            ref
+                                .read(ownerStallProvider.notifier)
+                                .updateStallStatus(
+                              stallData.stallID!,
+                              StallUpdateModel.fromJson(updated.toJson()),
+                            );
+                          });
+                        },
+                        child: Container(
+                          height: 52,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: data.stallStatus
+                                ? accentLight.withValues(alpha: 0.12)
+                                : card,
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              width: 1.5,
+                              color: data.stallStatus
+                                  ? accentDark
+                                  : textMuted.withValues(alpha: 0.35),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 8,
+                                height: 8,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: data.stallStatus
+                                      ? accentDark
+                                      : textMuted.withValues(alpha: 0.5),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                data.stallStatus
+                                    ? 'Open for Orders'
+                                    : 'Currently Closed',
+                                style: kFlameFontTitle.copyWith(
+                                  fontSize: 16,
+                                  color: data.stallStatus
+                                      ? accentDark
+                                      : textMuted,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
           ),
-          // Home, Queue, Processed History, Analytics?
           NavigationPanel(currentRoute: currentRoute ?? ''),
         ],
       ),

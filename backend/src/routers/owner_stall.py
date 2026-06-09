@@ -203,6 +203,12 @@ async def delete_product(owner_id: int, product_id: int, db: Annotated[Connectio
     if not results:
         raise HTTPException(status_code=404, detail=f"Product with ID: {product_id} of Owner ID: {owner_id} was not found.")
 
+    delete_order_lines_query = text("""
+                        
+            DELETE FROM order_line 
+            WHERE product_id = :p_id                        
+        """)
+
     delete_query = text("""
                         
             DELETE p
@@ -213,6 +219,7 @@ async def delete_product(owner_id: int, product_id: int, db: Annotated[Connectio
         """)
     
     try:
+        db.execute(delete_order_lines_query, {"p_id": product_id})
         
         results = db.execute(delete_query, {"p_id": product_id, "o_id": owner_id })
         db.commit()

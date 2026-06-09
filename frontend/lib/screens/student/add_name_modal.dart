@@ -100,7 +100,7 @@ class _AddNameModalState extends ConsumerState<AddNameModal> {
                           onTap: () {
                             ref
                                 .read(nameProvider.notifier)
-                                .addName(null); // Explicitly Stay Anonymous
+                                .addName(null);
                             Navigator.pop(context);
                           },
                           child: Container(

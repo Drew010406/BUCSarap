@@ -11,7 +11,7 @@ class HistoryService {
 
   Future<dynamic> getProductInfo(int productID) async {
     try {
-      Response response = await _dio!.get("/products/products/$productID");
+      Response response = await _dio!.get("/products/product_info/$productID");
       if (kDebugMode) {
         print(response.data.toString());
       }

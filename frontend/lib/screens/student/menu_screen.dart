@@ -34,7 +34,6 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
         leadingWidth: 140,
         leading: BackButtonContainer(
           onTap: () {
-            ref.watch(cartNotifierProvider.notifier).resetCart();
             Navigator.pop(context);
           },
         ),

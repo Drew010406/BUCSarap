@@ -128,7 +128,7 @@ class OrderService {
   Future<dynamic> saveFCM(int orderID, String token) async {
     try {
       Response response = await _dio!.post(
-        "/orders/${orderID}/notif/save_fcm",
+        "/queue/${orderID}/notif/save_fcm",
         queryParameters: {"fcm_token": token},
       );
       if (kDebugMode) {

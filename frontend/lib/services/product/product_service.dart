@@ -7,34 +7,6 @@ class ProductService {
 
   ProductService({dio}) : _dio = dio;
 
-  // Future<List<ProductWithDetailsModel>> getStallProducts(int stallId) async {
-  //   try {
-  //     Response response = await _dio!.get("/products/$stallId");
-  //     if (kDebugMode) {
-  //       print(response.data.toString());
-  //     }
-  //     return response.data
-  //         .map((product) => ProductWithDetailsModel.fromJson(product))
-  //         .toList();
-  //   } on DioException catch (e) {
-  //     if (e.response != null) {
-  //       final statusCode = e.response?.statusCode;
-  //       final errorData = e.response?.data;
-  //
-  //       if (statusCode == 500) {
-  //         final errorMessage = errorData['detail'] ?? 'Database error';
-  //         throw Exception(errorMessage);
-  //       } else {
-  //         throw Exception(
-  //           'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
-  //         );
-  //       }
-  //     } else {
-  //       throw Exception('Network error: ${e.message}');
-  //     }
-  //   }
-  // }
-
   Future<List<ProductResponseModel>> getProductsByCategory(
     int categoryID,
   ) async {
@@ -66,7 +38,7 @@ class ProductService {
   }
   Future getProductInfo(int productID) async {
     try {
-      Response response = await _dio!.get("/products/products/$productID");
+      Response response = await _dio!.get("/products/product_info/$productID");
       if(kDebugMode) {
         print(response.data.toString());
       }
@@ -89,32 +61,4 @@ class ProductService {
      }
     }
   }
-
-  // Future<ProductResponseModel> getAvailableProducts(int stallId) async {
-  //   try {
-  //     Response response = await _dio!.get("/products/$stallId/available");
-  //     if (kDebugMode) {
-  //       print(response.data.toString());
-  //     }
-  //     return response.data
-  //         .map((product) => ProductResponseModel.fromJson(product))
-  //         .toList();
-  //   } on DioException catch (e) {
-  //     if (e.response != null) {
-  //       final statusCode = e.response?.statusCode;
-  //       final errorData = e.response?.data;
-  //
-  //       if (statusCode == 500) {
-  //         final errorMessage = errorData['detail'] ?? 'Database error';
-  //         throw Exception(errorMessage);
-  //       } else {
-  //         throw Exception(
-  //           'Server error: $statusCode = ${errorData['detail'] ?? "Unknown Error"}',
-  //         );
-  //       }
-  //     } else {
-  //       throw Exception('Network error: ${e.message}');
-  //     }
-  //   }
-  // }
 }

@@ -12,82 +12,79 @@ from sse_starlette import EventSourceResponse
 
 route = APIRouter()
 
-available_stall_streams: dict[int, asyncio.Queue] = {}
+available_stall_streams: list[asyncio.Queue] = []
 
-@route.get("/{stall_id}/stream")
-async def stall_stram_generator(stall_id: int, request: Request):
-    
-    queue = asyncio.Queue()
-    available_stall_streams[stall_id] = queue
+@route.get("/stream")
+async def stall_stream_generator(request: Request):
+	queue = asyncio.Queue()
+	available_stall_streams.append(queue)
+	
+	async def stall_event_generator():
+		try:
+			while True:
+				try:
+					stall_data = await asyncio.wait_for(queue.get(), timeout=30)
+					yield {
+						"event": stall_data.get("event"),
+						"data": json.dumps(stall_data.get("data"))
+					}
+				except asyncio.TimeoutError:
+					yield {"event": "heartbeat", "data": "ping"}
+		finally:
+			available_stall_streams.remove(queue)
+	
+	return EventSourceResponse(stall_event_generator())
 
-    async def stall_event_generator():
-        
-        try:
-            while True:
-                
-                if await request.is_disconnected():
-                    break
-                try:
-                    stall_data = await asyncio.wait_for(queue.get(), timeout=30)
-                    yield {"event": stall_data.get("event"), "data": json.dumps(stall_data.get("data"))}
-                    
-                except asyncio.TimeoutError:
-                    yield {"event": "heartbeat", "data": "ping"}
 
-        finally:
-            available_stall_streams.pop(stall_id, None)
-            
-    return EventSourceResponse(stall_event_generator())
+async def broadcast(event: str, data: dict):
+	for q in available_stall_streams:
+		await q.put({"event": event, "data": data})
+
 
 @route.get("/", response_model=List[StallResponse])
-#gets all stalls 
+# gets all stalls
 async def get_all_stalls(db: Annotated[Connection, Depends(get_db)]):
-    
-    query = text("""
+	query = text("""
         SELECT stall_id, owner_id, stall_name, opening_time, closing_time, operating_days, stall_status, photo_path
         FROM stall
     """)
-    
-    try:
-        results = db.execute(query).mappings().fetchall()
-        return [StallResponse(**dict(row)) for row in results]
+	
+	try:
+		results = db.execute(query).mappings().fetchall()
+		return [StallResponse(**dict(row)) for row in results]
+	
+	
+	except Exception as error:
+		raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
 
-    
-    except Exception as error:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
 
-
-@route.get("/{stall_id}",response_model=StallResponse)
-#gets info of a stall using the stall id 
-async def get_stall(stall_id: int,owner_id: int, db: Annotated[Connection, Depends(get_db)]):
-    
-
-    query = text("""
+@route.get("/{stall_id}", response_model=StallResponse)
+# gets info of a stall using the stall id
+async def get_stall(stall_id: int, owner_id: int, db: Annotated[Connection, Depends(get_db)]):
+	query = text("""
         SELECT stall_id, owner_id, stall_name, opening_time, closing_time, operating_days, stall_status, photo_path
         FROM stall
         WHERE stall_id = :s_id AND owner_id = :o_id
     """)
-    
-    try:
-        result = db.execute(query, {"s_id": stall_id, "o_id": owner_id}).mappings().fetchone()
-        
-        if not result:
-            raise HTTPException(status_code=404, detail="Stall not found")
-        
-        return result
-    except HTTPException:
-        raise
-    
-    except Exception as error:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
+	
+	try:
+		result = db.execute(query, {"s_id": stall_id, "o_id": owner_id}).mappings().fetchone()
+		
+		if not result:
+			raise HTTPException(status_code=404, detail="Stall not found")
+		
+		return result
+	except HTTPException:
+		raise
+	
+	except Exception as error:
+		raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
 
 
 @route.get("/{stall_id}/with-categories", response_model=StallCategories)
-
 async def get_stall_with_categories(stall_id: int, db: Annotated[Connection, Depends(get_db)]):
-
-    #gets the stall info and categories
-    query = text("""
+	# gets the stall info and categories
+	query = text("""
         SELECT 
             s.stall_id,
             s.stall_name,
@@ -98,96 +95,96 @@ async def get_stall_with_categories(stall_id: int, db: Annotated[Connection, Dep
         LEFT JOIN product_category pc ON s.stall_id = pc.stall_id
         WHERE s.stall_id = :id
     """)
-    
-    try:
-        results = db.execute(query, {"id": stall_id}).mappings().fetchall()
-        
-        if not results:
-            raise HTTPException(status_code=404, detail="Stall not found")
-        
-        # Build stall with categories and products
-        stall_data = {
-            
-            "stall_id": results[0]["stall_id"],
-            "stall_name" : results[0]["stall_name"],
-            "categories": [
-                {
-                    "category_id": r["category_id"], 
-                    "category_name": r["category_name"]}
-                for r in results if r["category_id"]
-            ]
-        }
-        
-        return stall_data
-    except HTTPException:
-        raise
-    except Exception as error:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
+	
+	try:
+		results = db.execute(query, {"id": stall_id}).mappings().fetchall()
+		
+		if not results:
+			raise HTTPException(status_code=404, detail="Stall not found")
+		
+		# Build stall with categories and products
+		stall_data = {
+			
+			"stall_id": results[0]["stall_id"],
+			"stall_name": results[0]["stall_name"],
+			"categories": [
+				{
+					"category_id": r["category_id"],
+					"category_name": r["category_name"]}
+				for r in results if r["category_id"]
+			]
+		}
+		
+		return stall_data
+	except HTTPException:
+		raise
+	except Exception as error:
+		raise HTTPException(status_code=500, detail=f"Database error: {str(error)}")
 
 
-@route.put("/{stall_id}",response_model=StallResponse)
-async def update_stall(stall_id: int, stall_update: StallUpdate, db: Annotated[Connection, Depends(get_db)]):
-
-
-    # Check if stall exists
-    check_query = text("""
+@route.put("/{stall_id}", response_model=StallResponse)
+async def update_stall(stall_id: int, stall_update: StallUpdate,
+                       db: Annotated[Connection, Depends(get_db)]):
+	print(f"AVAILABLE STALLS LEN {len(available_stall_streams)}")
+	# Check if stall exists
+	check_query = text("""
         SELECT stall_id
         FROM stall 
         WHERE stall_id = :id
     """)
-    
-    existing_stall = db.execute(check_query, {"id": stall_id}).mappings().fetchone()
-    
-    if not existing_stall:
-        raise HTTPException(status_code=404, detail="Stall not found")
-    
-    update_data = stall_update.model_dump(exclude_unset=True)
-    
-    if not update_data:
-        raise HTTPException(status_code=400, detail="No fields to update")
-    
-    # Build dynamiDc update query
-    update_fields = []
-    params = {"id": stall_id}
-    
-    for field, value in update_data.items():
-        update_fields.append(f"{field} = :{field}")
-        params[field] = value
-        
-    update_query = text(f"""
+	
+	existing_stall = db.execute(check_query, {"id": stall_id}).mappings().fetchone()
+	
+	if not existing_stall:
+		raise HTTPException(status_code=404, detail="Stall not found")
+	
+	update_data = stall_update.model_dump(exclude_unset=True)
+	
+	if not update_data:
+		raise HTTPException(status_code=400, detail="No fields to update")
+	
+	# Build dynamiDc update query
+	update_fields = []
+	params = {"id": stall_id}
+	
+	for field, value in update_data.items():
+		update_fields.append(f"{field} = :{field}")
+		params[field] = value
+	
+	update_query = text(f"""
         UPDATE stall
         SET {', '.join(update_fields)}
         WHERE stall_id = :id
     """)
-    
-    try:
-        
-        db.execute(update_query, params)
-        db.commit()
-        
-        if any("stall_status" in update for update in update_fields):          
-            print("BINAGO ANG STATUS NG STALL")
-            
-            updated_data_of_stalls = await get_all_stalls(db)
-            
-            if stall_id in available_stall_streams:
-                
-                await available_stall_streams[stall_id].put({
-                    "event": "Stall Status Update",
-                    "data": [stall.model_dump() for stall in updated_data_of_stalls]
-                })
-                
-        select_query = text("""
+	
+	try:
+		
+		db.execute(update_query, params)
+		db.commit()
+		
+		if any("stall_status" in update for update in update_fields):
+			updated_data_of_stalls = await get_all_stalls(db)
+			
+			if stall_id in available_stall_streams:
+				await available_stall_streams[stall_id].put({
+					"event": "Stall Status Update",
+					"data": [stall.model_dump() for stall in updated_data_of_stalls]
+				})
+		
+		select_query = text("""
             SELECT stall_id, owner_id, stall_name, opening_time, closing_time, operating_days, stall_status, photo_path
             FROM stall
             WHERE stall_id = :id
         """)
-        
-        updated_stall = db.execute(select_query, {"id": stall_id}).mappings().fetchone()
-        return updated_stall
-    
-    except Exception as error:
-        
-        db.rollback()
-        raise HTTPException(status_code=400, detail=f"Database error: {str(error)}")
-    
+		
+		updated_stall = db.execute(select_query, {"id": stall_id}).mappings().fetchone()
+		await broadcast("stall_status_changed", {
+			"stall_id": stall_id,
+			"data": stall_update.model_dump()
+		})
+		return updated_stall
+	
+	except Exception as error:
+		
+		db.rollback()
+		raise HTTPException(status_code=400, detail=f"Database error: {str(error)}")

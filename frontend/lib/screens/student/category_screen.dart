@@ -31,6 +31,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
         leadingWidth: 140,
         leading: BackButtonContainer(
           onTap: () {
+            ref.watch(cartNotifierProvider.notifier).resetCart();
             Navigator.pop(context);
           },
         ),

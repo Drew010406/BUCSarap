@@ -27,7 +27,6 @@ class _ItemCartState extends ConsumerState<ItemCart> {
       mainAxisAlignment:
       MainAxisAlignment.spaceBetween,
       children: [
-        Container(child: Text("Picture")),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment:

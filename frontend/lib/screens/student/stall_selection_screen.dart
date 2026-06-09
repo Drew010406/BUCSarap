@@ -1,3 +1,7 @@
+import 'package:eventflux/client.dart';
+import 'package:eventflux/enum.dart';
+import 'package:eventflux/models/exception.dart';
+import 'package:eventflux/models/response.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +12,10 @@ import 'package:frontend/shared/cart_container.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../constants.dart';
 import '../../firebase_options.dart';
+import '../../models/stall_model.dart';
 import '../../providers/fcm_token_provider.dart';
+import '../../providers/owner_stall_provider.dart';
+import '../../providers/queue_provider.dart';
 import '../../providers/stall_provider.dart';
 import '../../services/firebase/firebase_api.dart';
 import '../../services/firebase/firebase_service.dart';
@@ -22,9 +29,42 @@ class StallSelectionScreen extends ConsumerStatefulWidget {
 }
 
 class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
+  Future<void> _connect() async {
+    // https://pub.dev/packages/flutter_client_sse
+    // https://www.reddit.com/r/FlutterDev/comments/194emt9/new_way_to_handle_server_sent_events_in_flutter/
+    // https://pub.dev/packages/eventflux
+    EventFlux.instance.connect(
+      EventFluxConnectionType.get,
+      "https://sufferer-cuddly-commerce.ngrok-free.dev/stalls/stream",
+      header: {
+        "Accept": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "ngrok-skip-browser-warning": "true",
+      },
+      onSuccessCallback: (EventFluxResponse? response) async {
+        response?.stream?.listen((data) {
+          // TODO sdfsdf
+          ref.invalidate(stallsProvider);
+          print("SSE DATA: ${data.data}");
+        });
+      },
+      onError: (EventFluxException error) {
+        Future.delayed(const Duration(seconds: 5), () {
+          _connect();
+        });
+      },
+    );
+  }
+  @override
+  void dispose() {
+    EventFlux.instance.disconnect();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
+    _connect();
     _initFCM();
   }
 
@@ -39,6 +79,7 @@ class _StallSelectionScreenState extends ConsumerState<StallSelectionScreen> {
   Widget build(BuildContext context) {
     final cartProducts = ref.watch(cartNotifierProvider);
     final stallsAsyncProvider = ref.watch(stallsProvider);
+
 
     return Scaffold(
       appBar: AppBar(
